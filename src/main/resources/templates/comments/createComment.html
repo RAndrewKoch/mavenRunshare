@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<script>
+</script>
+<body id="main">
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: runnerbar"></p>
+</div>
+<p th:replace="fragments :: navbar"></p>
+<h1
+        style="text-align:center; padding-top:100px;">Contribute to the conversation!
+</h1>
+<div class="centeringDiv">
+    <div th:unless="${currentRunner}">
+        <p>You must be logged in to add a comment</p>
+        <a class="btn btn-primary"
+           th:href="@{/runners/login}">Login
+            </a>
+    </div>
+
+</div>
+<form th:if=${currentRunner} method="post">
+    <div class = "form-group">
+        <label for="privateMessage">Private Message?</label>
+        <input type="checkbox"
+               th:field="${newCommentDTO.privateMessage}"
+               id = "privateMessage">
+        <p th:errors="${newCommentDTO.privateMessage}"
+           class="errors"></p>
+        <small class="form-text text-muted">If this
+            is not checked, message will show up on
+            community comment board</small>
+    </div>
+    <div class = "form-group">
+        <label for="messageTitle">Title</label><br>
+        <input width="80%"
+               th:field="${newCommentDTO.messageTitle}"
+               id="messageTitle">
+        <p th:errors="${newCommentDTO.messageTitle}"
+           class="errors"></p>
+    </div>
+    <div class="form-group">
+        <label for="message">Create A Message</label><br>
+        <textarea
+                cols="110" rows="5"
+                th:field="${newCommentDTO.message}"
+                  id="message"></textarea>
+        <p th:errors="${newCommentDTO.message}"
+           class="errors"></p>
+        <small class="form-text text-muted">Max
+            comment size 10,000 characters</small>
+    </div>
+    <div class="form-group">
+        <label for="trailSelector">Attach this
+            comment to a trail?</label>
+        <select
+                id="trailSelector"
+                th:field="${newCommentDTO.trail}">
+            <option th:value="${nullTrail}">None</option>
+            <option th:each="trail : ${trails}"
+                    th:value="${trail.id}"
+                    th:text="${trail.name}"></option>
+        </select>
+        <p th:errors = "${newCommentDTO.trail}"
+           class="errors"></p>
+    </div>
+    <div class="form-group">
+        <label for="runSessionSelector">Attach this
+            comment to a Run Session?</label>
+        <select
+                id="runSessionSelector"
+                th:field="${newCommentDTO.runSession}">
+            <option th:value="${nullRunSession}">None
+            </option>
+            <option th:each="runSession : ${runSessions}"
+                    th:value="${runSession.id}"
+                    th:text="${runSession.name}"></option>
+        </select>
+        <p th:errors = "${newCommentDTO.runSession}"
+           class="errors"></p>
+    </div>
+    <div class="form-group">
+        <label for="runnerSelector">Send this
+            message to Runner?</label>
+        <select multiple="multiple" name="runnersList"
+                id="runnerSelector">
+            <option th:each="runner : ${runners}"
+                    th:unless="${runner==currentRunner}"
+                    th:value="${runner.id}"
+                    th:text="${runner.callsign}"></option>
+        </select>
+        <p th:errors = "${newCommentDTO.runners}"
+           class="errors"></p>
+        <small class="form-text text-muted">Hold
+            Ctrl+click to select multiple runners</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Comment</button>
+</form>
+</body>
+</html>

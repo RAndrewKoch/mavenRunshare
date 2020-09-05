@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body id="main">
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: runnerbar"></p>
+</div>
+<p th:replace="fragments :: navbar"></p>
+
+<div class="centeringDiv">
+    <p style="margin-top:200px;"
+            th:text="${'You must be logged in as '+detailedRunner.callsign+' to view this page'}"></p>
+</div>
+<div class="centeringDiv">
+    <a class="btn btn-primary"
+       th:href="@{'/runners/login/'+${detailedRunner.id}}">Login here</a>
+</div>
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: listnavbar"></p>
+</div>
+</body>
+</html>

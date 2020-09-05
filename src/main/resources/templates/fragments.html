@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+
+<head th:fragment="head">
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link th:href="@{/css/runshare.css}" rel="stylesheet"/>
+    <script type="text/javascript"
+            th:src="@{/js/scripts.js}"></script>
+    <script type="text/javascript"
+            th:src="@{/js/weatherApi.js}"></script>
+    <script type="text/javascript"
+            th:src="@{/js/weatherInfo.js}"></script>
+    <script type="text/javascript"
+            th:src="@{/js/trailDistance.js}"></script>
+    <title
+            th:text="'Runshare ' + ${title}">Runshare
+    </title>
+</head>
+
+<!--SIDENAV BAR-->
+<div th:fragment="navbar"
+     style="position:sticky; top:50px;">
+    <div class="sideNav" id="sideNav">
+        <div class="topOfSideNav">
+            <img
+            th:src="@{../../../../images/RunshareLogo.jpg}"
+             width="150" height="150"
+            style="background-color:red"/>
+             <a class="closebtn"
+           onclick="closeNav()">&times;</a>
+        </div>
+        <div class="sideNavLinkList">
+
+            <div><a th:href="@{/}" >Home</a></div>
+
+            <div onmouseleave="closeMenu('runnerMenu')">
+                <div class="runnerMenuDropdown"
+                 onmouseover="openMenu('runnerMenu')"><a>
+                    Runners</a>
+                </div>
+                <div class="runnerMenu" id="runnerMenu"
+                 style="display:none">
+                 <div><a th:href="@{/runners}">Runner
+                List</a></div>
+                  <div><a th:href="@{/runners/addRunner}">Register a new
+                        Runner</a></div>
+                 <div th:if="${currentRunner}"><a
+                            th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}" th:text="${currentRunner.callsign}+' details'"></a></div>
+                </div>
+            </div>
+
+            <div onmouseleave="closeMenu('commentsMenu')">
+                <div class="commentsMenuDropdown"
+                     onmouseover="openMenu('commentsMenu')"><a>Comments</a></div>
+                <div class="commentsMenu"
+                     id="commentsMenu" style="display:none">
+                     <div><a th:href="@{/comments}">Community
+                    Board</a></div>
+                     <div th:if="${currentRunner}"><a
+                    th:href="@{/comments/createComment}">
+                Post a Comment</a></div>
+                    <div th:unless="${currentRunner}"><a>
+                        Login to add a comment</a></div>
+                </div>
+            </div>
+
+            <div onmouseleave="closeMenu('trailMenu')">
+                <div class="trailMenuDropdown"
+                     onmouseover="openMenu('trailMenu')">
+                    <a>Trails</a></div>
+                <div class="trailMenu" id="trailMenu"
+                     style="display:none">
+                     <div><a th:href="@{/trails}">Trail
+                     Catalog</a></div>
+                    <div
+                            th:unless="${curentRunner}"><a th:href="@{/runners/login}">Login to create a Trail</a></div>
+                      <div th:if="${currentRunner}"><a
+                              th:href="@{/trails/addTrail}">Add a
+                    Trail</a></div>
+                </div>
+            </div>
+
+            <div onmouseleave="closeMenu('runSessionMenu')">
+                <div class="runSessionMenuDropdown"
+                     onmouseover="openMenu('runSessionMenu')"><a>Run Sessions</a></div>
+                <div class="runSessionMenu"
+                     id="runSessionMenu"
+                     style="display:none">
+                     <div><a th:href="@{/runSessions}">Run
+                  Sessions</a></div>
+                    <div th:unless="${currentRunner}"><a
+                            th:href="@{/runners/login}">Login to create a Run Session
+                    </a>
+                    </div>
+                    <div th:if="${currentRunner}"><a
+                    th:href="@{/runSessions/addRunSession}">Add a
+                    run session</a></div>
+                </div>
+            </div>
+
+            <div th:unless="${currentRunner}"><a
+                    th:href="@{/runners/login}">Log in a
+                   Runner</a></div>
+            <div th:if="${currentRunner}"><a
+                    th:href="@{/runners/logout}">Logout
+                 </a></div>
+
+        </div>
+    </div>
+    <div class="sideNavButton" onclick="openNav()"
+         width="100px;" >
+        <span>
+        <img th:src="@{../../../../images/RunshareLogo.jpg}"
+             width="100px;"
+             style="border-style:outset; border-color:silver;"
+        height="100px" />
+        <small class="form-text text-muted">links
+        </small>
+        </span>
+    </div>
+</div>
+
+
+<!--RUNNERBAR-->
+<p th:if="${currentRunner}" th:fragment="runnerbar"
+class="runnerbar" >
+    <span th:text="'Currently Logged in'"></span>
+    <span class="runnerbarspan"
+          th:text="'Callsign: '+${currentRunner.callsign}">
+    </span>
+    <span class="runnerbarspan"
+            th:if="${!currentRunner.callsignOnly}"
+              th:text="'Runner name: '+${currentRunner.firstName}+' '+${currentRunner.lastName}">
+    </span>
+    <span class="runnerbarspan" th:if="${!currentRunner.callsignOnly}"
+              th:text="'Runner age: '+${currentRunner.age}">
+    </span>
+    <span><a th:href="@{'/runners/logout'}"
+             class="btn btn-primary"
+             th:text="'Logout'" style="margin:2px;"></a></span>
+</p>
+
+
+<!--footer navlink-->
+<p class="listnavbar" th:fragment="listnavbar">
+        <a th:href="@{/runSessions}">Run
+        Sessions</a>
+        <a th:href="@{/runners}">Runners</a>
+        <a th:href="@{/trails}">Trails</a>
+        <a th:href="@{/comments}">Comments</a>
+</p>

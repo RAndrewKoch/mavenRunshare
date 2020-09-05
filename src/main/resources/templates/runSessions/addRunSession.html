@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body id="main">
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: runnerbar"></p>
+</div>
+<p th:replace="fragments :: navbar"></p>
+
+<h1 style="padding-top:150px;"
+    th:text="${'Log a run, '+currentRunner.callsign+'!'}"></h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="name">Name your session</label>
+        <input th:field="${newRunSessionDTO.name}"
+               id="name">
+        <p th:errors="${newRunSessionDTO.name}"
+           class="errors"></p>
+        <small class="form-text text-muted">Name it
+            whatever you want!</small>
+    </div>
+    <div class="form-group">
+        <label for="date">Date of Run</label>
+        <input th:field="${newRunSessionDTO.date}"
+              type="date" id="date">
+        <p th:errors="${newRunSessionDTO.date}"
+           class="errors"></p>
+        <small class="form-text text-muted"></small>
+    </div>
+    <div class="form-group">
+        <label for="trail">Pick your Trail</label>
+        <select id="trail"
+                th:field="*{newRunSessionDTO.trail}">
+            <option th:each="trail : ${trails}"
+                    th:text="${trail.name}"
+                    th:value="${trail.id}"></option>
+        </select>
+        <p th:errors="${newRunSessionDTO.trail}"
+           class="errors"></p>
+        <small class="form-text text-muted">If your
+            trail isn't listed, create it in the "Add
+            a Trail" button above</small>
+    </div>
+    <div class="form-group">
+         <label>Number of laps?</label>
+        <input type="number" min="0" step="0.1"
+               th:field="${newRunSessionDTO.laps}">
+        <p th:errors="${newRunSessionDTO.laps}"
+           class="errors"></p>
+    </div>
+    <div class="form-group">
+        <label>Enter Run Session Time:</label>
+        <input type="number" min="0" max="24"
+               style="width:40px;"
+               th:field="${newRunSessionDTO.hours}">
+        <span>:</span>
+        <input type="number" min="0" max="59"
+               style="width:40px;"
+               th:field="${newRunSessionDTO.minutes}">
+        <span>:</span>
+        <input type="number" min="0" max="59"
+               style="width:40px;"
+               th:field="${newRunSessionDTO.seconds}">
+
+    </div>
+    <button type="submit" class="btn btn-primary">Log
+        this run
+    </button>
+</form>
+</body>
+</html>

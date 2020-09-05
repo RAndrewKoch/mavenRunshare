@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body id="main">
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: runnerbar"></p>
+</div>
+<p th:replace="fragments :: navbar"></p>
+
+<h1 style="padding-top:150px;">Add a new trail to the
+    catalog</h1>
+<form method="post">
+    <div class="form-group">
+        <label for="name">Trail Name</label>
+        <input th:field="${newTrailDTO.name}" id="name">
+    <p th:errors="${newTrailDTO.name}" class="errors"></p>
+    <small class="form-text text-muted">Name the
+        trail or greenway</small>
+    </div>
+    <div class="form-group">
+        <label for="miles">Trail Length</label>
+        <input th:field="${newTrailDTO.miles}" id="miles"
+               type="number" min="0" step="0.01">
+        <p th:errors="${newTrailDTO.miles}"
+           class="errors"></p>
+        <small class="form-text text-muted">Length
+            of trail in miles</small>
+    </div>
+    <div class="form-group">
+        <label for="address">Location of trail</label>
+        <input th:field="${newTrailDTO.address}"
+               id="address">
+        <p th:errors="${newTrailDTO.address}"
+           class="errors"></p>
+        <small class="form-text text-muted">Location
+        of trail (Trailhead address}</small>
+    </div>
+    <div class="form-group">
+        <label for="zipCode">Zipcode of Trail</label>
+        <input th:field="${newTrailDTO.zipCode}"
+               id="zipCode">
+        <p th:errors="${newTrailDTO.zipCode}"
+           class="errors"></p>
+        <small class="form-text text-muted">Zipcode
+            of trailhead for location purposes</small>
+    </div>
+    <div class="form-group">
+        <label for="trailDifficulty">What difficulty
+        would you rate this trail?</label>
+        <select
+                th:field="${newTrailDifficultyDTO.trailDifficulty}" id="trailDifficulty">
+           <option value="">Do not wish to set
+               a rating</option>
+            <option
+                    th:each="difficulty : ${difficulties}" th:value="${difficulty}" th:text="${difficulty.getDescription()}"></option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Create
+        new Trail
+    </button>
+</form>
+</body>
+</html>

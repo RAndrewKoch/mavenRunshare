@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+
+<body id="main">
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: runnerbar"></p>
+</div>
+<p th:replace="fragments :: navbar"></p>
+
+<div class="centeringDiv" style="padding-top:80px;">
+    <h1 class="trailDetailsHeader"
+        th:text="${detailedTrail.name}"></h1>
+</div>
+
+<div class="centeringDiv" style="margin:5px; padding:5px;">
+    <span
+            th:text="'Trail length: '+${detailedTrail.miles}"></span>
+    <span
+            th:text="'Location: '+${detailedTrail.address}"></span>
+    <span
+            th:text="'Zip Code: '+${detailedTrail.zipCode}"></span>
+</div>
+<div class="centeringDiv" style="margin:5px; padding:5px;">
+   <span>
+        <span th:if="${detailedTrail.returnTrailDifficultyAvg(trailDifficulties) == 6}">Community difficulty average: &#9734 &#9734 &#9734 &#9734 &#9734</span>
+        <span th:if="${detailedTrail.returnTrailDifficultyAvg(trailDifficulties) == 1}">Community difficulty average: &#9733 &#9734 &#9734 &#9734 &#9734</span>
+        <span th:if="${detailedTrail.returnTrailDifficultyAvg(trailDifficulties) == 2}">Community difficulty average: &#9733 &#9733 &#9734 &#9734 &#9734</span>
+        <span th:if="${detailedTrail.returnTrailDifficultyAvg(trailDifficulties) == 3}">Community difficulty average: &#9733 &#9733 &#9733 &#9734 &#9734</span>
+        <span th:if="${detailedTrail.returnTrailDifficultyAvg(trailDifficulties) == 4}">Community difficulty average: &#9733 &#9733 &#9733 &#9733 &#9734</span>
+        <span th:if="${detailedTrail.returnTrailDifficultyAvg(trailDifficulties) == 5}">Community difficulty average: &#9733 &#9733 &#9733 &#9733 &#9733</span>
+   </span>
+    <span th:if="${currentRunner}">
+        <span th:if="${runnerTrailRating == 6}">You have
+            not assigned a difficulty</span>
+        <span th:if="${runnerTrailRating == 1}">Your
+            difficulty rating: &#9733 &#9734 &#9734 &#9734 &#9734</span>
+         <span th:if="${runnerTrailRating == 2}">Your
+            difficulty rating: &#9733 &#9733 &#9734
+             &#9734 &#9734</span>
+         <span th:if="${runnerTrailRating == 3}">Your
+            difficulty rating: &#9733 &#9733 &#9733
+             &#9734 &#9734</span>
+         <span th:if="${runnerTrailRating == 4}">Your
+            difficulty rating: &#9733 &#9733 &#9733
+             &#9733 &#9734</span>
+         <span th:if="${runnerTrailRating == 5}">Your
+            difficulty rating: &#9733 &#9733 &#9733
+             &#9733 &#9733</span>
+        <span th:if="${runnerTrailRating}"><a class="btn btn-primary"
+                th:href="@{'/trails/editDifficulty/'+ ${currentRunner.id}+'/'+${detailedTrail.id}}">Adjust
+            difficulty</a></span>
+        <span style="padding:2px;"
+              th:unless="${runnerTrailRating} ">
+            <a class="btn btn-primary"
+               th:href="@{'/trails/addDifficulty/'+ ${currentRunner.id}+'/'+${detailedTrail.id}}">Set your difficulty rating</a>
+        </span>
+    </span>
+</div>
+
+<div class="centeringDiv" style="margin:5px; padding:5px;" >
+    <span th:if="${currentRunner}"><a
+            th:href="@{/comments/createComment}"
+            class="btn btn-primary"
+            th:text="'Comment on '+${detailedTrail.name}"></a>
+    </span>
+    <span>
+    <button class="btn btn-primary" id="weatherSpanButton"
+            th:onclick="'getWeather('+${detailedTrail.numberZipCode}+',callApiKey())'">Get current
+        Weather</button>
+    <span hidden id="weatherSpan" ></span>
+    </span>
+    <span th:if="${currentRunner}">
+        <button
+                class="btn btn-primary"
+                th:onclick="'displayMilesFromHome('+${currentRunner.numberZipCode}+','+${detailedTrail.numberZipCode}+')'"
+                id="distanceButton">Distance from home</button>
+        <span hidden
+              id="distanceFromHomeSpan"></span>
+    </span>
+</div>
+
+
+
+<div th:each="comment : ${comments}"
+     style="border-style:solid">
+    <p>
+    <span><a
+            th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
+             th:text="${comment.messageCreator.callsign}"></a></span>
+        <span th:text = "' said'"></span>
+        <span th:if="${comment.trail}"
+              th:text="' about the '"></span>
+        <span th:if="${comment.trail}"><a
+                th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}" th:text="${comment.trail.name}"></a></span>
+        <span th:if="${comment.trail}" th:text="' trail'"></span>
+        <span th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}"></span>
+    </p>
+    <p th:text="'Title: '+${comment.messageTitle}"></p>
+    <p th:text="${comment.message}"></p>
+    <span style="padding-right:10px;"
+          th:text="'Created on: '+${comment.displayStringDate()}"></span><span th:text="'At: '+${comment.displayStringTime()}"></span>
+</div>
+
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: listnavbar"></p>
+</div>
+</body>
+
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body id="main">
+<div class="centeringDiv">
+    <p th:replace="fragments :: runnerbar"></p>
+</div>
+<p th:replace="fragments :: navbar"></p>
+
+<h1 style="padding-top:170px;">Log in to the starting line,
+    Runner!</h1>
+<form method="post">
+    <div class="form-group">
+        <label th:unless="${selectedRunner}" for="callsign">Callsign</label>
+        <input
+                th:if="${selectedRunner}"
+                th:field="${runnerLoginDTO.callsign}"
+                hidden
+                th:value="${selectedRunner.callsign}">
+        <h3 th:if="${selectedRunner}"
+           th:text="'Enter password for '+${selectedRunner.callsign}"></h3>
+        <select th:unless="${selectedRunner}"
+               th:field="*{runnerLoginDTO.callsign}"
+               id="callsign">
+            <option th:each="runner : ${runners}"
+                    th:text="${runner.callsign}"
+                    th:value="${runner.callsign}"></option>
+        </select>
+        <p th:errors="${runnerLoginDTO.callsign}"
+           class="errors"></p>
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input
+                type="password"
+                th:field="${runnerLoginDTO.password}"
+               id="password">
+        <p th:errors="${runnerLoginDTO.password}"
+           class="errors"></p>
+    </div>
+    <button type="submit"
+            class="btn btn-primary">Login, Runner</button>
+</form>
+</body>
+</html>

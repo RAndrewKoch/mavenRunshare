@@ -1,0 +1,172 @@
+body {
+    background-color:#0A0A0A;
+    color: white;
+    padding: 10px;
+    padding-bottom: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+}
+
+.errors {
+    color: red;
+    font-style:italic;
+}
+
+.sideNavButton {
+    top:0px;
+    display:inline;
+    width:100px;
+    float:left;
+}
+
+.sideNav {
+    border-right:ridge;
+    background-color:#0A0A0A;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index:1;
+    top:0;
+    left: 0;
+    overflow-x:hidden;
+    padding-top: 10px;
+    transition:0.5s;
+}
+
+.sideNavLinkList{
+    list-style-type: none;
+    padding: 10px;
+}
+
+.sideNav a {
+  padding: 4px 4px 4px 0px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sideNav a:hover {
+    background-color:#2A2773;
+     color: #f1f1f1;
+}
+
+.topOfSideNav {
+    top:0;
+}
+
+.sideNav .closebtn {
+    position: absolute;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    top:30px;
+    padding: 0;
+}
+
+.closebtn:hover{
+    background-color: #2A2773;
+    cursor: pointer;
+}
+
+.runnerbar{
+    z-index:999;
+    position: fixed;
+    top: 0;
+    width: 90%;
+    align-content: center;
+    background-color:#2A2773;
+    border:outset;
+    border-radius:10px;
+    text-align:center;
+    align-items:center;
+    display:flex;
+    justify-content:space-around;
+}
+
+.listnavbar{
+    position: fixed;
+    bottom: 0;
+    width:50%;
+    background-color:#2A2773;
+    border:outset;
+    border-radius:10px;
+    text-align:center;
+    display:flex;
+    justify-content:space-around;
+}
+
+.runnerbarspan{
+    position:relative;
+}
+
+.runnertable, .trailtable, .runsessiontable{
+    table-layout:fixed;
+    width:100%;
+}
+
+.runnertablehead, .trailtablehead, .runsessiontablehead{
+    border:outset;
+    border-radius:10px;
+    background-color:#2A2773;
+}
+
+.runnertableline:nth-child(even){
+    background-color:#0E0D26;
+}
+
+.trailtableline:nth-child(even){
+    background-color:#0E0D26;
+}
+
+.runsessiontableline:nth-child(even){
+    background-color:#0E0D26;
+}
+
+
+.centeringDiv{
+    display:flex;
+    justify-content:space-around;
+}
+
+.runnerDetailsHeader, .trailDetailsHeader,
+.runSessionDetailsHeader{
+    text-align:center;
+     border:outset;
+     border-radius:10px;
+     background-color:#2A2773;
+     display:inline;
+}
+
+
+.runnerMenu {
+    padding-left:20px;
+    background-color:#0A0A0A;
+    transition: display 1s linear;
+}
+
+.commentsMenu {
+    padding-left:20px;
+    background-color:#0A0A0A;
+    transition: all 0.3s;
+}
+
+.trailMenu {
+    padding-left:20px;
+    background-color:#0A0A0A;
+    transition: all 0.3s;
+}
+
+.runSessionMenu {
+    padding-left:20px;
+    background-color:#0A0A0A;
+    transition: all 0.3s;
+}
+
+
+
+
+

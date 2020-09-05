@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body id="main">
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: runnerbar"></p>
+</div>
+
+<p th:replace="fragments :: navbar"></p>
+
+<h1 style="text-align:center; padding-top:70px;">Community
+    Conversations
+</h1>
+<div th:unless="${currentRunner}" class="centeringDiv">
+    <div>
+        <span><a
+                th:href="@{/runners/login}"
+                class="btn btn-primary" style="margin:5px; padding:5px;">Login</a></span>
+        <span>to contribute
+            to comments</span>
+    </div>
+</div>
+<div th:if="${currentRunner}" class="centeringDiv">
+    <a
+       th:href="@{/comments/createComment}"
+       class="btn btn-primary"
+       style="margin:5px; padding:5px;">Post a
+        Comment</a>
+</div>
+<div th:each="comment : ${comments}">
+    <div th:unless="${comment.privateMessage == true}"
+         style="border-style:solid">
+        <p>
+        <span><a
+                th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
+                 th:text="${comment.messageCreator.callsign}"></a></span>
+        <span th:text = "' said'"></span>
+        <span th:if="${comment.trail}"
+              th:text="' about the '"></span>
+        <span th:if="${comment.trail}"><a
+                th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}" th:text="${comment.trail.name}"></a></span>
+        <span th:if="${comment.trail}" th:text="' trail'"></span>
+        <span th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}"></span>
+        </p>
+        <p th:text="'Title: '+${comment.messageTitle}"></p>
+        <p th:text="${comment.message}"></p>
+        <span style="padding-right:10px;"
+                th:text="'Created on: '+${comment.displayStringDate()}"></span><span th:text="'At: '+${comment.displayStringTime()}"></span>
+    </div>
+</div>
+<div class="centeringDiv">
+    <p th:replace="fragments :: listnavbar"></p>
+</div>
+</body>
+</html>

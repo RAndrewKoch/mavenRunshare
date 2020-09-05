@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body id="main">
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: runnerbar"></p>
+</div>
+<p th:replace="fragments :: navbar"></p>
+<div class="centeringDiv" style="padding-top:130px;">
+    <h1 class="runnerDetailsHeader"
+        th:text="'Editing '+${newRunnerRegistrationDTO.callsign}">
+    </h1>
+</div>
+<h3 >Need to make some
+    changes?</h3>
+
+
+<form method = "post">
+    <div class= "form-group">
+        <label for="callsign">Callsign</label>
+        <input
+                th:field="${newRunnerRegistrationDTO.callsign}"
+               id="callsign">
+        <p
+                th:errors="${newRunnerRegistrationDTO.callsign}"
+                class="errors"></p>
+        <small class="form-text text-muted">What
+            should we call you, runner?</small>
+    </div>
+    <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input th:field="${newRunnerRegistrationDTO.firstName}"
+               id="firstName">
+        <p th:errors="${newRunnerRegistrationDTO.firstName}"
+           class="errors"></p>
+        <small class="form-text text-muted">For our
+        records.  Check "Callsign Only" if you
+        wish your information to be private</small>
+    </div>
+    <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input
+                th:field="${newRunnerRegistrationDTO.lastName}"
+                id="lastName">
+        <p
+                th:errors="${newRunnerRegistrationDTO.lastName}"
+                class="errors"></p>
+        <small class="form-text text-muted">For our
+            records.  Check "Callsign Only" if you
+            wish your information to be private</small>
+    </div>
+    <div class="form-group">
+        <label for="age">Age</label>
+        <input
+                id="age"
+                th:field="${newRunnerRegistrationDTO.age}"
+                type="number"
+                min="16" value="16" placeholder="16">
+        <p th:errors="${newRunnerRegistrationDTO.age}"
+           class="errors"></p>
+        <small class="form-text text-muted">Due to
+            privacy concerns, we cannot track
+            Runners under 16</small>
+    </div>
+    <div class="form-group">
+        <label for="zipCode">Zip Code</label>
+        <input id="zipCode"
+                th:field="${newRunnerRegistrationDTO.zip}">
+        <p th:errors="${newRunnerRegistrationDTO.zip}"
+           class="errors"></p>
+        <small class="form-text text-muted">Zip code
+            is requested for location services. Please
+            type "00000" if you wish no zip code location
+            service
+        </small>
+    </div>
+    <div class="form-group">
+        <label for="gender">Runner Gender</label>
+        <select
+                th:field="${newRunnerRegistrationDTO.gender}"
+                name="gender"
+                id="gender">
+            <option
+                    th:each="gender : ${genders}" th:value="${gender}" th:text="${gender.getDisplayName()}">
+            </option>
+        </select>
+        <p th:errors="${newRunnerRegistrationDTO.gender}"
+           class="errors"></p>
+        <small class="form-text text-muted">Please
+            contact administrator if desired gender
+            is not listed</small>
+    </div>
+    <div class="form-group">
+        <label for="runnerLevel">Runner Level</label>
+        <select
+                th:field="${newRunnerRegistrationDTO.runnerLevel}"
+                name="runnerLevel" id="runnerLevel">
+            <option
+                    th:each="runnerLevel : ${runnerLevels}" th:value="${runnerLevel}" th:text="${runnerLevel.getDescription()}"></option>
+        </select>
+        <p
+                th:errors="${newRunnerRegistrationDTO.runnerLevel}"
+                class="errors"></p>
+        <small class="form-text text-muted">Give us
+            an idea of your running level</small>
+    </div>
+    <div class="form-group">
+        <label for="weight">Runner Weight</label>
+        <input
+                th:field="${newRunnerRegistrationDTO.weight}"
+                type="number" min="0" id="weight">
+        <p th:errors="${newRunnerRegistrationDTO.weight}"
+           class="errors"></p>
+        <small class="form-text text-muted">Weight measured
+            in pounds</small>
+    </div>
+    <div class="form-group">
+        <label for="callsignOnly">Callsign only</label>
+        <input
+                th:field="${newRunnerRegistrationDTO.callsignOnly}"
+                type="checkbox" id="callsignOnly">
+        <p
+                th:errors="${newRunnerRegistrationDTO.callsignOnly}"
+                class="errors"></p>
+        <small class="form-text text-muted">Check
+            here if you only want Runshare to be
+            able to display your callsign.  No other
+            information will ever be displayed </small>
+    </div>
+    <div hidden>
+        <input
+                th:field="${newRunnerRegistrationDTO.password}">
+    </div>
+    <div hidden>
+        <input
+                th:field="${newRunnerRegistrationDTO.verifyPassword}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit
+        Edits</button>
+</form>
+
+
+</body>
+</html>

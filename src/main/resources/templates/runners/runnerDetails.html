@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body id="main">
+<div class="centeringDiv">
+<p th:replace="fragments :: runnerbar"></p>
+</div>
+<p th:replace="fragments :: navbar"></p>
+
+<div class="centeringDiv" style="padding-top:70px;">
+    <h1
+        class="runnerDetailsHeader"
+        th:text="${detailedRunner.Callsign}">
+    </h1>
+</div>
+
+
+    <div class="centeringDiv">
+        <span th:text="'Name: '+${detailedRunner.firstName}+' '+${detailedRunner.lastName}"></span>
+        <span th:text="'Age: '+${detailedRunner.age}"></span>
+        <span th:text="'Weight: '+${detailedRunner.weight}"></span>
+    </div>
+
+    <div class="centeringDiv">
+        <span th:text="'Gender: '+${detailedRunner.gender.getDisplayName()}"></span>
+        <span th:text="'Running Level: '+${detailedRunner.runnerLevel.getDisplayName()}"></span>
+        <span th:text="'Zip Code: '+${detailedRunner.zip}"></span>
+    </div>
+
+    <div style="padding:10px">
+    <div th:if="${comments}" class="centeringDiv">
+        <h1 class="runnerDetailsHeader"
+            th:text="'Comments for '+${detailedRunner.callsign}"></h1>
+    </div>
+    <div th:if="${comments}">
+    <div th:each="comment : ${comments}"
+         style="border-style:solid">
+        <p>
+        <span><a
+                th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
+                th:text="${comment.messageCreator.callsign}"></a></span>
+            <span th:text = "' said'"></span>
+            <span th:if="${comment.trail}"
+                  th:text="' about the '"></span>
+            <span th:if="${comment.trail}"><a
+                    th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}" th:text="${comment.trail.name}"></a></span>
+            <span th:if="${comment.trail}" th:text="' trail'"></span>
+            <span th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}"></span>
+        </p>
+        <p th:text="'Title: '+${comment.messageTitle}"></p>
+        <p th:text="${comment.message}"></p>
+        <span style="padding-right:10px;"
+              th:text="'Created on: '+${comment.displayStringDate()}"></span><span th:text="'At: '+${comment.displayStringTime()}"></span>
+    </div>
+    </div>
+    </div>
+
+    <div th:if="${runSessions}" class="centeringDiv">
+        <h1 class="runnerDetailsHeader"
+            th:text="'Run Sessions for '+${detailedRunner.callsign}">
+        </h1>
+    </div>
+    <div th:if="${runSessions}">
+        <table class="runnertable">
+            <tr class="runnertablehead">
+                <th>Name</th>
+                <th>Date</th>
+                <th>Trail</th>
+                <th>Laps</th>
+            </tr>
+            <tr th:each="runSession: ${runSessions}"
+                class="runnertableline">
+                <td th:text="${runSession.name}"></td>
+                <td th:text="${runSession.date}"></td>
+                <td th:text="${runSession.trail.name}"></td>
+                <td th:text="${runSession.laps}"></td>
+            </tr>
+        </table>
+    </div>
+
+
+<div class="centeringDiv">
+<p th:replace="fragments :: listnavbar"></p>
+</div>
+</body>
+</html>
