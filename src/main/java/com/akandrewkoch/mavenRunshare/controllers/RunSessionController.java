@@ -111,7 +111,7 @@ public class RunSessionController extends MainController {
         model.addAttribute("comments", commentRepository.findByRunSession_IdOrderByDateCreatedDescTimeCreatedDesc(id));
         model.addAttribute("title", "Details " + detailedRunSession.getName());
         model.addAttribute("detailedRunSession", detailedRunSession);
-        return "/runSessions/runSessionDetails";
+        return "runSessions/runSessionDetails";
     }
 
     @GetMapping("/runSessionDetails")
@@ -119,6 +119,6 @@ public class RunSessionController extends MainController {
         setRunnerInModel(request, model);
         model.addAttribute("title", "Blank Details");
         model.addAttribute("detailedRunSession", new RunSession());
-        return "/runSessions/runSessionDetails";
+        return "runSessions/runSessionDetails";
     }
 }
