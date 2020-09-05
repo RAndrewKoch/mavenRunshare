@@ -27,7 +27,7 @@ public class CommentController extends MainController{
         setRunnerInModel(request, model);
         model.addAttribute("title", "Comments");
         model.addAttribute("comments", commentRepository.findFirst10ByOrderByDateCreatedDescTimeCreatedDesc());
-        return "/comments/index";
+        return "comments/index";
     }
 
     @GetMapping(value={"/createComment", "/createComment/{id}"})
@@ -40,7 +40,7 @@ public class CommentController extends MainController{
         model.addAttribute("trails", trailRepository.findAll());
         model.addAttribute("runSessions", runSessionRepository.findAll());
         model.addAttribute(new NewCommentDTO());
-        return "/comments/createComment";
+        return "comments/createComment";
     }
 
     @PostMapping("/createComment")
@@ -53,7 +53,7 @@ public class CommentController extends MainController{
             model.addAttribute("runners", runnerRepository.findAll());
             model.addAttribute("trails", trailRepository.findAll());
             model.addAttribute("runSessions", runSessionRepository.findAll());
-            return "/comments/createComment";
+            return "comments/createComment";
         }
 
         if (runnersList != null) {

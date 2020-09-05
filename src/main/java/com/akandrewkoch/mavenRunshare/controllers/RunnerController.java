@@ -136,7 +136,7 @@ public class RunnerController extends MainController {
             model.addAttribute("runners", runnerRepository.findAll());
             model.addAttribute(new RunnerLoginDTO());
             model.addAttribute("title", "Login");
-            return "/runners/login";
+            return "runners/login";
     }
 
     @GetMapping("/login/{id}")
@@ -147,7 +147,7 @@ public class RunnerController extends MainController {
         listedRunner.setCallsign(runnerRepository.findById(id).get().getCallsign());
         model.addAttribute("runnerLoginDTO", listedRunner);
         model.addAttribute("title", "Login "+listedRunner.getCallsign());
-        return "/runners/login";
+        return "runners/login";
     }
 
     @PostMapping("/login")
@@ -209,7 +209,7 @@ public class RunnerController extends MainController {
     private String logoutRunner (Model model, HttpSession session, HttpServletRequest request){
         session.removeAttribute(runnerSessionKey);
         request.getSession().invalidate();
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/runnerDetails/{id}")
@@ -217,16 +217,16 @@ public class RunnerController extends MainController {
         setRunnerInModel(request, model);
         if (getRunnerFromSession(session)==null){
             model.addAttribute("detailedRunner", runnerRepository.findById(id).get());
-            return"/runners/runnerDetailsNoAccess";
+            return"runners/runnerDetailsNoAccess";
         }
         if (getRunnerFromSession(session).getId()!=id){
             model.addAttribute("detailedRunner", runnerRepository.findById(id).get());
-            return "/runners/runnerDetailsNoAccess";
+            return "runners/runnerDetailsNoAccess";
         }
         Optional<Runner> testRunner = runnerRepository.findById(id);
 
         if (testRunner.isEmpty()){
-            return "/runners/index";
+            return "runners/index";
         }
 
         Runner detailedRunner = testRunner.get();
@@ -243,7 +243,7 @@ public class RunnerController extends MainController {
             model.addAttribute("runSessions", runSessions);
         }
 
-        return "/runners/runnerDetails";
+        return "runners/runnerDetails";
     }
 
     @GetMapping("/runnerDetails")
@@ -251,7 +251,7 @@ public class RunnerController extends MainController {
         setRunnerInModel(request, model);
         model.addAttribute("title", "Blank Details");
         model.addAttribute("detailedRunner", new Runner());
-        return "/runners/runnerDetails";
+        return "runners/runnerDetails";
     }
 
     @GetMapping("/editRunner/{id}")
@@ -259,7 +259,7 @@ public class RunnerController extends MainController {
         setRunnerInModel(request, model);
         Optional<Runner> runnerTest = runnerRepository.findById(id);
         if (runnerTest.isEmpty()){
-            return "/runners/index";
+            return "runners/index";
         }
 
         Runner runnerToEdit = runnerTest.get();
@@ -279,7 +279,7 @@ public class RunnerController extends MainController {
         model.addAttribute("genders", Gender.values());
         model.addAttribute("runnerLevels", RunnerLevel.values());
         model.addAttribute("title", "Editing Runner"+newRunnerRegistrationDTO.getCallsign());
-        return "/runners/editRunner";
+        return "runners/editRunner";
 
     }
 
