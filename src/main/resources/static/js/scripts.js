@@ -1,14 +1,20 @@
 let navClosed = true;
 
 function openNav(){
-    if (navClosed===true)
-    {document.getElementById("sideNav").style.width =
-    "250px";
-    document.getElementById("main").style
-    .marginLeft="250px";
-    navClosed = false
-    } else{
-        closeNav();
+    if (navClosed===true){
+      if (screen.width<800){
+          document.getElementById("sideNav").style
+          .width="100vw";
+          document.getElementById("main").style
+          .marginLeft="100vw";
+          navClosed=false;
+          } else {
+          document.getElementById("sideNav").style.width ="25%";
+          document.getElementById("main").style.marginLeft="25%";
+          navClosed = false;
+         }
+    } else {
+         closeNav();
     }
 }
 
