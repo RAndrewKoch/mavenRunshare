@@ -39,12 +39,12 @@
 
             <div onmouseleave="closeMenu('runnerMenu')">
                 <div class="runnerMenuDropdown" onmouseover="openMenu('runnerMenu')"><a>Runners</a></div>
-                    <div class="runnerMenu" id="runnerMenu" style="display:none">
-                        <div><a th:href="@{/runners}">Runner List</a></div>
-                        <div><a th:href="@{/runners/addRunner}">Register a new Runner</a></div>
-                        <div th:unless="${currentRunner}"><a th:href="@{/runners/login}">Login a Runner</a></div>
-                        <div th:if="${currentRunner}"><a th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}" th:text="${currentRunner.callsign}+' details'"></a></div>
-                    </div>
+                <div class="runnerMenu" id="runnerMenu" style="display:none">
+                    <div><a th:href="@{/runners}">Runner List</a></div>
+                    <div><a th:href="@{/runners/addRunner}">Register a new Runner</a></div>
+                    <div th:unless="${currentRunner}"><a th:href="@{/runners/login}">Login a Runner</a></div>
+                    <div th:if="${currentRunner}"><a th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}" th:text="${currentRunner.callsign}+' details'"></a></div>
+                </div>
             </div>
 
             <div onmouseleave="closeMenu('commentsMenu')">
