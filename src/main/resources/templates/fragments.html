@@ -7,7 +7,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <link th:href="@{/css/runshare.css}" rel="stylesheet"/>
     <link rel="icon" type="image/png"
-          href="images/favicon.png"/>
+          href="../../images/favicon.png"/>
     <script type="text/javascript"
             th:src="@{/js/scripts.js}"></script>
     <script type="text/javascript"
@@ -38,19 +38,13 @@
             <div><a th:href="@{/}" >Home</a></div>
 
             <div onmouseleave="closeMenu('runnerMenu')">
-                <div class="runnerMenuDropdown"
-                 onmouseover="openMenu('runnerMenu')"><a>
-                    Runners</a>
-                </div>
-                <div class="runnerMenu" id="runnerMenu"
-                 style="display:none">
-                 <div><a th:href="@{/runners}">Runner
-                List</a></div>
-                  <div><a th:href="@{/runners/addRunner}">Register a new
-                        Runner</a></div>
-                 <div th:if="${currentRunner}"><a
-                            th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}" th:text="${currentRunner.callsign}+' details'"></a></div>
-                </div>
+                <div class="runnerMenuDropdown" onmouseover="openMenu('runnerMenu')"><a>Runners</a></div>
+                    <div class="runnerMenu" id="runnerMenu" style="display:none">
+                        <div><a th:href="@{/runners}">Runner List</a></div>
+                        <div><a th:href="@{/runners/addRunner}">Register a new Runner</a></div>
+                        <div th:unless="${currentRunner}"><a th:href="@{/runners/login}">Login a Runner</a></div>
+                        <div th:if="${currentRunner}"><a th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}" th:text="${currentRunner.callsign}+' details'"></a></div>
+                    </div>
             </div>
 
             <div onmouseleave="closeMenu('commentsMenu')">
@@ -63,7 +57,8 @@
                      <div th:if="${currentRunner}"><a
                     th:href="@{/comments/createComment}">
                 Post a Comment</a></div>
-                    <div th:unless="${currentRunner}"><a>
+                    <div th:unless="${currentRunner}"><a
+                            th:href="@{/runners/login}">
                         Login to add a comment</a></div>
                 </div>
             </div>
@@ -77,7 +72,7 @@
                      <div><a th:href="@{/trails}">Trail
                      Catalog</a></div>
                     <div
-                            th:unless="${curentRunner}"><a th:href="@{/runners/login}">Login to create a Trail</a></div>
+                            th:unless="${currentRunner}"><a th:href="@{/runners/login}">Login to create a Trail</a></div>
                       <div th:if="${currentRunner}"><a
                               th:href="@{/trails/addTrail}">Add a
                     Trail</a></div>
