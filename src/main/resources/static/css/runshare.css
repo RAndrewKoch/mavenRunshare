@@ -35,6 +35,28 @@ body {
     transition:0.5s;
 }
 
+@media screen and (max-width: 800px){
+    .sideNav
+    { }
+    .homeMenuDropdown, .runnerMenuDropdown,
+    .commentsMenuDropdown, .trailMenuDropdown,
+    .runSessionMenuDropdown, .loginMenuDropdown,
+    .runnerMenu, .commentsMenu, .trailMenu, .runSessionMenu
+    {
+    text-align:center;
+    }
+    .homeMenuDropdown, .runnerMenuDropdown,
+    .commentsMenuDropdown, .trailMenuDropdown,
+    .runSessionMenuDropdown, .loginMenuDropdown
+    {
+    color:white;
+    }
+    .runnerMenu, .commentsMenu, .trailMenu, .runSessionMenu
+    {
+    color:grey;
+    }
+}
+
 .sideNavLinkList{
     list-style-type: none;
     padding: 10px;

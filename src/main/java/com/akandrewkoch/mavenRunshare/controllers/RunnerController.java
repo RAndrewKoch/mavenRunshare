@@ -207,6 +207,7 @@ public class RunnerController extends MainController {
 
     @GetMapping("/logout")
     private String logoutRunner (Model model, HttpSession session, HttpServletRequest request){
+        model.addAttribute("title", "Home");
         session.removeAttribute(runnerSessionKey);
         request.getSession().invalidate();
         return "index";
@@ -278,7 +279,7 @@ public class RunnerController extends MainController {
         model.addAttribute(newRunnerRegistrationDTO);
         model.addAttribute("genders", Gender.values());
         model.addAttribute("runnerLevels", RunnerLevel.values());
-        model.addAttribute("title", "Editing Runner"+newRunnerRegistrationDTO.getCallsign());
+        model.addAttribute("title", "Editing Runner "+newRunnerRegistrationDTO.getCallsign());
         return "runners/editRunner";
 
     }

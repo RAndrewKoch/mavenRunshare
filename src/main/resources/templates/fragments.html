@@ -3,6 +3,7 @@
 
 <head th:fragment="head">
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <link th:href="@{/css/runshare.css}" rel="stylesheet"/>
@@ -24,7 +25,7 @@
 <!--SIDENAV BAR-->
 <div th:fragment="navbar"
      style="position:sticky; top:50px;">
-    <div class="sideNav" id="sideNav">
+    <div class="sideNav" id="sideNav" >
         <div class="topOfSideNav">
             <img
             th:src="@{../../../../images/RunshareLogo.jpg}"
@@ -35,7 +36,9 @@
         </div>
         <div class="sideNavLinkList">
 
-            <div><a th:href="@{/}" >Home</a></div>
+            <div><a th:href="@{/}"
+                    class="homeMenuDropdown">Home
+            </a></div>
 
             <div onmouseleave="closeMenu('runnerMenu')">
                 <div class="runnerMenuDropdown" onmouseover="openMenu('runnerMenu')"><a>Runners</a></div>
@@ -97,12 +100,14 @@
                 </div>
             </div>
 
-            <div th:unless="${currentRunner}"><a
+            <div class="loginMenuDropdown">
+              <div th:unless="${currentRunner}"><a
                     th:href="@{/runners/login}">Log in a
                    Runner</a></div>
-            <div th:if="${currentRunner}"><a
+              <div th:if="${currentRunner}"><a
                     th:href="@{/runners/logout}">Logout
                  </a></div>
+            </div>
 
         </div>
     </div>
