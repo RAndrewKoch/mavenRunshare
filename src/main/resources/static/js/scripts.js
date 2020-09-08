@@ -28,11 +28,12 @@ function closeNav() {
 function openMenu(menuId){
     let runnerMenu = document.getElementById(menuId);
     runnerMenu.style.transition = "all 1s";
-    runnerMenu.style.display = "block";
+    runnerMenu.removeAttribute("style");
 }
 
 function closeMenu(menuId){
     let runnerMenu = document.getElementById(menuId);
     console.log("closeRunners fired");
     runnerMenu.style.display = "none";
+    ;
 }

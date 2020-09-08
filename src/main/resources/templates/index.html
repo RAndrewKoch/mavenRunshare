@@ -10,15 +10,17 @@
 <p th:replace="fragments :: navbar"></p>
 
 
-<h1 style="text-align:center; padding-top:50px;">Welcome
+<h1 class="homePageHeader"
+        style="text-align:center;">Welcome
     to RunShare!</h1>
 <div style="text-align:center">
-<a th:unless="${currentRunner}"
-   th:href="@{/runners/addRunner}"
-        class="btn btn-primary">Create a
+<a  class="homePageButton btn btn-primary"
+   th:unless="${currentRunner}"
+   th:href="@{/runners/addRunner}">Create a
     new Runner account</a>
-<a th:unless="${currentRunner}" th:href="@{/runners/login}"
-   class="btn btn-primary">Log in an existing Runner
+<a  class="homePageButton btn btn-primary"
+    th:unless="${currentRunner}"
+   th:href="@{/runners/login}">Log in an existing Runner
 </a>
 </div>
 <div class="centeringDiv">

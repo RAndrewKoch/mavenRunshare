@@ -29,10 +29,9 @@
         <div class="topOfSideNav">
             <img
             th:src="@{../../../../images/RunshareLogo.jpg}"
-             width="150" height="150"
-            style="background-color:red"/>
+             width="150" height="150"/>
              <a class="closebtn"
-           onclick="closeNav()">&times;</a>
+           onclick="closeNav()">x</a>
         </div>
         <div class="sideNavLinkList">
 
@@ -41,8 +40,10 @@
             </a></div>
 
             <div onmouseleave="closeMenu('runnerMenu')">
-                <div class="runnerMenuDropdown" onmouseover="openMenu('runnerMenu')"><a>Runners</a></div>
-                <div class="runnerMenu" id="runnerMenu" style="display:none">
+                <div class="runnerMenuDropdown"
+                     onmouseover="openMenu('runnerMenu')"><a>Runners</a></div>
+                <div class="runnerMenu" id="runnerMenu"
+                     style="display:none">
                     <div><a th:href="@{/runners}">Runner List</a></div>
                     <div><a th:href="@{/runners/addRunner}">Register a new Runner</a></div>
                     <div th:unless="${currentRunner}"><a th:href="@{/runners/login}">Login a Runner</a></div>
