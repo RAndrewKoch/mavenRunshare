@@ -133,7 +133,6 @@ public class TrailController extends MainController{
         List<TrailDifficultyRating> trailDifficulties = new ArrayList<>();
         grabDifficultiesList.forEach(trailDifficulties::add);
 
-
         model.addAttribute("trailDifficulties", trailDifficulties);
         model.addAttribute("comments", commentRepository.findByTrail_IdOrderByDateCreatedDescTimeCreatedDesc(id));
         model.addAttribute("title", "Trail Details");
