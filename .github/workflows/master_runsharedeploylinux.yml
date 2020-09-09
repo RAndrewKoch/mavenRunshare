@@ -23,6 +23,8 @@ jobs:
     - name: Build with Maven
       env:
          SPRING_DATASTORE_PASSWORD : ${{ secrets.SpringDatastorePassword }}
+         SPRING_DATASTORE_URL : ${{ secrets.SpringDatastoreUrl }}
+         SPRING_DATASTORE_USERNAME : ${{ secrets.SpringDatastoreUsername }}
       run: mvn clean install
 
     - name: Deploy to Azure Web App
