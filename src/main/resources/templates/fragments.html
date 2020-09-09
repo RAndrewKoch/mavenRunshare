@@ -36,12 +36,13 @@
         <div class="sideNavLinkList">
 
             <div><a th:href="@{/}"
-                    class="homeMenuDropdown">Home
+                    class="homeMenuDropdown"><span
+                    class="dropMenuHeader">Home</span>
             </a></div>
 
             <div onmouseleave="closeMenu('runnerMenu')">
                 <div class="runnerMenuDropdown"
-                     onmouseover="openMenu('runnerMenu')"><a>Runners</a></div>
+                     onmouseover="openMenu('runnerMenu')"><a><span class="dropMenuHeader">Runners</span></a></div>
                 <div class="runnerMenu" id="runnerMenu"
                      style="display:none">
                     <div><a th:href="@{/runners}">Runner List</a></div>
@@ -53,7 +54,7 @@
 
             <div onmouseleave="closeMenu('commentsMenu')">
                 <div class="commentsMenuDropdown"
-                     onmouseover="openMenu('commentsMenu')"><a>Comments</a></div>
+                     onmouseover="openMenu('commentsMenu')"><a><span class="dropMenuHeader">Comments</span></a></div>
                 <div class="commentsMenu"
                      id="commentsMenu" style="display:none">
                      <div><a th:href="@{/comments}">Community
@@ -70,11 +71,12 @@
             <div onmouseleave="closeMenu('trailMenu')">
                 <div class="trailMenuDropdown"
                      onmouseover="openMenu('trailMenu')">
-                    <a>Trails</a></div>
+                    <a><span class="dropMenuHeader">
+                        Trails</span></a></div>
                 <div class="trailMenu" id="trailMenu"
                      style="display:none">
                      <div><a th:href="@{/trails}">Trail
-                     Catalog</a></div>
+                         Catalog</a></div>
                     <div
                             th:unless="${currentRunner}"><a th:href="@{/runners/login}">Login to create a Trail</a></div>
                       <div th:if="${currentRunner}"><a
@@ -85,7 +87,7 @@
 
             <div onmouseleave="closeMenu('runSessionMenu')">
                 <div class="runSessionMenuDropdown"
-                     onmouseover="openMenu('runSessionMenu')"><a>Run Sessions</a></div>
+                     onmouseover="openMenu('runSessionMenu')"><a><span class="dropMenuHeader">Run Sessions</span></a></div>
                 <div class="runSessionMenu"
                      id="runSessionMenu"
                      style="display:none">
@@ -103,10 +105,11 @@
 
             <div class="loginMenuDropdown">
               <div th:unless="${currentRunner}"><a
-                    th:href="@{/runners/login}">Log in a
-                   Runner</a></div>
+                    th:href="@{/runners/login}"><span class="dropMenuHeader">Log in a
+                  Runner</span></a></div>
               <div th:if="${currentRunner}"><a
-                    th:href="@{/runners/logout}">Logout
+                    th:href="@{/runners/logout}"><span
+                      class="dropMenuHeader">Logout</span>
                  </a></div>
             </div>
 
