@@ -198,6 +198,8 @@ body {
     .listnavbar{
         display:none;
     }
-
+    .mobilePortraitDelete{
+        display:none;
+    }
 }
 

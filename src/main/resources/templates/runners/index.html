@@ -29,8 +29,8 @@
 
 <table class="runnertable">
     <tr class="runnertablehead">
-        <th th:if="${currentRunner}">Logged In</th>
-        <th th:unless="${currentRunner}">Log in Runner</th>
+        <th th:if="${currentRunner}" class="mobilePortraitDelete">Logged In</th>
+        <th th:unless="${currentRunner}" class="mobilePortraitDelete">Log in Runner</th>
         <th><span>Callsign</span><span><a
                 th:href="@{'/runners/callsignAsc'}">&#8593;
         </a></span><span><a
@@ -44,7 +44,7 @@
             &#8595;</a></span>
         </th>
 
-        <th>
+        <th class="mobilePortraitDelete">
             <span>Name</span><br>
             <span>
                 <a th:href="@{'/runners/firstNameAsc'}">&#8593;</a>
@@ -64,17 +64,17 @@
                     &#8595;</a>
             </span>
         </th>
-        <th><span>Age</span><span><a
+        <th class="mobilePortraitDelete"><span>Age</span><span><a
                 th:href="@{'/runners/ageAsc'}">&#8593;
         </a></span><span><a
                 th:href="@{'/runners/ageDesc'}">&#8595;
         </a></span>
         </th>
-        <th>Zip Code</th>
+        <th class="mobilePortraitDelete">Zip Code</th>
     </tr>
     <tr class="runnertableline"
         th:each="runner : ${runners}">
-        <td>
+        <td class="mobilePortraitDelete">
             <span th:if="${currentRunner}">
                 <a class="btn btn-primary"
                       th:if="${currentRunner.callsign==runner.callsign}" th:href="@{'/runners/editRunner/'+${runner.id}}" th:text="'Edit Runner'">
@@ -91,15 +91,19 @@
         </td>
         <td th:text="${runner.runnerLevel.getDisplayName()}">
         </td>
-        <td th:if="${runner.callsignOnly}"
+        <td class="mobilePortraitDelete"
+            th:if="${runner.callsignOnly}"
             style="text-align:center; border-style:outset; background-color:silver; color:black;"
             colspan="3" th:text="'Runner has chosen
             Callsign-only privacy mode'"></td>
-        <td th:unless="${runner.callsignOnly}"
+        <td class="mobilePortraitDelete"
+            th:unless="${runner.callsignOnly}"
                 th:text="${runner.firstName}+' '+${runner.lastName}"></td>
-        <td th:unless="${runner.callsignOnly}"
+        <td class="mobilePortraitDelete"
+            th:unless="${runner.callsignOnly}"
             th:text="${runner.age}"></td>
-        <td th:unless="${runner.callsignOnly}">
+        <td class="mobilePortraitDelete"
+            th:unless="${runner.callsignOnly}">
             <span th:unless="${runner.zip}==0" th:text="${runner.zip}"></span>
         </td>
 

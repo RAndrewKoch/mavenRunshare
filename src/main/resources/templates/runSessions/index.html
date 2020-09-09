@@ -41,20 +41,20 @@ th:href="@{'/runSessions/addRunSession'}" style="margin:5px; padding:5px;">Add a
             <span><a th:href="@{'/runSessions/nameAsc'}">&#8593;</a></span>
             <span><a th:href="@{'/runSessions/nameDesc'}">&#8595;</a></span>
         </th>
-        <th>
+        <th class="mobilePortraitDelete">
             <span>Date</span>
             <span><a th:href="@{'/runSessions/dateAsc'}">&#8593;</a></span>
             <span><a th:href="@{'/runSessions/dateDesc'}">&#8595;</a></span>
         </th>
-        <th>
+        <th class="mobilePortraitDelete">
             <span>Time</span>
             <span><a th:href="@{'/runSessions/timeAsc'}">&#8593;</a></span>
             <span><a th:href="@{'/runSessions/timeDesc'}">&#8595;</a></span>
         </th>
         <th>Creator</th>
         <th>Trail</th>
-        <th>Laps</th>
-        <th>Distance</th>
+        <th class="mobilePortraitDelete">Laps</th>
+        <th class="mobilePortraitDelete">Distance</th>
         <th>Pace</th>
 
     </tr>
@@ -63,15 +63,19 @@ th:href="@{'/runSessions/addRunSession'}" style="margin:5px; padding:5px;">Add a
         <td><a
                 th:href="@{'/runSessions/runSessionDetails/'+${runsession.id}}"
                 th:text="${runsession.name}"></a></td>
-        <td th:text="${runsession.getDisplayDate()}"></td>
-        <td th:text="${runsession.time}"></td>
+        <td class="mobilePortraitDelete"
+            th:text="${runsession.getDisplayDate()}"></td>
+        <td class="mobilePortraitDelete"
+            th:text="${runsession.time}"></td>
         <td><a
                 th:href="@{'/runners/runnerDetails/'+${runsession.creator.id}}"
                 th:text="${runsession.creator.callsign}"></a></td>
         <td><a
                 th:href="@{'/trails/trailDetails/'+${runsession.trail.id}}" th:text="${runsession.trail.name}"></a></td>
-        <td th:text="${runsession.laps}"></td>
-        <td th:text="${runsession.distance}"></td>
+        <td class="mobilePortraitDelete"
+            th:text="${runsession.laps}"></td>
+        <td class="mobilePortraitDelete"
+            th:text="${runsession.distance}"></td>
         <td th:text="${runsession.getPace()}+' per mile'"></td>
     </tr>
 </table>

@@ -17,14 +17,16 @@
     <div>
         <span><a
                 th:href="@{/runners/login}"
-                class="btn btn-primary" style="margin:5px; padding:5px;">Login</a></span>
+                class="btn btn-primary"
+                style="margin:5px; padding:5px;">Login</a></span>
         <span>to create a Trail</span>
     </div>
 </div>
 <div class="centeringDiv">
     <div th:if="${currentRunner}"><a
-        class="btn btn-primary"
-        th:href="@{'/trails/addTrail'}" style="margin:5px; padding:5px;">Add a new
+            class="btn btn-primary"
+            th:href="@{'/trails/addTrail'}"
+            style="margin:5px; padding:5px;">Add a new
         Trail</a></div>
 </div>
 
@@ -46,28 +48,44 @@
         </a></span><span><a
                 th:href="@{'/trails/milesDesc'}">&#8595;
         </a></span></th>
-        <th><span>Location</span><span><a
+        <th class="mobilePortraitDelete">
+            <span>Location</span><span><a
                 th:href="@{'/trails/addressAsc'}">&#8593;
         </a></span><span><a
                 th:href="@{'/trails/addressDesc'}">&#8595;
         </a></span></th>
         <th>Difficulty Rating</th>
-        <th>Times Rated</th>
+        <th class="mobilePortraitDelete">Times Rated</th>
     </tr>
     <tr class="trailtableline" th:each="trail : ${trails}">
         <td>
-                <a th:href="@{'trails/trailDetails/'+${trail.id}}" th:text="${trail.name}"></a>
+            <a th:href="@{'trails/trailDetails/'+${trail.id}}"
+               th:text="${trail.name}"></a>
         </td>
         <td th:text="${trail.miles}"></td>
-        <td th:text="${trail.address}"></td>
+        <td class="mobilePortraitDelete"
+            th:text="${trail.address}"></td>
         <td
-                th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 6}">&#9734 &#9734 &#9734 &#9734 &#9734</td>
-        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 1}">&#9733 &#9734 &#9734 &#9734 &#9734</td>
-        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 2}">&#9733 &#9733 &#9734 &#9734 &#9734</td>
-        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 3}">&#9733 &#9733 &#9733 &#9734 &#9734</td>
-        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 4}">&#9733 &#9733 &#9733 &#9733 &#9734</td>
-        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 5}">&#9733 &#9733 &#9733 &#9733 &#9733</td>
-        <td th:text="${trail.returnNumberOfTrailDifficultyRatings(trailDifficulties)}"></td>
+                th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 6}">
+            &#9734 &#9734 &#9734 &#9734 &#9734
+        </td>
+        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 1}">
+            &#9733 &#9734 &#9734 &#9734 &#9734
+        </td>
+        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 2}">
+            &#9733 &#9733 &#9734 &#9734 &#9734
+        </td>
+        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 3}">
+            &#9733 &#9733 &#9733 &#9734 &#9734
+        </td>
+        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 4}">
+            &#9733 &#9733 &#9733 &#9733 &#9734
+        </td>
+        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 5}">
+            &#9733 &#9733 &#9733 &#9733 &#9733
+        </td>
+        <td class="mobilePortraitDelete"
+            th:text="${trail.returnNumberOfTrailDifficultyRatings(trailDifficulties)}"></td>
     </tr>
 
 </table>

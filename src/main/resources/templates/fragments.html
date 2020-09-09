@@ -3,8 +3,10 @@
 
 <head th:fragment="head">
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <link th:href="@{/css/runshare.css}" rel="stylesheet"/>
     <link rel="icon" type="image/png"
@@ -25,13 +27,13 @@
 <!--SIDENAV BAR-->
 <div th:fragment="navbar"
      style="position:sticky; top:50px;">
-    <div class="sideNav" id="sideNav" >
+    <div class="sideNav" id="sideNav">
         <div class="topOfSideNav">
             <img
-            th:src="@{../../../../images/RunshareLogo.jpg}"
-             width="150" height="150"/>
-             <a class="closebtn"
-           onclick="closeNav()">x</a>
+                    th:src="@{../../../../images/RunshareLogo.jpg}"
+                    width="150" height="150"/>
+            <a class="closebtn"
+               onclick="closeNav()">x</a>
         </div>
         <div class="sideNavLinkList">
 
@@ -42,26 +44,39 @@
 
             <div onmouseleave="closeMenu('runnerMenu')">
                 <div class="runnerMenuDropdown"
-                     onmouseover="openMenu('runnerMenu')"><a><span class="dropMenuHeader">Runners</span></a></div>
+                     onmouseover="openMenu('runnerMenu')">
+                    <a><span
+                            class="dropMenuHeader">Runners</span></a>
+                </div>
                 <div class="runnerMenu" id="runnerMenu"
                      style="display:none">
-                    <div><a th:href="@{/runners}">Runner List</a></div>
-                    <div><a th:href="@{/runners/addRunner}">Register a new Runner</a></div>
-                    <div th:unless="${currentRunner}"><a th:href="@{/runners/login}">Login a Runner</a></div>
-                    <div th:if="${currentRunner}"><a th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}" th:text="${currentRunner.callsign}+' details'"></a></div>
+                    <div><a th:href="@{/runners}">Runner
+                        List</a></div>
+                    <div><a th:href="@{/runners/addRunner}">Register
+                        a new Runner</a></div>
+                    <div th:unless="${currentRunner}"><a
+                            th:href="@{/runners/login}">Login
+                        a Runner</a></div>
+                    <div th:if="${currentRunner}"><a
+                            th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}"
+                            th:text="${currentRunner.callsign}+' details'"></a>
+                    </div>
                 </div>
             </div>
 
             <div onmouseleave="closeMenu('commentsMenu')">
                 <div class="commentsMenuDropdown"
-                     onmouseover="openMenu('commentsMenu')"><a><span class="dropMenuHeader">Comments</span></a></div>
+                     onmouseover="openMenu('commentsMenu')">
+                    <a><span
+                            class="dropMenuHeader">Comments</span></a>
+                </div>
                 <div class="commentsMenu"
                      id="commentsMenu" style="display:none">
-                     <div><a th:href="@{/comments}">Community
-                    Board</a></div>
-                     <div th:if="${currentRunner}"><a
-                    th:href="@{/comments/createComment}">
-                Post a Comment</a></div>
+                    <div><a th:href="@{/comments}">Community
+                        Board</a></div>
+                    <div th:if="${currentRunner}"><a
+                            th:href="@{/comments/createComment}">
+                        Post a Comment</a></div>
                     <div th:unless="${currentRunner}"><a
                             th:href="@{/runners/login}">
                         Login to add a comment</a></div>
@@ -75,53 +90,61 @@
                         Trails</span></a></div>
                 <div class="trailMenu" id="trailMenu"
                      style="display:none">
-                     <div><a th:href="@{/trails}">Trail
-                         Catalog</a></div>
+                    <div><a th:href="@{/trails}">Trail
+                        Catalog</a></div>
                     <div
-                            th:unless="${currentRunner}"><a th:href="@{/runners/login}">Login to create a Trail</a></div>
-                      <div th:if="${currentRunner}"><a
-                              th:href="@{/trails/addTrail}">Add a
-                    Trail</a></div>
+                            th:unless="${currentRunner}"><a
+                            th:href="@{/runners/login}">Login
+                        to create a Trail</a></div>
+                    <div th:if="${currentRunner}"><a
+                            th:href="@{/trails/addTrail}">Add
+                        a
+                        Trail</a></div>
                 </div>
             </div>
 
             <div onmouseleave="closeMenu('runSessionMenu')">
                 <div class="runSessionMenuDropdown"
-                     onmouseover="openMenu('runSessionMenu')"><a><span class="dropMenuHeader">Run Sessions</span></a></div>
+                     onmouseover="openMenu('runSessionMenu')">
+                    <a><span class="dropMenuHeader">Run Sessions</span></a>
+                </div>
                 <div class="runSessionMenu"
                      id="runSessionMenu"
                      style="display:none">
-                     <div><a th:href="@{/runSessions}">Run
-                  Sessions</a></div>
+                    <div><a th:href="@{/runSessions}">Run
+                        Sessions</a></div>
                     <div th:unless="${currentRunner}"><a
-                            th:href="@{/runners/login}">Login to create a Run Session
+                            th:href="@{/runners/login}">Login
+                        to create a Run Session
                     </a>
                     </div>
                     <div th:if="${currentRunner}"><a
-                    th:href="@{/runSessions/addRunSession}">Add a
-                    run session</a></div>
+                            th:href="@{/runSessions/addRunSession}">Add
+                        a
+                        run session</a></div>
                 </div>
             </div>
 
             <div class="loginMenuDropdown">
-              <div th:unless="${currentRunner}"><a
-                    th:href="@{/runners/login}"><span class="dropMenuHeader">Log in a
+                <div th:unless="${currentRunner}"><a
+                        th:href="@{/runners/login}"><span
+                        class="dropMenuHeader">Log in a
                   Runner</span></a></div>
-              <div th:if="${currentRunner}"><a
-                    th:href="@{/runners/logout}"><span
-                      class="dropMenuHeader">Logout</span>
-                 </a></div>
+                <div th:if="${currentRunner}"><a
+                        th:href="@{/runners/logout}"><span
+                        class="dropMenuHeader">Logout</span>
+                </a></div>
             </div>
 
         </div>
     </div>
     <div class="sideNavButton" onclick="openNav()"
-         width="100px;" >
+         width="100px;">
         <span>
         <img th:src="@{../../../../images/RunshareLogo.jpg}"
              width="100px;"
              style="border-style:outset; border-color:silver;"
-        height="100px" />
+             height="100px"/>
         <small class="form-text text-muted">links
         </small>
         </span>
@@ -131,29 +154,32 @@
 
 <!--RUNNERBAR-->
 <p th:if="${currentRunner}" th:fragment="runnerbar"
-class="runnerbar" >
-    <span th:text="'Currently Logged in'"></span>
+   class="runnerbar">
+    <span th:text="'Currently Logged in'"
+          class="mobilePortraitDelete"></span>
     <span class="runnerbarspan"
           th:text="'Callsign: '+${currentRunner.callsign}">
     </span>
-    <span class="runnerbarspan"
-            th:if="${!currentRunner.callsignOnly}"
-              th:text="'Runner name: '+${currentRunner.firstName}+' '+${currentRunner.lastName}">
+    <span class="runnerbarspan mobilePortraitDelete"
+          th:if="${!currentRunner.callsignOnly}"
+          th:text="'Runner name: '+${currentRunner.firstName}+' '+${currentRunner.lastName}">
     </span>
-    <span class="runnerbarspan" th:if="${!currentRunner.callsignOnly}"
-              th:text="'Runner age: '+${currentRunner.age}">
+    <span class="runnerbarspan mobilePortraitDelete"
+          th:if="${!currentRunner.callsignOnly}"
+          th:text="'Runner age: '+${currentRunner.age}">
     </span>
     <span><a th:href="@{'/runners/logout'}"
              class="btn btn-primary"
-             th:text="'Logout'" style="margin:2px;"></a></span>
+             th:text="'Logout'"
+             style="margin:2px;"></a></span>
 </p>
 
 
 <!--footer navlink-->
 <p class="listnavbar" th:fragment="listnavbar">
-        <a th:href="@{/runSessions}">Run
+    <a th:href="@{/runSessions}">Run
         Sessions</a>
-        <a th:href="@{/runners}">Runners</a>
-        <a th:href="@{/trails}">Trails</a>
-        <a th:href="@{/comments}">Comments</a>
+    <a th:href="@{/runners}">Runners</a>
+    <a th:href="@{/trails}">Trails</a>
+    <a th:href="@{/comments}">Comments</a>
 </p>
