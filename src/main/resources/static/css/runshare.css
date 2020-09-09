@@ -190,6 +190,11 @@ body {
     {
     text-align:center;
     }
+    .dropMenuHeader
+    {
+    font-size:25px;
+    color:white;
+    }
     .homeMenuDropdown, .runnerMenuDropdown,
     .commentsMenuDropdown, .trailMenuDropdown,
     .runSessionMenuDropdown, .loginMenuDropdown
@@ -202,5 +207,6 @@ body {
     {
     margin-top:10px;
     }
+
 }
 
