@@ -9,11 +9,7 @@ function getWeather(zip, apiKey){
     ('weatherSpanButton');
     console.log (weatherSpan);
     zip = getZipFromNumberZip(zip);
-    //API key for openWeatherMaps stored in apiKey.js, which
-    // is not tracked by git commits.  Will need to enter an
-     //api key into this function to make the weather
-//     tracking work
-    const response=fetch("http://api.openweathermap.org/data/2.5/weather?zip="+zip+",us&appid="+apiKey);
+    const response=fetch("https://api.openweathermap.org/data/2.5/weather?zip="+zip+",us&appid="+apiKey);
     response.then(console.log (response));
     response.then(function(response){
         if (response.status === 404){
