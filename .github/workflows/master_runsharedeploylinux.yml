@@ -21,6 +21,8 @@ jobs:
         java-version: '11'
 
     - name: Build with Maven
+      env:
+         SPRING_DATASTORE_PASSWORD : ${{ secrets.SpringDatastorePassword }}
       run: mvn clean install
 
     - name: Deploy to Azure Web App

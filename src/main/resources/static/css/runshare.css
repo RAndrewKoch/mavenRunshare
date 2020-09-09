@@ -35,30 +35,6 @@ body {
     transition:0.5s;
 }
 
-@media screen and (max-width: 800px){
-    .sideNav
-    { }
-    .homeMenuDropdown, .runnerMenuDropdown,
-    .commentsMenuDropdown, .trailMenuDropdown,
-    .runSessionMenuDropdown, .loginMenuDropdown,
-    .runnerMenu, .commentsMenu, .trailMenu, .runSessionMenu
-    {
-    text-align:center;
-    }
-    .homeMenuDropdown, .runnerMenuDropdown,
-    .commentsMenuDropdown, .trailMenuDropdown,
-    .runSessionMenuDropdown, .loginMenuDropdown
-    {
-    }
-    .runnerMenu, .commentsMenu, .trailMenu, .runSessionMenu
-    {
-    }
-    .homePageButton
-    {
-    margin-top:10px;
-    }
-}
-
 .homeMenuDropdown, .runnerMenuDropdown,
     .commentsMenuDropdown, .trailMenuDropdown,
     .runSessionMenuDropdown, .loginMenuDropdown{
@@ -200,5 +176,31 @@ body {
     padding-top:40vh;
 }
 
+.homePageButton {
+    font-size:3vw;
+}
 
+@media screen and (max-width: 800px){
+    .sideNav
+    { }
+    .homeMenuDropdown, .runnerMenuDropdown,
+    .commentsMenuDropdown, .trailMenuDropdown,
+    .runSessionMenuDropdown, .loginMenuDropdown,
+    .runnerMenu, .commentsMenu, .trailMenu, .runSessionMenu
+    {
+    text-align:center;
+    }
+    .homeMenuDropdown, .runnerMenuDropdown,
+    .commentsMenuDropdown, .trailMenuDropdown,
+    .runSessionMenuDropdown, .loginMenuDropdown
+    {
+    }
+    .runnerMenu, .commentsMenu, .trailMenu, .runSessionMenu
+    {
+    }
+    .homePageButton
+    {
+    margin-top:10px;
+    }
+}
 
