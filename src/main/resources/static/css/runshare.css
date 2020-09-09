@@ -182,32 +182,24 @@ body {
 
 @media screen and (orientation:portrait) and (max-width:
 800px){
-    .sideNav
-    { }
     .homeMenuDropdown, .runnerMenuDropdown,
     .commentsMenuDropdown, .trailMenuDropdown,
     .runSessionMenuDropdown, .loginMenuDropdown,
-    .runnerMenu, .commentsMenu, .trailMenu, .runSessionMenu
-    {
-    text-align:center;
+    .runnerMenu, .commentsMenu, .trailMenu, .runSessionMenu {
+         text-align:center;
+     }
+    .dropMenuHeader {
+        font-size:25px;
+         color:white;
     }
-    .dropMenuHeader
-    {
-    font-size:25px;
-    color:white;
+    .homePageButton{
+        margin-top:10px;
     }
-    .homeMenuDropdown, .runnerMenuDropdown,
-    .commentsMenuDropdown, .trailMenuDropdown,
-    .runSessionMenuDropdown, .loginMenuDropdown
-    {
+    .listnavbar{
+        display:none;
     }
-    .runnerMenu, .commentsMenu, .trailMenu, .runSessionMenu
-    {
+    .mobilePortraitDelete{
+        display:none;
     }
-    .homePageButton
-    {
-    margin-top:10px;
-    }
-
 }
 
