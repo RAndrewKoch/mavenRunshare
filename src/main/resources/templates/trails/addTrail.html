@@ -14,7 +14,8 @@
 <form method="post">
     <div class="form-group">
         <label for="name">Trail Name</label>
-        <input th:field="${newTrailDTO.name}" id="name">
+        <input th:field="${newTrailDTO.name}" id="name"
+               autofocus>
     <p th:errors="${newTrailDTO.name}" class="errors"></p>
     <small class="form-text text-muted">Name the
         trail or greenway</small>

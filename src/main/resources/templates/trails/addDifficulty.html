@@ -16,7 +16,7 @@
     <div class="form-group">
         <label for="difficulty">Choose the difficulty</label>
         <select
-                th:field="${newTrailDifficultyDTO.trailDifficulty}" id="difficulty">
+                th:field="${newTrailDifficultyDTO.trailDifficulty}" id="difficulty" autofocus>
             <option
                     th:each="difficulty: ${trailDifficulties}" th:text="${difficulty.getDescription()}" th:value="${difficulty}"></option>
         </select>

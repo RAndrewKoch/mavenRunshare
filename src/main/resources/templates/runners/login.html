@@ -17,12 +17,13 @@
                 th:if="${selectedRunner}"
                 th:field="${runnerLoginDTO.callsign}"
                 hidden
-                th:value="${selectedRunner.callsign}">
+                th:value="${selectedRunner.callsign}"
+                >
         <h3 th:if="${selectedRunner}"
            th:text="'Enter password for '+${selectedRunner.callsign}"></h3>
         <select th:unless="${selectedRunner}"
                th:field="*{runnerLoginDTO.callsign}"
-               id="callsign">
+               id="callsign" autofocus>
             <option th:each="runner : ${runners}"
                     th:text="${runner.callsign}"
                     th:value="${runner.callsign}"></option>
@@ -30,12 +31,14 @@
         <p th:errors="${runnerLoginDTO.callsign}"
            class="errors"></p>
     </div>
-    <div>
-        <label for="password">Password</label>
-        <input
-                type="password"
-                th:field="${runnerLoginDTO.password}"
-               id="password">
+    <div th:if="${selectedRunner}">
+        <label>Password</label>
+        <input type="password" th:field="${runnerLoginDTO.password}"  autofocus>
+        <p th:errors="${runnerLoginDTO.password}" class="errors"></p>
+    </div>
+    <div th:unless="${selectedRunner}">
+        <label>Password</label>
+        <input type="password" th:field="${runnerLoginDTO.password}">
         <p th:errors="${runnerLoginDTO.password}"
            class="errors"></p>
     </div>
