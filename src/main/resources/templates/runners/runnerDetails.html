@@ -46,12 +46,11 @@
             <span th:if="${comment.trail}"><a
                     th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}" th:text="${comment.trail.name}"></a></span>
             <span th:if="${comment.trail}" th:text="' trail'"></span>
-            <span th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}"></span>
+            <span
+                    th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}+' CST'"></span>
         </p>
         <p th:text="'Title: '+${comment.messageTitle}"></p>
         <p th:text="${comment.message}"></p>
-        <span style="padding-right:10px;"
-              th:text="'Created on: '+${comment.displayStringDate()}"></span><span th:text="'At: '+${comment.displayStringTime()}"></span>
     </div>
     </div>
     </div>
