@@ -31,6 +31,10 @@
     <span
             th:text="'Date: '+${detailedRunSession.getDisplayDate()}"></span>
 </div>
+<div th:if=${runners} class="centeringDiv">
+        <span
+                th:text="'Other Runners on this Run Session: '+${runners}"></span>
+</div>
 <div th:each="comment : ${comments}"
      style="border-style:solid">
     <p>

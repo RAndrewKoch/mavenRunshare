@@ -54,6 +54,9 @@ public class Runner extends AbstractEntity{
     @OneToMany(mappedBy="creator")
     private final List<RunSession> runSessions= new ArrayList<>();
 
+    @ManyToMany(mappedBy="runners")
+    private final List<RunSession> runSessionPack = new ArrayList<>();
+
     private Integer numberZipCode;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

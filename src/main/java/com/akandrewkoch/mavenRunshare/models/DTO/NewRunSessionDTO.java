@@ -1,16 +1,20 @@
 package com.akandrewkoch.mavenRunshare.models.DTO;
 
 import com.akandrewkoch.mavenRunshare.models.AbstractEntity;
+import com.akandrewkoch.mavenRunshare.models.Runner;
 import com.akandrewkoch.mavenRunshare.models.Trail;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewRunSessionDTO extends AbstractEntity {
 
     @NotBlank(message="Run Session needs to be named")
     private String name;
 
+    public List<Runner> runners = new ArrayList<>();
 
     @NotBlank(message="Must supply a date")
     private String date;
@@ -34,6 +38,10 @@ public class NewRunSessionDTO extends AbstractEntity {
     public void setName(String name) {
         this.name = name;
     }
+
+    public List<Runner> getRunners() { return runners; }
+
+    public void setRunners(List<Runner> runners) { this.runners = runners; }
 
     public String getDate() {
         return date;
