@@ -168,6 +168,8 @@
           th:if="${!currentRunner.callsignOnly}"
           th:text="'Runner age: '+${currentRunner.age}">
     </span>
+    <span><a
+            th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}" class="btn btn-primary" th:text="'Details'" style="margin:2px;"></a></span>
     <span><a th:href="@{'/runners/logout'}"
              class="btn btn-primary"
              th:text="'Logout'"

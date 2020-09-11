@@ -71,9 +71,9 @@
             </tr>
             <tr th:each="runSession: ${runSessions}"
                 class="runnertableline">
-                <td th:text="${runSession.name}"></td>
+                <td><a th:href="@{'/runSessions/runSessionDetails/'+${runSession.id}}" th:text="${runSession.name}"></a></td>
                 <td th:text="${runSession.date}"></td>
-                <td th:text="${runSession.trail.name}"></td>
+                <td><a th:href="@{'/trails/trailDetails/'+${runSession.trail.id}}" th:text="${runSession.trail.name}"></a></td>
                 <td th:text="${runSession.laps}"></td>
             </tr>
         </table>
@@ -94,9 +94,9 @@
         </tr>
         <tr th:each="runSession: ${otherSessions}"
             class="runnertableline">
-            <td th:text="${runSession.name}"></td>
+            <td><a th:href="@{'/runSessions/runSessionDetails/'+${runSession.id}}" th:text="${runSession.name}"></a></td>
             <td th:text="${runSession.date}"></td>
-            <td th:text="${runSession.trail.name}"></td>
+            <td><a th:href="@{'/trails/trailDetails/'+${runSession.trail.id}}" th:text="${runSession.trail.name}"></a></td>
             <td th:text="${runSession.laps}"></td>
         </tr>
     </table>
