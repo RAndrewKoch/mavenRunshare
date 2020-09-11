@@ -245,7 +245,7 @@ public class RunnerController extends MainController {
         }
 
         List<RunSession> otherSessions = runSessionRepository.findAllByRunners(runnerRepository.findById(id).get());
-        if (!runSessions.isEmpty()){
+        if (!otherSessions.isEmpty()){
             model.addAttribute("otherSessions", otherSessions);
         }
 
