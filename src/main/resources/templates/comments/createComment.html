@@ -23,22 +23,12 @@
 
 </div>
 <form th:if=${currentRunner} method="post">
-    <div class = "form-group">
-        <label for="privateMessage">Private Message?</label>
-        <input type="checkbox"
-               th:field="${newCommentDTO.privateMessage}"
-               id = "privateMessage">
-        <p th:errors="${newCommentDTO.privateMessage}"
-           class="errors"></p>
-        <small class="form-text text-muted">If this
-            is not checked, message will show up on
-            community comment board</small>
-    </div>
+
     <div class = "form-group">
         <label for="messageTitle">Title</label><br>
         <input width="80%"
                th:field="${newCommentDTO.messageTitle}"
-               id="messageTitle">
+               id="messageTitle" autofocus>
         <p th:errors="${newCommentDTO.messageTitle}"
            class="errors"></p>
     </div>
@@ -96,6 +86,17 @@
            class="errors"></p>
         <small class="form-text text-muted">Hold
             Ctrl+click to select multiple runners</small>
+    </div>
+    <div class = "form-group">
+        <label for="privateMessage">Private Message?</label>
+        <input type="checkbox"
+               th:field="${newCommentDTO.privateMessage}"
+               id = "privateMessage">
+        <p th:errors="${newCommentDTO.privateMessage}"
+           class="errors"></p>
+        <small class="form-text text-muted">If this
+            is not checked, message will show up on
+            community comment board</small>
     </div>
     <button type="submit" class="btn btn-primary">Create Comment</button>
 </form>
