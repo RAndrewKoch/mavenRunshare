@@ -58,7 +58,7 @@
 
     <div th:if="${runSessions}" class="centeringDiv">
         <h1 class="runnerDetailsHeader"
-            th:text="'Run Sessions for '+${detailedRunner.callsign}">
+            th:text="'Run Sessions '+${detailedRunner.callsign}+' led'">
         </h1>
     </div>
     <div th:if="${runSessions}">
@@ -78,6 +78,29 @@
             </tr>
         </table>
     </div>
+
+<div th:if="${otherSessions}" class="centeringDiv">
+    <h1 class="runnerDetailsHeader"
+        th:text="'Run Sessions '+${detailedRunner.callsign}+' joined'">
+    </h1>
+</div>
+<div th:if="${otherSessions}">
+    <table class="runnertable">
+        <tr class="runnertablehead">
+            <th>Name</th>
+            <th>Date</th>
+            <th>Trail</th>
+            <th>Laps</th>
+        </tr>
+        <tr th:each="runSession: ${otherSessions}"
+            class="runnertableline">
+            <td th:text="${runSession.name}"></td>
+            <td th:text="${runSession.date}"></td>
+            <td th:text="${runSession.trail.name}"></td>
+            <td th:text="${runSession.laps}"></td>
+        </tr>
+    </table>
+</div>
 
 
 <div class="centeringDiv">
