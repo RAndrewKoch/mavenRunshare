@@ -175,7 +175,7 @@ public class RunnerController extends MainController {
         setUserInSession(request.getSession(), loginRunner);
         setRunnerInModel(request, model);
         model.addAttribute("runners", runnerRepository.findAll());
-        return "runners/index";
+        return "redirect:/runners/runnerDetails/"+loginRunner.getId();
     }
 
     @PostMapping("/login/{id}")
@@ -202,7 +202,7 @@ public class RunnerController extends MainController {
         setUserInSession(request.getSession(), loginRunner);
         model.addAttribute("runners", runnerRepository.findAll());
         setRunnerInModel(request, model);
-        return "runners/index";
+        return "redirect:/runners/runnerDetails/"+loginRunner.getId();
     }
 
     @GetMapping("/logout")
@@ -312,6 +312,6 @@ public class RunnerController extends MainController {
         updatedRunner.setZip(newRunnerRegistrationDTO.getZip());
         updatedRunner.setNumberZipCode(Integer.parseInt(newRunnerRegistrationDTO.getZip()));
         runnerRepository.save(updatedRunner);
-        return "redirect:/runners";
+        return "redirect:/runners/runnerDetails/"+updatedRunner.getId();
     }
 }
