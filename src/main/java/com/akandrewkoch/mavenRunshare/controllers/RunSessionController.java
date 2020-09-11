@@ -3,6 +3,7 @@ package com.akandrewkoch.mavenRunshare.controllers;
 
 import com.akandrewkoch.mavenRunshare.models.DTO.NewRunSessionDTO;
 import com.akandrewkoch.mavenRunshare.models.RunSession;
+import com.akandrewkoch.mavenRunshare.models.Runner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -88,7 +90,7 @@ public class RunSessionController extends MainController {
             return "runSessions/addRunSession";
         }
 
-        RunSession newRunSession = new RunSession(newRunSessionDTO.getName(), newRunSessionDTO.getDate(),  getRunnerFromSession(session), newRunSessionDTO.getTrail(),  newRunSessionDTO.getLaps(), (newRunSessionDTO.getSeconds()+(newRunSessionDTO.getMinutes()*60)+(newRunSessionDTO.getHours()*3600)));
+        RunSession newRunSession = new RunSession(newRunSessionDTO.getName(), newRunSessionDTO.getRunners(), newRunSessionDTO.getDate(),  getRunnerFromSession(session), newRunSessionDTO.getTrail(),  newRunSessionDTO.getLaps(), (newRunSessionDTO.getSeconds()+(newRunSessionDTO.getMinutes()*60)+(newRunSessionDTO.getHours()*3600)));
         runSessionRepository.save(newRunSession);
         model.addAttribute("title", "Run Sessions");
         model.addAttribute("runSessions", runSessionRepository.findAll());
@@ -111,6 +113,20 @@ public class RunSessionController extends MainController {
         model.addAttribute("comments", commentRepository.findByRunSession_IdOrderByDateCreatedDescTimeCreatedDesc(id));
         model.addAttribute("title", "Details " + detailedRunSession.getName());
         model.addAttribute("detailedRunSession", detailedRunSession);
+        List<Runner> otherRunners = runnerRepository.findAllByRunSessionPackId(id);
+        String runnerString="";
+        if (!otherRunners.isEmpty()) {
+            runnerString += otherRunners.get(0).getCallsign();
+            if (otherRunners.size()>1) {
+                for (int i = 1; i < otherRunners.size() - 1; i++) {
+                    runnerString += ", " + otherRunners.get(i).getCallsign();
+                }
+            }
+            runnerString += " and " + otherRunners.get(otherRunners.size() - 1).getCallsign();
+        }
+        if (!runnerString.isBlank()) {
+            model.addAttribute("runners", runnerString);
+        }
         return "runSessions/runSessionDetails";
     }
 

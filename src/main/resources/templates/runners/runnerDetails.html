@@ -28,6 +28,7 @@
         <span th:text="'Zip Code: '+${detailedRunner.zip}"></span>
     </div>
 
+
     <div style="padding:10px">
     <div th:if="${comments}" class="centeringDiv">
         <h1 class="runnerDetailsHeader"
@@ -46,19 +47,18 @@
             <span th:if="${comment.trail}"><a
                     th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}" th:text="${comment.trail.name}"></a></span>
             <span th:if="${comment.trail}" th:text="' trail'"></span>
-            <span th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}"></span>
+            <span
+                    th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}+' CST'"></span>
         </p>
         <p th:text="'Title: '+${comment.messageTitle}"></p>
         <p th:text="${comment.message}"></p>
-        <span style="padding-right:10px;"
-              th:text="'Created on: '+${comment.displayStringDate()}"></span><span th:text="'At: '+${comment.displayStringTime()}"></span>
     </div>
     </div>
     </div>
 
     <div th:if="${runSessions}" class="centeringDiv">
         <h1 class="runnerDetailsHeader"
-            th:text="'Run Sessions for '+${detailedRunner.callsign}">
+            th:text="'Run Sessions '+${detailedRunner.callsign}+' led'">
         </h1>
     </div>
     <div th:if="${runSessions}">
@@ -78,6 +78,29 @@
             </tr>
         </table>
     </div>
+
+<div th:if="${otherSessions}" class="centeringDiv">
+    <h1 class="runnerDetailsHeader"
+        th:text="'Run Sessions '+${detailedRunner.callsign}+' joined'">
+    </h1>
+</div>
+<div th:if="${otherSessions}">
+    <table class="runnertable">
+        <tr class="runnertablehead">
+            <th>Name</th>
+            <th>Date</th>
+            <th>Trail</th>
+            <th>Laps</th>
+        </tr>
+        <tr th:each="runSession: ${otherSessions}"
+            class="runnertableline">
+            <td th:text="${runSession.name}"></td>
+            <td th:text="${runSession.date}"></td>
+            <td th:text="${runSession.trail.name}"></td>
+            <td th:text="${runSession.laps}"></td>
+        </tr>
+    </table>
+</div>
 
 
 <div class="centeringDiv">

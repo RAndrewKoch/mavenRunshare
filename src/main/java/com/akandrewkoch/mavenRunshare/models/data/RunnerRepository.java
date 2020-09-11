@@ -28,4 +28,6 @@ public interface RunnerRepository extends CrudRepository<Runner, Integer> {
 
     List<Runner> findAllByOrderByAgeAsc();
     List<Runner> findAllByOrderByAgeDesc();
+
+    List<Runner> findAllByRunSessionPackId(Integer runSessionPack);
 }

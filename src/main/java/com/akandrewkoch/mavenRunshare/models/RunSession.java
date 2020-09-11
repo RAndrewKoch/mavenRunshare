@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
@@ -28,6 +29,9 @@ public class RunSession extends AbstractEntity{
     @ManyToOne
     private Runner creator;
 
+    @ManyToMany
+    private List<Runner> runners = new ArrayList<>();
+
     @ManyToOne
     private Trail trail;
 
@@ -45,8 +49,9 @@ public class RunSession extends AbstractEntity{
 //    @OneToMany
 //    private final List<Runner> runners = new ArrayList<>();
 
-    public RunSession (String name, String date, Runner creator, Trail trail, double laps, Integer time){
+    public RunSession (String name, List<Runner> runners, String date, Runner creator, Trail trail, double laps, Integer time){
         this.name = Jsoup.clean(name, Whitelist.none());
+        this.runners = runners;
         this.date = Jsoup.clean(date, Whitelist.none());
         this.creator= creator;
         this.trail = trail;
@@ -65,6 +70,10 @@ public class RunSession extends AbstractEntity{
     public void setName(String name) {
         this.name = name;
     }
+
+    public List<Runner> getRunners() { return runners; }
+
+    public void setRunners(List<Runner> otherRunners) { this.runners = otherRunners; }
 
     public String getDate() {
         return date;
