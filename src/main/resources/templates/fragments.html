@@ -155,8 +155,6 @@
 <!--RUNNERBAR-->
 <p th:if="${currentRunner}" th:fragment="runnerbar"
    class="runnerbar">
-    <span th:text="'Currently Logged in'"
-          class="mobilePortraitDelete"></span>
     <span class="runnerbarspan"
           th:text="'Callsign: '+${currentRunner.callsign}">
     </span>
