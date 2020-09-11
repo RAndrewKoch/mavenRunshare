@@ -27,6 +27,11 @@
         <span th:text="'Running Level: '+${detailedRunner.runnerLevel.getDisplayName()}"></span>
         <span th:text="'Zip Code: '+${detailedRunner.zip}"></span>
     </div>
+    <div class="centeringDiv">
+        <a
+                th:href="@{'/runners/editRunner/'+${detailedRunner.id}}" class="btn btn-primary" style="margin-top:2px;">Edit Details</a>
+
+    </div>
 
 
     <div style="padding:10px">
