@@ -8,7 +8,9 @@
     <p th:replace="fragments :: runnerbar"></p>
 </div>
 <p th:replace="fragments :: navbar"></p>
-<div class="centeringDiv" style="padding-top:130px;">
+
+<div class="headerBlankSpace"></div>
+<div class="centeringDiv">
     <h1 class="runnerDetailsHeader"
         th:text="'Editing '+${newRunnerRegistrationDTO.callsign}">
     </h1>

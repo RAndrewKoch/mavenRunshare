@@ -9,8 +9,8 @@
 </div>
 <p th:replace="fragments :: navbar"></p>
 
-<h1 style="padding-top:150px;"
-    th:text="${'Log a run, '+currentRunner.callsign+'!'}"></h1>
+<div class="headerBlankSpace"></div>
+<h1 th:text="${'Log a run, '+currentRunner.callsign+'!'}"></h1>
 
 <form method="post">
     <div class="form-group">
@@ -22,8 +22,10 @@
         <small class="form-text text-muted">Name it
             whatever you want!</small>
     </div>
-    <div class="form-group">
-        <label for="otherRunners">Did anybody run
+    <div class="form-group" >
+        <label for="otherRunners"
+               >Did anybody
+            run
             with you?</label>
         <select multiple="multiple" name="otherRunners"
                 id="otherRunners"

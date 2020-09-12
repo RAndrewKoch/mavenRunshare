@@ -6,11 +6,14 @@ function openNav(){
           document.getElementById("sideNav").style
           .width="100vw";
           document.getElementById("main").style
-          .marginLeft="100vw";
+          .width="100vw";
           navClosed=false;
           } else {
           document.getElementById("sideNav").style.width ="25%";
-          document.getElementById("main").style.marginLeft="25%";
+          document.getElementById("main").style
+          .width="75%";
+          document.getElementById("main").style
+          .marginLeft="25%";
           navClosed = false;
          }
     } else {
@@ -22,6 +25,7 @@ function closeNav() {
     document.getElementById("sideNav").style.width = "0";
     document.getElementById("main").style
     .marginLeft="0";
+    document.getElementById("main").style.width="100%";
     navClosed= true;
 }
 

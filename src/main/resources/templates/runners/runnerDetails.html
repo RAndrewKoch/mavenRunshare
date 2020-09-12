@@ -4,69 +4,78 @@
 </head>
 <body id="main">
 <div class="centeringDiv">
-<p th:replace="fragments :: runnerbar"></p>
+    <p th:replace="fragments :: runnerbar"></p>
 </div>
 <p th:replace="fragments :: navbar"></p>
 
-<div class="centeringDiv" style="padding-top:70px;">
+<div class="headerBlankSpace"></div>
+<div class="centeringDiv" style="margin-bottom:10px;">
     <h1
-        class="runnerDetailsHeader"
-        th:text="${detailedRunner.Callsign}">
+            class="runnerDetailsHeader"
+            th:text="${detailedRunner.Callsign}">
     </h1>
 </div>
 
 
-    <div class="centeringDiv">
-        <span th:text="'Name: '+${detailedRunner.firstName}+' '+${detailedRunner.lastName}"></span>
-        <span th:text="'Age: '+${detailedRunner.age}"></span>
-        <span th:text="'Weight: '+${detailedRunner.weight}"></span>
-    </div>
+<div class="centeringDiv">
+    <span th:text="'Name: '+${detailedRunner.firstName}+' '+${detailedRunner.lastName}"></span>
+    <span th:text="'Age: '+${detailedRunner.age}"></span>
+    <span th:text="'Weight: '+${detailedRunner.weight}"></span>
+</div>
 
-    <div class="centeringDiv">
-        <span th:text="'Gender: '+${detailedRunner.gender.getDisplayName()}"></span>
-        <span th:text="'Running Level: '+${detailedRunner.runnerLevel.getDisplayName()}"></span>
-        <span th:text="'Zip Code: '+${detailedRunner.zip}"></span>
-    </div>
-    <div class="centeringDiv">
-        <a
-                th:href="@{'/runners/editRunner/'+${detailedRunner.id}}" class="btn btn-primary" style="margin-top:2px;">Edit Details</a>
+<div class="centeringDiv">
+    <span th:text="'Gender: '+${detailedRunner.gender.getDisplayName()}"></span>
+    <span th:text="'Zip Code: '+${detailedRunner.zip}"></span>
+</div>
+<div class="centeringDiv">
+    <span th:text="'Running Level: '+${detailedRunner.runnerLevel.getDisplayName()}"></span>
+</div>
+<div class="centeringDiv">
+    <a
+            th:href="@{'/runners/editRunner/'+${detailedRunner.id}}"
+            class="btn btn-primary" style="margin-top:2px;">Edit
+        Details</a>
 
-    </div>
+</div>
 
 
-    <div style="padding:10px">
+<div style="padding:10px">
     <div th:if="${comments}" class="centeringDiv">
         <h1 class="runnerDetailsHeader"
             th:text="'Comments for '+${detailedRunner.callsign}"></h1>
     </div>
     <div th:if="${comments}">
-    <div th:each="comment : ${comments}"
-         style="border-style:solid">
-        <p>
+        <div th:each="comment : ${comments}"
+             style="border-style:solid">
+            <p>
         <span><a
                 th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
                 th:text="${comment.messageCreator.callsign}"></a></span>
-            <span th:text = "' said'"></span>
-            <span th:if="${comment.trail}"
-                  th:text="' about the '"></span>
-            <span th:if="${comment.trail}"><a
-                    th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}" th:text="${comment.trail.name}"></a></span>
-            <span th:if="${comment.trail}" th:text="' trail'"></span>
-            <span
-                    th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}+' CST'"></span>
-        </p>
-        <p th:text="'Title: '+${comment.messageTitle}"></p>
-        <p th:text="${comment.message}"></p>
+                <span th:text="' said'"></span>
+                <span th:if="${comment.trail}"
+                      th:text="' about the '"></span>
+                <span th:if="${comment.trail}"><a
+                        th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}"
+                        th:text="${comment.trail.name}"></a></span>
+                <span th:if="${comment.trail}"
+                      th:text="' trail'"></span>
+                <span
+                        th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}+' CST'"></span>
+            </p>
+            <p th:text="'Title: '+${comment.messageTitle}"></p>
+            <p th:text="${comment.message}"></p>
+        </div>
     </div>
-    </div>
-    </div>
+</div>
 
-    <div th:if="${runSessions}" class="centeringDiv">
+<div th:if="${runSessions}" style="border-style:solid;
+     padding:20px; margin:5px;">
+    <div class="centeringDiv">
         <h1 class="runnerDetailsHeader"
             th:text="'Run Sessions '+${detailedRunner.callsign}+' led'">
         </h1>
     </div>
-    <div th:if="${runSessions}">
+    <div>
         <table class="runnertable">
             <tr class="runnertablehead">
                 <th>Name</th>
@@ -76,40 +85,56 @@
             </tr>
             <tr th:each="runSession: ${runSessions}"
                 class="runnertableline">
-                <td><a th:href="@{'/runSessions/runSessionDetails/'+${runSession.id}}" th:text="${runSession.name}"></a></td>
+                <td>
+                    <a th:href="@{'/runSessions/runSessionDetails/'+${runSession.id}}"
+                       th:text="${runSession.name}"></a>
+                </td>
                 <td th:text="${runSession.date}"></td>
-                <td><a th:href="@{'/trails/trailDetails/'+${runSession.trail.id}}" th:text="${runSession.trail.name}"></a></td>
+                <td>
+                    <a th:href="@{'/trails/trailDetails/'+${runSession.trail.id}}"
+                       th:text="${runSession.trail.name}"></a>
+                </td>
                 <td th:text="${runSession.laps}"></td>
             </tr>
         </table>
     </div>
-
-<div th:if="${otherSessions}" class="centeringDiv">
-    <h1 class="runnerDetailsHeader"
-        th:text="'Run Sessions '+${detailedRunner.callsign}+' joined'">
-    </h1>
 </div>
-<div th:if="${otherSessions}">
-    <table class="runnertable">
-        <tr class="runnertablehead">
-            <th>Name</th>
-            <th>Date</th>
-            <th>Trail</th>
-            <th>Laps</th>
-        </tr>
-        <tr th:each="runSession: ${otherSessions}"
-            class="runnertableline">
-            <td><a th:href="@{'/runSessions/runSessionDetails/'+${runSession.id}}" th:text="${runSession.name}"></a></td>
-            <td th:text="${runSession.date}"></td>
-            <td><a th:href="@{'/trails/trailDetails/'+${runSession.trail.id}}" th:text="${runSession.trail.name}"></a></td>
-            <td th:text="${runSession.laps}"></td>
-        </tr>
-    </table>
+
+<div th:if="${otherSessions}" style="border-style:solid;
+     padding:20px; margin:5px;">
+    <div th:if="${otherSessions}" class="centeringDiv">
+        <h1 class="runnerDetailsHeader"
+            th:text="'Run Sessions '+${detailedRunner.callsign}+' joined'">
+        </h1>
+    </div>
+    <div th:if="${otherSessions}">
+        <table class="runnertable">
+            <tr class="runnertablehead">
+                <th>Name</th>
+                <th>Date</th>
+                <th>Trail</th>
+                <th>Laps</th>
+            </tr>
+            <tr th:each="runSession: ${otherSessions}"
+                class="runnertableline">
+                <td>
+                    <a th:href="@{'/runSessions/runSessionDetails/'+${runSession.id}}"
+                       th:text="${runSession.name}"></a>
+                </td>
+                <td th:text="${runSession.date}"></td>
+                <td>
+                    <a th:href="@{'/trails/trailDetails/'+${runSession.trail.id}}"
+                       th:text="${runSession.trail.name}"></a>
+                </td>
+                <td th:text="${runSession.laps}"></td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 
 <div class="centeringDiv">
-<p th:replace="fragments :: listnavbar"></p>
+    <p th:replace="fragments :: listnavbar"></p>
 </div>
 </body>
 </html>
