@@ -9,9 +9,10 @@
 </div>
 <p th:replace="fragments :: navbar"></p>
 
+
+<div class="headerBlankSpace"></div>
 <div class="centeringDiv">
-    <p style="margin-top:200px;"
-            th:text="${'You must be logged in as '+detailedRunner.callsign+' to view this page'}"></p>
+    <p th:text="${'You must be logged in as '+detailedRunner.callsign+' to view this page'}"></p>
 </div>
 <div class="centeringDiv">
     <a class="btn btn-primary"

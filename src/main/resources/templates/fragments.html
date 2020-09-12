@@ -27,13 +27,16 @@
 <!--SIDENAV BAR-->
 <div th:fragment="navbar"
      style="position:sticky; top:50px;">
-    <div class="sideNav" id="sideNav">
-        <div class="topOfSideNav">
+    <div class="sideNav" id="sideNav"
+         style="padding-top:50px;">
+        <div class="topOfSideNav" >
             <img
                     th:src="@{../../../../images/RunshareLogo.jpg}"
                     width="150" height="150"/>
             <a class="closebtn"
-               onclick="closeNav()">x</a>
+               onclick="closeNav()"
+               style="padding-top:50px;">x
+            </a>
         </div>
         <div class="sideNavLinkList">
 
@@ -144,7 +147,7 @@
         <img th:src="@{../../../../images/RunshareLogo.jpg}"
              width="100px;"
              style="border-style:outset; border-color:silver;"
-             height="100px"/>
+             height="100px" class="sideNavButtonPic"/>
         <small class="form-text text-muted">links
         </small>
         </span>

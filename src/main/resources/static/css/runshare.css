@@ -2,7 +2,7 @@ body {
     background-color:#0A0A0A;
     color: white;
     padding: 10px;
-    padding-bottom: 50px;
+    padding-bottom: 70px;
 }
 
 #main {
@@ -12,6 +12,10 @@ body {
 .errors {
     color: red;
     font-style:italic;
+}
+
+.headerBlankSpace {
+    margin-top:160px;
 }
 
 .sideNavButton {
@@ -180,8 +184,16 @@ body {
     font-size:3vw;
 }
 
+.commentTextArea {
+    max-width:100vw;
+}
+
 @media screen and (orientation:portrait) and (max-width:
 800px){
+    .headerBlankSpace {
+    margin-top:110px;
+    }
+
     .homeMenuDropdown, .runnerMenuDropdown,
     .commentsMenuDropdown, .trailMenuDropdown,
     .runSessionMenuDropdown, .loginMenuDropdown,
@@ -201,5 +213,12 @@ body {
     .mobilePortraitDelete{
         display:none;
     }
+
+   .sideNavButtonPic {
+        height:50px;
+        width:50px;
+   }
+
+
 }
 
