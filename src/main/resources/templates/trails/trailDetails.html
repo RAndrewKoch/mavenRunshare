@@ -24,16 +24,15 @@
     <span
             th:text="'Zip Code: '+${detailedTrail.zipCode}"></span>
 </div>
-<div class="centeringDiv" style="margin:5px; padding:5px;">
-   <span>
+   <div class="centeringDiv" style="margin:5px; padding:5px;">
         <span th:if="${detailedTrail.returnTrailDifficultyAvg(trailDifficulties) == 6}">Community difficulty average: &#9734 &#9734 &#9734 &#9734 &#9734</span>
         <span th:if="${detailedTrail.returnTrailDifficultyAvg(trailDifficulties) == 1}">Community difficulty average: &#9733 &#9734 &#9734 &#9734 &#9734</span>
         <span th:if="${detailedTrail.returnTrailDifficultyAvg(trailDifficulties) == 2}">Community difficulty average: &#9733 &#9733 &#9734 &#9734 &#9734</span>
         <span th:if="${detailedTrail.returnTrailDifficultyAvg(trailDifficulties) == 3}">Community difficulty average: &#9733 &#9733 &#9733 &#9734 &#9734</span>
         <span th:if="${detailedTrail.returnTrailDifficultyAvg(trailDifficulties) == 4}">Community difficulty average: &#9733 &#9733 &#9733 &#9733 &#9734</span>
         <span th:if="${detailedTrail.returnTrailDifficultyAvg(trailDifficulties) == 5}">Community difficulty average: &#9733 &#9733 &#9733 &#9733 &#9733</span>
-   </span>
-    <span th:if="${currentRunner}">
+   </div>
+    <div th:if="${currentRunner}" class="centeringDiv" style="margin:5px; padding:5px;">
         <span th:if="${runnerTrailRating == 6}">You have
             not assigned a difficulty</span>
         <span th:if="${runnerTrailRating == 1}">Your
@@ -50,15 +49,17 @@
          <span th:if="${runnerTrailRating == 5}">Your
             difficulty rating: &#9733 &#9733 &#9733
              &#9733 &#9733</span>
-        <span th:if="${runnerTrailRating}"><a class="btn btn-primary"
-                th:href="@{'/trails/editDifficulty/'+ ${currentRunner.id}+'/'+${detailedTrail.id}}">Adjust
+    </div>
+
+<div th:if="${currentRunner}" class="centeringDiv">
+      <span th:if="${runnerTrailRating}"><a class="btn btn-primary"
+                                            th:href="@{'/trails/editDifficulty/'+ ${currentRunner.id}+'/'+${detailedTrail.id}}">Adjust
             difficulty</a></span>
-        <span style="padding:2px;"
-              th:unless="${runnerTrailRating} ">
+    <span style="padding:2px;"
+          th:unless="${runnerTrailRating} ">
             <a class="btn btn-primary"
                th:href="@{'/trails/addDifficulty/'+ ${currentRunner.id}+'/'+${detailedTrail.id}}">Set your difficulty rating</a>
         </span>
-    </span>
 </div>
 
 <div class="centeringDiv" style="margin:5px; padding:5px;" >
