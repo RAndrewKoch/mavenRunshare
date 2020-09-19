@@ -18,17 +18,17 @@
 
 
 <div class="centeringDiv">
-    <span th:text="'Name: '+${detailedRunner.firstName}+' '+${detailedRunner.lastName}"></span>
-    <span th:text="'Age: '+${detailedRunner.age}"></span>
-    <span th:text="'Weight: '+${detailedRunner.weight}"></span>
+    <span class="mobileBox" th:text="'Name: '+${detailedRunner.firstName}+' '+${detailedRunner.lastName}"></span>
+    <span class="mobileBox" th:text="'Age: '+${detailedRunner.age}"></span>
+    <span class="mobileBox" th:text="'Weight: '+${detailedRunner.weight}"></span>
 </div>
 
 <div class="centeringDiv">
-    <span th:text="'Gender: '+${detailedRunner.gender.getDisplayName()}"></span>
-    <span th:text="'Zip Code: '+${detailedRunner.zip}"></span>
+    <span class="mobileBox" th:text="'Gender: '+${detailedRunner.gender.getDisplayName()}"></span>
+    <span class="mobileBox" th:text="'Zip Code: '+${detailedRunner.zip}"></span>
 </div>
 <div class="centeringDiv">
-    <span th:text="'Running Level: '+${detailedRunner.runnerLevel.getDisplayName()}"></span>
+    <span class="mobileBox" th:text="'Running Level: '+${detailedRunner.runnerLevel.getDisplayName()}"></span>
 </div>
 <div class="centeringDiv">
     <a

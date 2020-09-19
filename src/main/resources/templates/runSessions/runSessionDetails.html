@@ -17,23 +17,23 @@
     </h1>
 </div>
 <div class="centeringDiv">
-    <span
+    <span class="mobileBox"
             th:text="'Date: '+${detailedRunSession.date}"></span>
-    <span><a
+    <span class="mobileBox"><a
             th:href="@{'/runners/runnerDetails/'+${detailedRunSession.creator.id}}"
             th:text="'Creator: '+${detailedRunSession.creator.callsign}"></a></span>
-    <span><a
+    <span class="mobileBox"><a
             th:href="@{'/trails/trailDetails/'+${detailedRunSession.trail.id}}"
             th:text="'Trail: '+${detailedRunSession.trail.name}"></a></span>
 </div>
 <div class="centeringDiv">
-    <span
+    <span class="mobileBox"
             th:text="'Run Time: '+${detailedRunSession.time}"></span>
-    <span
+    <span class="mobileBox"
             th:text="'Date: '+${detailedRunSession.getDisplayDate()}"></span>
 </div>
 <div th:if=${runners} class="centeringDiv">
-        <span
+        <span class="mobileBox"
                 th:text="'Other Runners on this Run Session: '+${runners}"></span>
 </div>
 
@@ -41,6 +41,8 @@
     <a th:href="@{/comments/createComment}"
        class="btn btn-primary" style="margin:3px;">Comment on this session</a>
 </div>
+
+
 <div th:unless="${currentRunner}"
      class="centeringDiv" >
     <a th:href="@{/runners/login}"
