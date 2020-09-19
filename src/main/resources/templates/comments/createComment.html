@@ -17,6 +17,8 @@
 <div th:if="${trailToCommentOn}"
      th:text="'Commenting on '+${trailToCommentOn.name}+' trail'"
      style="text-align:center;"></div>
+<div th:if="${runSessionToCommentOn}"
+     th:text="${runSessionToCommentOn.name}+' run session'" style="text-align:center;"></div>
 <div class="centeringDiv">
     <div th:unless="${currentRunner}"
          style="text-align:center;">
@@ -48,6 +50,8 @@
         <small class="form-text text-muted">Max
             comment size 10,000 characters</small>
     </div>
+
+
     <div th:unless="${trailToCommentOn}" class="form-group">
         <label for="trailSelector">Attach this
             comment to a trail?</label>
@@ -62,13 +66,14 @@
         <p th:errors = "${newCommentDTO.trail}"
            class="errors"></p>
     </div>
-
     <select th:if="${trailToCommentOn}" hidden
             th:field="${newCommentDTO.trail}">
         <option selected
                 th:value="${trailToCommentOn.id}"></option>
     </select>
-    <div class="form-group">
+
+
+    <div th:unless="${runSessionToCommentOn}" class="form-group">
         <label for="runSessionSelector">Attach this
             comment to a Run Session?</label>
         <select
@@ -83,11 +88,22 @@
         <p th:errors = "${newCommentDTO.runSession}"
            class="errors"></p>
     </div>
+    <select hidden
+            th:if="${runSessionToCommentOn}"
+            th:field="${newCommentDTO.runSession}">
+        <option selected
+                th:value="${runSessionToCommentOn.id}"></option>
+    </select>
+
+
+
+
     <div class="form-group">
-        <label for="runnerSelector">Send this
-            message to Runner?</label>
+        <label for="runnerSelector">Add runners to
+            comment?</label>
         <select multiple="multiple" name="runnersList"
                 id="runnerSelector">
+            <option th:each="runnerToAdd : ${runnersToAdd}" hidden selected th:value="${runnerToAdd.id}"></option>
             <option th:each="runner : ${runners}"
                     th:unless="${runner==currentRunner}"
                     th:value="${runner.id}"
@@ -97,6 +113,10 @@
            class="errors"></p>
         <small class="form-text text-muted">Hold
             Ctrl+click to select multiple runners</small>
+        <small th:if="${runSessionToCommentOn}"
+               class="form-text text-muted">Runners
+            associated with this run session are
+            pre-selected</small>
     </div>
     <div class = "form-group">
         <label for="privateMessage">Private Message?</label>

@@ -38,7 +38,7 @@
 </div>
 
 <div class="centeringDiv" th:if="${currentRunner}">
-    <a th:href="@{/comments/createComment}"
+    <a th:href="@{'/comments/createComment/'+${detailedRunSession.id}}"
        class="btn btn-primary" style="margin:3px;">Comment on this session</a>
 </div>
 

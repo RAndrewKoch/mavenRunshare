@@ -2,6 +2,7 @@ package com.akandrewkoch.mavenRunshare.controllers;
 
 import com.akandrewkoch.mavenRunshare.models.Comment;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewCommentDTO;
+import com.akandrewkoch.mavenRunshare.models.RunSession;
 import com.akandrewkoch.mavenRunshare.models.Runner;
 import com.akandrewkoch.mavenRunshare.models.Trail;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,8 @@ import javax.validation.Valid;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -47,20 +50,37 @@ public class CommentController extends MainController{
     }
 
     @GetMapping("/createComment/{entityId}")
-    public String displayCreateCommentEntity(@PathVariable Integer entityId, HttpServletRequest request, Model model){
+    public String displayCreateCommentEntity(@PathVariable Integer entityId, HttpServletRequest request, Model model, HttpSession session){
         setRunnerInModel(request, model);
-        if (entityId.equals(null)){
-        } else {
-            Optional<Trail> testTrail = trailRepository.findById(entityId);
-            if (testTrail.isPresent()){
-                Trail trailToCommentOn = testTrail.get();
-                model.addAttribute("trailToCommentOn", trailToCommentOn);
-            }
+        List<Runner> runnersToAdd =new ArrayList<>();
+        ArrayList<Runner> runnersToDisplay = (ArrayList<Runner>) runnerRepository.findAll();
+        runnersToDisplay.remove(runnersToDisplay.indexOf(getRunnerFromSession(session)));
+        Optional<Trail> testTrail = trailRepository.findById(entityId);
+        if (testTrail.isPresent()){
+            Trail trailToCommentOn = testTrail.get();
+            model.addAttribute("trailToCommentOn", trailToCommentOn);
         }
+        Optional<RunSession> testRunSession = runSessionRepository.findById(entityId);
+        if (testRunSession.isPresent()){
+            RunSession runSessionToCommentOn = testRunSession.get();
+            model.addAttribute("runSessionToCommentOn", runSessionToCommentOn);
+            model.addAttribute("trailToCommentOn", runSessionToCommentOn.getTrail());
+            runnersToDisplay.removeAll(runSessionToCommentOn.getRunners());
+            runnersToDisplay.remove(runSessionToCommentOn.getCreator());
+            if (!runSessionToCommentOn.getRunners().isEmpty()){
+                runnersToAdd.addAll(runSessionToCommentOn.getRunners());
+            }
+            runnersToAdd.add(runSessionToCommentOn.getCreator());
+            if (runnersToAdd.contains(getRunnerFromSession(session))){
+                runnersToAdd.remove(getRunnerFromSession(session));
+            }
+
+        }
+        model.addAttribute("runnersToAdd", runnersToAdd);
         model.addAttribute("title", "Create Comment");
         model.addAttribute("nullTrail", null);
         model.addAttribute("nullRunSession", null);
-        model.addAttribute("runners", runnerRepository.findAll());
+        model.addAttribute("runners", runnersToDisplay);
         model.addAttribute("trails", trailRepository.findAll());
         model.addAttribute("runSessions", runSessionRepository.findAll());
         model.addAttribute(new NewCommentDTO());
