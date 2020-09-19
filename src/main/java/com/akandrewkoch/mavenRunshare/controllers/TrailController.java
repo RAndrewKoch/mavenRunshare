@@ -3,9 +3,12 @@ package com.akandrewkoch.mavenRunshare.controllers;
 
 import com.akandrewkoch.mavenRunshare.models.DTO.NewTrailDTO;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewTrailDifficultyDTO;
+import com.akandrewkoch.mavenRunshare.models.DTO.NewTrailSceneryDTO;
 import com.akandrewkoch.mavenRunshare.models.Trail;
 import com.akandrewkoch.mavenRunshare.models.TrailDifficultyRating;
+import com.akandrewkoch.mavenRunshare.models.TrailSceneryRating;
 import com.akandrewkoch.mavenRunshare.models.enums.TrailDifficulty;
+import com.akandrewkoch.mavenRunshare.models.enums.TrailScenery;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -61,7 +64,12 @@ public class TrailController extends MainController{
         List<TrailDifficultyRating> trailDifficulties = new ArrayList<>();
         grabDifficultiesList.forEach(trailDifficulties::add);
 
+        Iterable<TrailSceneryRating> grabSceneryRatingsList = trailSceneryRatingRepository.findAll();
+        List<TrailSceneryRating> trailSceneryRatings = new ArrayList<>();
+        grabSceneryRatingsList.forEach(trailSceneryRatings::add);
+
         model.addAttribute("trailDifficulties", trailDifficulties);
+        model.addAttribute("trailSceneryRatings", trailSceneryRatings);
         model.addAttribute("trails", trailRepository.findAll());
         return "trails/index";
     }
@@ -71,16 +79,19 @@ public class TrailController extends MainController{
         setRunnerInModel(request, model);
         model.addAttribute("title", "Add Trail");
         model.addAttribute("difficulties", TrailDifficulty.values());
+        model.addAttribute("sceneryValues", TrailScenery.values());
         model.addAttribute(new NewTrailDTO());
         model.addAttribute(new NewTrailDifficultyDTO());
+        model.addAttribute(new NewTrailSceneryDTO());
         return "trails/addTrail";
     }
 
     @PostMapping("/addTrail")
-    private String processAddTrailForm (@ModelAttribute @Valid NewTrailDTO newTrailDTO, Errors errors, @ModelAttribute @Valid NewTrailDifficultyDTO newTrailDifficultyDTO, Model model, HttpServletRequest request){
+    private String processAddTrailForm (@ModelAttribute @Valid NewTrailDTO newTrailDTO, Errors errors, @ModelAttribute @Valid NewTrailDifficultyDTO newTrailDifficultyDTO, @ModelAttribute @Valid NewTrailSceneryDTO newTrailSceneryDTO, Model model, HttpServletRequest request){
         setRunnerInModel(request, model);
         model.addAttribute("title", "Add Trail");
         model.addAttribute("difficulties", TrailDifficulty.values());
+        model.addAttribute("sceneryValues", TrailScenery.values());
         if (errors.hasErrors()){
             model.addAttribute("title", "Add Trail");
             return "trails/addTrail";
@@ -101,6 +112,11 @@ public class TrailController extends MainController{
         if (newTrailDifficultyDTO.getTrailDifficulty()!=null){
             TrailDifficultyRating newTrailDifficultyRating = new TrailDifficultyRating(newTrailDifficultyDTO.getTrailDifficulty(), getRunnerFromSession(session), newTrail);
             trailDifficultyRatingRepository.save(newTrailDifficultyRating);
+        }
+
+        if (newTrailSceneryDTO.getTrailScenery()!=null){
+            TrailSceneryRating newTrailSceneryRating = new TrailSceneryRating(newTrailSceneryDTO.getTrailScenery(), getRunnerFromSession(session), newTrail);
+            trailSceneryRatingRepository.save(newTrailSceneryRating);
         }
         model.addAttribute("title", "Trail List");
         model.addAttribute("trails", trailRepository.findAll());
@@ -128,12 +144,23 @@ public class TrailController extends MainController{
                 TrailDifficultyRating detailedTrailDifficultyRating = testDifficulty.get();
                 model.addAttribute("runnerTrailRating", detailedTrailDifficultyRating.getDifficulty().getNumberLevel());
             }
+
+            Optional<TrailSceneryRating> testScenery = Optional.ofNullable(trailSceneryRatingRepository.findByRunner_IdAndTrail_Id(runnerId, id));
+            if (testScenery.isPresent()) {
+                TrailSceneryRating detailedTrailSceneryRating = testScenery.get();
+                model.addAttribute("runnerSceneryRating", detailedTrailSceneryRating.getScenery().getNumberLevel());
+            }
         }
         Iterable<TrailDifficultyRating> grabDifficultiesList = trailDifficultyRatingRepository.findAll();
         List<TrailDifficultyRating> trailDifficulties = new ArrayList<>();
         grabDifficultiesList.forEach(trailDifficulties::add);
 
+        Iterable<TrailSceneryRating> grabSceneryList = trailSceneryRatingRepository.findAll();
+        List<TrailSceneryRating> trailSceneryRatings= new ArrayList<>();
+        grabSceneryList.forEach(trailSceneryRatings::add);
+
         model.addAttribute("trailDifficulties", trailDifficulties);
+        model.addAttribute("trailSceneryRatings", trailSceneryRatings);
         model.addAttribute("comments", commentRepository.findByTrail_IdOrderByDateCreatedDescTimeCreatedDesc(id));
         model.addAttribute("title", "Trail Details");
         model.addAttribute("detailedTrail",detailedTrail);
@@ -187,9 +214,9 @@ public class TrailController extends MainController{
     }
 
     @PostMapping("/addDifficulty/{runnerId}/{trailId}")
-    public String processAddDifficutlyForm (@ModelAttribute @Valid NewTrailDifficultyDTO newTrailDifficultyDTO, @PathVariable int runnerId, @PathVariable int trailId, Errors errors, Model model, HttpServletRequest request ){
+    public String processAddDifficultyForm (@ModelAttribute @Valid NewTrailDifficultyDTO newTrailDifficultyDTO, @PathVariable int runnerId, @PathVariable int trailId, Errors errors, Model model, HttpServletRequest request ){
         setRunnerInModel(request, model);
-        model.addAttribute("title", "Add Difficutly");
+        model.addAttribute("title", "Add Difficulty");
         if (errors.hasErrors()){
             model.addAttribute("trailDifficulties", TrailDifficulty.values());
             return "trails/addDifficulty/"+runnerId+"/"+trailId;
@@ -210,6 +237,55 @@ public class TrailController extends MainController{
         TrailDifficultyRating editedTrail = trailDifficultyRatingRepository.findByRunner_IdAndTrail_Id(runnerId, trailId);
         editedTrail.setDifficulty(newTrailDifficultyDTO.getTrailDifficulty());
         trailDifficultyRatingRepository.save(editedTrail);
+        return "redirect:/trails";
+    }
+
+
+//    scenery block
+@GetMapping("/addScenery/{runnerId}/{trailId}")
+public String displayAddSceneryView (@PathVariable int runnerId, @PathVariable int trailId, Model model, HttpServletRequest request){
+    setRunnerInModel(request, model);
+    model.addAttribute("title", "Add Scenery");
+    model.addAttribute("trailSceneryValues", TrailScenery.values());
+    model.addAttribute(new NewTrailSceneryDTO());
+    model.addAttribute("trail", trailRepository.findById(trailId));
+    return "trails/addScenery";
+}
+
+    @GetMapping("/editScenery/{runnerId}/{trailId}")
+    public String displayEditSceneryView (@PathVariable int trailId, Model model, HttpServletRequest request){
+        setRunnerInModel(request, model);
+        model.addAttribute(new NewTrailSceneryDTO());
+        model.addAttribute("title", "Edit Scenery");
+        model.addAttribute("trailSceneryValues", TrailScenery.values());
+        model.addAttribute("trail", trailRepository.findById(trailId));
+        return "trails/addScenery";
+    }
+
+    @PostMapping("/addScenery/{runnerId}/{trailId}")
+    public String processAddSceneryForm (@ModelAttribute @Valid NewTrailSceneryDTO newTrailSceneryDTO, @PathVariable int runnerId, @PathVariable int trailId, Errors errors, Model model, HttpServletRequest request ){
+        setRunnerInModel(request, model);
+        model.addAttribute("title", "Add Scenery");
+        if (errors.hasErrors()){
+            model.addAttribute("trailSceneryValues", TrailScenery.values());
+            return "trails/addScenery/"+runnerId+"/"+trailId;
+        }
+        TrailSceneryRating newTrail = new TrailSceneryRating(newTrailSceneryDTO.getTrailScenery(), runnerRepository.findById(runnerId), trailRepository.findById(trailId));
+        trailSceneryRatingRepository.save(newTrail);
+        return "redirect:/trails";
+    }
+
+    @PostMapping("/editScenery/{runnerId}/{trailId}")
+    public String processEditSceneryForm (@ModelAttribute @Valid NewTrailSceneryDTO newTrailSceneryDTO, @PathVariable int runnerId, @PathVariable int trailId, Errors errors, Model model, HttpServletRequest request){
+        setRunnerInModel(request, model);
+        model.addAttribute("title", "Edit Scenery");
+        if (errors.hasErrors()){
+            model.addAttribute("trailSceneryValues", TrailScenery.values());
+            return "trails/editScenery/"+runnerId+"/"+trailId;
+        }
+        TrailSceneryRating editedTrail = trailSceneryRatingRepository.findByRunner_IdAndTrail_Id(runnerId, trailId);
+        editedTrail.setScenery(newTrailSceneryDTO.getTrailScenery());
+        trailSceneryRatingRepository.save(editedTrail);
         return "redirect:/trails";
     }
 

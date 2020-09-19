@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body id="main">
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: runnerbar"></p>
+</div>
+<p th:replace="fragments :: navbar"></p>
+
+<div class="headerBlankSpace"></div>
+
+<h1 style="width:100vw"
+    th:text="'Set your scenery rating for
+'+${trail.Name}+' trail'"></h1>
+<form method="post">
+    <div class="form-group" style="width:90vw;">
+        <div>
+            <label for="scenery">Choose the
+                scenery rating</label>
+        </div>
+        <select style="width:90vw;"
+                th:field="${newTrailSceneryDTO.trailScenery}" id="scenery" autofocus>
+            <option
+                    th:each="scenery: ${trailSceneryValues}"
+                    th:text="${scenery.getDescription()}"
+                    th:value="${scenery}"></option>
+        </select>
+        <p
+                th:errors="${newTrailSceneryDTO.trailScenery}" class="errors"></p>
+    </div>
+    <button type="submit" class="btn btn-primary">Set
+        trail scenery rating
+    </button>
+</form>
+</body>
+</html>
