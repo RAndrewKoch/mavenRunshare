@@ -127,14 +127,14 @@
         <a class="btn btn-primary"
            th:unless="${currentRunner}"
            th:href="@{/runners/login}">Log in to see
-            personal ratings</a>
+            personal ratings or comment</a>
     </div>
 </div>
 
 
 <div class="centeringDiv" style="margin:5px; padding:5px;">
     <span th:if="${currentRunner}"><a
-            th:href="@{/comments/createComment}"
+            th:href="@{'/comments/createComment/'+${detailedTrail.id}}"
             class="btn btn-primary"
             th:text="'Comment on '+${detailedTrail.name}"></a>
     </span>
