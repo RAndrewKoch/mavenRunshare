@@ -36,6 +36,18 @@
         <span
                 th:text="'Other Runners on this Run Session: '+${runners}"></span>
 </div>
+
+<div class="centeringDiv" th:if="${currentRunner}">
+    <a th:href="@{/comments/createComment}"
+       class="btn btn-primary" style="margin:3px;">Comment on this session</a>
+</div>
+<div th:unless="${currentRunner}"
+     class="centeringDiv" >
+    <a th:href="@{/runners/login}"
+       class="btn btn-primary" style="margin:3px;">Login to
+        create a
+        comment</a>
+</div>
 <div th:each="comment : ${comments}"
      style="border-style:solid">
     <p>
