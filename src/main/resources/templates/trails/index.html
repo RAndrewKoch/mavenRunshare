@@ -55,7 +55,9 @@
                 th:href="@{'/trails/addressDesc'}">&#8595;
         </a></span></th>
         <th>Difficulty Rating</th>
-        <th class="mobilePortraitDelete">Times Rated</th>
+        <th class="mobilePortraitDelete">Ratings</th>
+        <th>Scenery Rating</th>
+        <th class="mobilePortraitDelete">Ratings</th>
     </tr>
     <tr class="trailtableline" th:each="trail : ${trails}">
         <td>
@@ -63,29 +65,22 @@
                th:text="${trail.name}"></a>
         </td>
         <td th:text="${trail.miles}"></td>
-        <td class="mobilePortraitDelete"
-            th:text="${trail.address}"></td>
-        <td
-                th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 6}">
-            &#9734 &#9734 &#9734 &#9734 &#9734
-        </td>
-        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 1}">
-            &#9733 &#9734 &#9734 &#9734 &#9734
-        </td>
-        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 2}">
-            &#9733 &#9733 &#9734 &#9734 &#9734
-        </td>
-        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 3}">
-            &#9733 &#9733 &#9733 &#9734 &#9734
-        </td>
-        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 4}">
-            &#9733 &#9733 &#9733 &#9733 &#9734
-        </td>
-        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 5}">
-            &#9733 &#9733 &#9733 &#9733 &#9733
-        </td>
-        <td class="mobilePortraitDelete"
-            th:text="${trail.returnNumberOfTrailDifficultyRatings(trailDifficulties)}"></td>
+        <td class="mobilePortraitDelete" th:text="${trail.address}"></td>
+        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 6}">&#9734 &#9734 &#9734 &#9734 &#9734</td>
+        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 1}">&#9733 &#9734 &#9734 &#9734 &#9734</td>
+        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 2}">&#9733 &#9733 &#9734 &#9734 &#9734</td>
+        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 3}">&#9733 &#9733 &#9733 &#9734 &#9734</td>
+        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 4}">&#9733 &#9733 &#9733 &#9733 &#9734</td>
+        <td th:if="${trail.returnTrailDifficultyAvg(trailDifficulties) == 5}">&#9733 &#9733 &#9733 &#9733 &#9733</td>
+        <td class="mobilePortraitDelete" th:text="${trail.returnNumberOfTrailDifficultyRatings(trailDifficulties)}"></td>
+
+        <td th:if="${trail.returnTrailSceneryAvg(trailSceneryRatings) == 6}">&#9734 &#9734 &#9734 &#9734 &#9734</td>
+        <td th:if="${trail.returnTrailSceneryAvg(trailSceneryRatings) == 1}">&#9733 &#9734 &#9734 &#9734 &#9734</td>
+        <td th:if="${trail.returnTrailSceneryAvg(trailSceneryRatings) == 2}">&#9733 &#9733 &#9734 &#9734 &#9734</td>
+        <td th:if="${trail.returnTrailSceneryAvg(trailSceneryRatings) == 3}">&#9733 &#9733 &#9733 &#9734 &#9734</td>
+        <td th:if="${trail.returnTrailSceneryAvg(trailSceneryRatings) == 4}">&#9733 &#9733 &#9733 &#9733 &#9734</td>
+        <td th:if="${trail.returnTrailSceneryAvg(trailSceneryRatings) == 5}">&#9733 &#9733 &#9733 &#9733 &#9733</td>
+        <td class="mobilePortraitDelete" th:text="${trail.returnNumberOfTrailSceneryRatings(trailSceneryRatings)}"></td>
     </tr>
 
 </table>

@@ -56,9 +56,23 @@
         <select style="width:90vw;"
                 th:field="${newTrailDifficultyDTO.trailDifficulty}" id="trailDifficulty">
            <option value="">Do not wish to set
-               a rating</option>
+               a difficulty rating</option>
             <option
                     th:each="difficulty : ${difficulties}" th:value="${difficulty}" th:text="${difficulty.getDescription()}"></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <div>
+            <label for="trailScenery">Describe the
+                scenery on this trail</label>
+        </div>
+        <select style="width:90vw;"
+                th:field="${newTrailSceneryDTO.trailScenery}" id="trailScenery">
+            <option value="">Do not wish to set a
+                scenery rating</option>
+            <option th:each="scenery : ${sceneryValues}"
+                    th:value="${scenery}"
+                    th:text="${scenery.getDescription()}"></option>
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Create

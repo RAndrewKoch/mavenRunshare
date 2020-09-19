@@ -116,6 +116,31 @@ public class Trail extends AbstractEntity {
         return count;
     }
 
+    public int returnTrailSceneryAvg (List<TrailSceneryRating> trailSceneryRatingList){
+        double sum = 0;
+        double count = 0;
+        for (int i = 0; i<trailSceneryRatingList.size(); i++){
+            if (trailSceneryRatingList.get(i).getTrail().getId().equals(this.getId())) {
+                sum += trailSceneryRatingList.get(i).getScenery().getNumberLevel();
+                count ++;
+            }
+        }
+        if (count==0){
+            return 6;
+        }
+        return (int) Math.round(sum/count);
+    }
+
+    public int returnNumberOfTrailSceneryRatings (List<TrailSceneryRating> trailSceneryRatingList){
+        int count =0;
+        for (int i=0; i<trailSceneryRatingList.size(); i++){
+            if (trailSceneryRatingList.get(i).getTrail().getId().equals(this.getId())) {
+                count ++;
+            }
+        }
+        return count;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

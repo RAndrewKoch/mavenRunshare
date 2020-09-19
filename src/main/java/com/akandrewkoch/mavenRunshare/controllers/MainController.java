@@ -28,6 +28,9 @@ public class MainController {
     @Autowired
     TrailDifficultyRatingRepository trailDifficultyRatingRepository;
 
+    @Autowired
+    TrailSceneryRatingRepository trailSceneryRatingRepository;
+
     public static final String runnerSessionKey = "user";
 
     Runner getRunnerFromSession(HttpSession session) {
