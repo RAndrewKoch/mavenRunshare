@@ -114,21 +114,40 @@ public class CommentController extends MainController{
         return "redirect:/comments";
     }
 
-    @PostMapping(value= {"/createComment/{entityId}"})
+    @PostMapping("/createComment/{entityId}")
     public String processCreateCommentEntity(@ModelAttribute @Valid NewCommentDTO newCommentDTO, Errors errors, Model model, @RequestParam(value = "runnersList", required=false) int[] runnersList, @PathVariable(required=false) Integer entityId, HttpServletRequest request, HttpSession session){
         setRunnerInModel(request, model);
         if (errors.hasErrors()){
+            List<Runner> runnersToAdd =new ArrayList<>();
+            ArrayList<Runner> runnersToDisplay = (ArrayList<Runner>) runnerRepository.findAll();
+            runnersToDisplay.remove(runnersToDisplay.indexOf(getRunnerFromSession(session)));
             if (!entityId.equals(null)){
                 Optional<Trail> testTrail = trailRepository.findById(entityId);
                 if (testTrail.isPresent()){
                     Trail trailToCommentOn = testTrail.get();
                     model.addAttribute("trailToCommentOn", trailToCommentOn);
                 }
+                Optional<RunSession> testRunSession = runSessionRepository.findById(entityId);
+                if (testRunSession.isPresent()) {
+                    RunSession runSessionToCommentOn = testRunSession.get();
+                    model.addAttribute("runSessionToCommentOn", runSessionToCommentOn);
+                    model.addAttribute("trailToCommentOn", runSessionToCommentOn.getTrail());
+                    runnersToDisplay.removeAll(runSessionToCommentOn.getRunners());
+                    runnersToDisplay.remove(runSessionToCommentOn.getCreator());
+                    if (!runSessionToCommentOn.getRunners().isEmpty()) {
+                        runnersToAdd.addAll(runSessionToCommentOn.getRunners());
+                    }
+                    runnersToAdd.add(runSessionToCommentOn.getCreator());
+                    if (runnersToAdd.contains(getRunnerFromSession(session))) {
+                        runnersToAdd.remove(getRunnerFromSession(session));
+                    }
+                }
             }
+            model.addAttribute("runnersToAdd", runnersToAdd);
             model.addAttribute("title", "Create Comment");
             model.addAttribute("nullTrail", null);
             model.addAttribute("nullRunSession", null);
-            model.addAttribute("runners", runnerRepository.findAll());
+            model.addAttribute("runners", runnersToDisplay);
             model.addAttribute("trails", trailRepository.findAll());
             model.addAttribute("runSessions", runSessionRepository.findAll());
             return "comments/createComment";
