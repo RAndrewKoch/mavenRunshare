@@ -116,13 +116,17 @@ public class RunSessionController extends MainController {
         List<Runner> otherRunners = runnerRepository.findAllByRunSessionPackId(id);
         String runnerString="";
         if (!otherRunners.isEmpty()) {
-            runnerString += otherRunners.get(0).getCallsign();
-            if (otherRunners.size()>1) {
-                for (int i = 1; i < otherRunners.size() - 1; i++) {
-                    runnerString += ", " + otherRunners.get(i).getCallsign();
+            if (otherRunners.size()==1){
+                runnerString= otherRunners.get(0).getCallsign();
+            } else {
+                runnerString += otherRunners.get(0).getCallsign();
+                if (otherRunners.size() > 1) {
+                    for (int i = 1; i < otherRunners.size() - 1; i++) {
+                        runnerString += ", " + otherRunners.get(i).getCallsign();
+                    }
                 }
+                runnerString += " and " + otherRunners.get(otherRunners.size() - 1).getCallsign();
             }
-            runnerString += " and " + otherRunners.get(otherRunners.size() - 1).getCallsign();
         }
         if (!runnerString.isBlank()) {
             model.addAttribute("runners", runnerString);
