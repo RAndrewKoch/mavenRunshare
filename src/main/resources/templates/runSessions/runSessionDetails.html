@@ -51,7 +51,8 @@
         comment</a>
 </div>
 <div th:each="comment : ${comments}"
-     style="border-style:solid">
+     style="border-style:solid"
+     th:unless="${comment.privateMessage == true}">
     <p>
     <span><a
             th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
