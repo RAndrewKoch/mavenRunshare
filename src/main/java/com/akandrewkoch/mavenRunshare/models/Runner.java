@@ -67,8 +67,12 @@ public class Runner extends AbstractEntity{
     @OneToMany(mappedBy = "runner")
     private final List<TrailDifficultyRating> trailDifficultyRatings = new ArrayList<>();
 
-//    @ManyToMany(mappedBy = "runners")
-//    private final List<RunSession> runSessions = new ArrayList<>();
+    @ManyToMany
+    private final List<Runner> friends = new ArrayList<>();
+
+    @ManyToMany
+    private final List<Runner> friendRequests = new ArrayList<>();
+
 
     //Constructors
     public Runner() {
@@ -124,6 +128,10 @@ public class Runner extends AbstractEntity{
 
     public Integer getNumberZipCode() { return numberZipCode; }
 
+    public List<Runner> getFriendRequests() { return friendRequests; }
+
+    public List<Runner> getFriends() { return friends; }
+
     //setters
 
     public void setCallsign(String callsign) {
@@ -175,5 +183,11 @@ public class Runner extends AbstractEntity{
 
     public void addComment (Comment comment){this.comments.add(comment);}
 
+    public void addFriendRequest (Runner runner) {this.friendRequests.add(runner);}
 
+    public void addFriend (Runner runner) {this.friends.add(runner);}
+
+    public void removeFriendRequest (Runner runner) {this.friendRequests.remove(runner);}
+
+    public boolean isFriend (Runner runner) { return this.friends.contains(runner);}
 }
