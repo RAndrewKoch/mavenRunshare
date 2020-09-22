@@ -12,11 +12,22 @@
 
 <div class="headerBlankSpace"></div>
 <div class="centeringDiv">
-    <p th:text="${'You must be logged in as '+detailedRunner.callsign+' to view this page'}"></p>
+    <p
+            th:text="${'You must be logged in as '+detailedRunner.callsign+' or be their friend to view this page'}"></p>
 </div>
 <div class="centeringDiv">
-    <a class="btn btn-primary"
-       th:href="@{'/runners/login/'+${detailedRunner.id}}">Login here</a>
+    <a th:unless="${currentRunner}" class="btn btn-primary"
+       th:href="@{'/runners/login/'+${detailedRunner.id}}" th:text="'Login as '+${detailedRunner.callsign}"></a>
+    <a th:unless="${currentRunner}"
+       class="btn btn-primary"
+       th:href="@{/runners/login}"
+       th:text="'Login as another runner'"></a>
+    <form th:if="${currentRunner}" method="post">
+        <button type="submit"
+                class="btn btn-primary"
+                th:text="'Request to be friends with '+${detailedRunner.callsign}"></button>
+
+    </form>
 </div>
 
 <div class="centeringDiv">

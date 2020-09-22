@@ -9,33 +9,75 @@
 <p th:replace="fragments :: navbar"></p>
 
 <div class="headerBlankSpace"></div>
-<div class="centeringDiv" style="margin-bottom:10px;">
-    <h1
-            class="runnerDetailsHeader"
-            th:text="${detailedRunner.Callsign}">
+
+<div class="centeringDiv"
+     th:unless="${currentRunnerIsDetailedRunner}">
+    <small class="form-text text-muted">Viewing
+        friend</small>
+</div>
+
+<div class="centeringDiv">
+    <h1 class="runnerDetailsHeader"
+        th:text="${detailedRunner.Callsign}"
+        style="margin-bottom:10px;">
     </h1>
 </div>
 
 
 <div class="centeringDiv">
-    <span class="mobileBox" th:text="'Name: '+${detailedRunner.firstName}+' '+${detailedRunner.lastName}"></span>
-    <span class="mobileBox" th:text="'Age: '+${detailedRunner.age}"></span>
-    <span class="mobileBox" th:text="'Weight: '+${detailedRunner.weight}"></span>
+    <span class="mobileBox"
+          th:text="'Name: '+${detailedRunner.firstName}+' '+${detailedRunner.lastName}"></span>
+    <span class="mobileBox"
+          th:text="'Age: '+${detailedRunner.age}"></span>
+    <span class="mobileBox"
+          th:text="'Weight: '+${detailedRunner.weight}"></span>
 </div>
 
 <div class="centeringDiv">
-    <span class="mobileBox" th:text="'Gender: '+${detailedRunner.gender.getDisplayName()}"></span>
-    <span class="mobileBox" th:text="'Zip Code: '+${detailedRunner.zip}"></span>
+    <span class="mobileBox"
+          th:text="'Gender: '+${detailedRunner.gender.getDisplayName()}"></span>
+    <span class="mobileBox"
+          th:text="'Zip Code: '+${detailedRunner.zip}"></span>
 </div>
 <div class="centeringDiv">
-    <span class="mobileBox" th:text="'Running Level: '+${detailedRunner.runnerLevel.getDisplayName()}"></span>
+    <span class="mobileBox"
+          th:text="'Running Level: '+${detailedRunner.runnerLevel.getDisplayName()}"></span>
 </div>
-<div class="centeringDiv">
+<div class="centeringDiv"
+     th:if="${currentRunnerIsDetailedRunner}">
     <a
             th:href="@{'/runners/editRunner/'+${detailedRunner.id}}"
-            class="btn btn-primary" style="margin-top:2px;">Edit
+            class="btn btn-primary"
+            style="margin-top:2px; margin-bottom:10px;">Edit
         Details</a>
+</div>
 
+<div th:if="${currentRunnerIsDetailedRunner}">
+    <div class="centeringDiv" th:if="${friends}">
+        <h1 class="runnerDetailsHeader">Friends List</h1>
+    </div>
+</div>
+<div th:if="${currentRunnerIsDetailedRunner}">
+    <div class="centeringDiv" th:if="${friends}">
+        <div>
+            <a th:each="friend : ${friends}"
+               th:href="@{'/runners/runnerDetails/'+${friend.id}}"
+               th:text="${friend.callsign}"
+               style="padding-left:5px; padding-right:5px; border-style:solid; margin:5px;">
+            </a>
+        </div>
+    </div>
+</div>
+
+<div th:if="${currentRunnerIsDetailedRunner}">
+    <div class="centeringDiv" th:if="${friendRequests}">
+        <a th:each="friendRequest : ${friendRequests}"
+           th:text="${friendRequest.callsign}+' would like to be your friend'"
+           class="btn btn-primary"
+           th:href="@{'/runners/friendRequest/'+${friendRequest.id}+'/'+${detailedRunner.id}}"
+           style="margin:5px;">
+        </a>
+    </div>
 </div>
 
 
@@ -64,6 +106,11 @@
             </p>
             <p th:text="'Title: '+${comment.messageTitle}"></p>
             <p th:text="${comment.message}"></p>
+            <small
+                    th:if="${comment.privateMessage == true}"
+                    class="form-text text-muted">Private
+                Message
+            </small>
         </div>
     </div>
 </div>

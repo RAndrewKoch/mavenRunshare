@@ -2,6 +2,7 @@ package com.akandrewkoch.mavenRunshare.controllers;
 
 
 import com.akandrewkoch.mavenRunshare.models.Comment;
+import com.akandrewkoch.mavenRunshare.models.DTO.NewFriendRequestDTO;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewRunnerRegistrationDTO;
 import com.akandrewkoch.mavenRunshare.models.DTO.RunnerLoginDTO;
 import com.akandrewkoch.mavenRunshare.models.RunSession;
@@ -76,6 +77,7 @@ public class RunnerController extends MainController {
                    return "runners/index";
            }
        }
+
         model.addAttribute("runners", runnerRepository.findAll());
         return "runners/index";
     }
@@ -216,41 +218,59 @@ public class RunnerController extends MainController {
     @GetMapping("/runnerDetails/{id}")
     private String displayRunnerDetailsView (@PathVariable Integer id, Model model, HttpServletRequest request, HttpSession session){
         setRunnerInModel(request, model);
+//        if no runner is logged in, detail pages cannot be viewed
         if (getRunnerFromSession(session)==null){
             model.addAttribute("detailedRunner", runnerRepository.findById(id).get());
             return"runners/runnerDetailsNoAccess";
         }
-        if (getRunnerFromSession(session).getId()!=id){
-            model.addAttribute("detailedRunner", runnerRepository.findById(id).get());
-            return "runners/runnerDetailsNoAccess";
+
+//        find if the person requesting the details page is the detailed runner, or a friend of the detailed runner
+        if (getRunnerFromSession(session).getId().equals(id)||getRunnerFromSession(session).getFriends().contains(runnerRepository.findById(id).get())) {
+            Optional<Runner> testRunner = runnerRepository.findById(id);
+
+            if (getRunnerFromSession(session).getId().equals(id)){
+                model.addAttribute("currentRunnerIsDetailedRunner", true);
+            }
+
+            if (testRunner.isEmpty()) {
+                return "runners/index";
+            }
+
+            Runner detailedRunner = testRunner.get();
+            model.addAttribute("title", "Details " + detailedRunner.getCallsign());
+            model.addAttribute("detailedRunner", detailedRunner);
+
+            List<Comment> comments = commentRepository.findByRunners_IdOrderByDateCreatedDescTimeCreatedDesc(id);
+            if (!comments.isEmpty()) {
+                model.addAttribute("comments", comments);
+            }
+
+            List<RunSession> runSessions = runSessionRepository.findAllByCreator_Id(id);
+            if (!runSessions.isEmpty()) {
+                model.addAttribute("runSessions", runSessions);
+            }
+
+            List<RunSession> otherSessions = runSessionRepository.findAllByRunners(runnerRepository.findById(id).get());
+            if (!otherSessions.isEmpty()) {
+                model.addAttribute("otherSessions", otherSessions);
+            }
+
+            if (!detailedRunner.getFriendRequests().isEmpty()) {
+                model.addAttribute("friendRequests", detailedRunner.getFriendRequests());
+            }
+
+            if (!detailedRunner.getFriends().isEmpty()){
+                model.addAttribute("friends", detailedRunner.getFriends());
+            }
+
+
+            return "runners/runnerDetails";
         }
-        Optional<Runner> testRunner = runnerRepository.findById(id);
 
-        if (testRunner.isEmpty()){
-            return "runners/index";
-        }
-
-        Runner detailedRunner = testRunner.get();
-        model.addAttribute("title", "Details "+detailedRunner.getCallsign());
-        model.addAttribute("detailedRunner",  detailedRunner);
-
-        List<Comment> comments = commentRepository.findByRunners_IdOrderByDateCreatedDescTimeCreatedDesc(id);
-        if (!comments.isEmpty()){
-            model.addAttribute("comments", comments);
-        }
-
-        List<RunSession> runSessions = runSessionRepository.findAllByCreator_Id(id);
-        if (!runSessions.isEmpty()) {
-            model.addAttribute("runSessions", runSessions);
-        }
-
-        List<RunSession> otherSessions = runSessionRepository.findAllByRunners(runnerRepository.findById(id).get());
-        if (!otherSessions.isEmpty()){
-            model.addAttribute("otherSessions", otherSessions);
-        }
-
-
-        return "runners/runnerDetails";
+        NewFriendRequestDTO newFriendRequestDTO = new NewFriendRequestDTO();
+        model.addAttribute(newFriendRequestDTO);
+        model.addAttribute("detailedRunner", runnerRepository.findById(id).get());
+        return "runners/runnerDetailsNoAccess";
     }
 
     @GetMapping("/runnerDetails")
@@ -259,6 +279,15 @@ public class RunnerController extends MainController {
         model.addAttribute("title", "Blank Details");
         model.addAttribute("detailedRunner", new Runner());
         return "runners/runnerDetails";
+    }
+
+    @PostMapping("/runnerDetails/{id}")
+    private String processFriendRequestDTO (@PathVariable int id, Model model, HttpServletRequest request, HttpSession session){
+        setRunnerInModel(request, model);
+        Runner requestedFriend = runnerRepository.findById(id);
+        requestedFriend.addFriendRequest(getRunnerFromSession(session));
+        runnerRepository.save(requestedFriend);
+        return "redirect:/runners/index";
     }
 
     @GetMapping("/editRunner/{id}")
@@ -313,5 +342,30 @@ public class RunnerController extends MainController {
         updatedRunner.setNumberZipCode(Integer.parseInt(newRunnerRegistrationDTO.getZip()));
         runnerRepository.save(updatedRunner);
         return "redirect:/runners/runnerDetails/"+updatedRunner.getId();
+    }
+
+    @GetMapping("/friendRequest/{requester}/{requested}")
+    private String displayFriendRequestView (@PathVariable Integer requester, @PathVariable Integer requested, Model model, HttpServletRequest request){
+        setRunnerInModel(request, model);
+        model.addAttribute("title", "Accept Friend");
+        Runner friendRequested = runnerRepository.findById(requested).get();
+        Runner runnerRequesting = runnerRepository.findById(requester).get();
+        model.addAttribute("friendRequested", friendRequested);
+        model.addAttribute("runnerRequesting", runnerRequesting);
+        return "runners/friendRequest";
+    }
+
+    @PostMapping("/friendRequest/{requester}/{requested}")
+    private String processFriendRequestForm (@PathVariable Integer requester, @PathVariable Integer requested, Model model, HttpServletRequest request){
+        setRunnerInModel(request, model);
+        model.addAttribute("title", "AcceptFriend");
+        Runner runnerAccepting = runnerRepository.findById(requested).get();
+        Runner runnerRequesting = runnerRepository.findById(requester).get();
+        runnerAccepting.addFriend(runnerRequesting);
+        runnerRequesting.addFriend(runnerAccepting);
+        runnerAccepting.removeFriendRequest(runnerRequesting);
+        runnerRepository.save(runnerAccepting);
+        runnerRepository.save(runnerRequesting);
+        return "redirect:/runners/runnerDetails/"+runnerAccepting.getId();
     }
 }

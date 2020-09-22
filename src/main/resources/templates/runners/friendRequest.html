@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body id="main">
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: runnerbar"></p>
+</div>
+<p th:replace="fragments :: navbar"></p>
+<div class="headerBlankSpace"></div>
+
+<div class="centeringDiv" style="margin-bottom=10px;">
+    <h1 class="runnerDetailsHeader"
+        th:text="'Accepting friend request from '+${runnerRequesting.callsign}"></h1>
+</div>
+
+<div class="centeringDiv">
+    <div style="width:50%; text-align:justify;">Accepting
+        friend request will allow your new friend to view your details page and let you see theirs as well
+    </div>
+</div>
+<div class="centeringDiv">
+    <form method="post">
+        <button type="submit" class="btn btn-primary"
+                th:text="'Accept friend'"></button>
+    </form>
+</div>
+</body>
+</html>
