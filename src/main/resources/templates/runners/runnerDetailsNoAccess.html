@@ -17,17 +17,39 @@
 </div>
 <div class="centeringDiv">
     <a th:unless="${currentRunner}" class="btn btn-primary"
-       th:href="@{'/runners/login/'+${detailedRunner.id}}" th:text="'Login as '+${detailedRunner.callsign}"></a>
+       th:href="@{'/runners/login/'+${detailedRunner.id}}"
+       th:text="'Login as '+${detailedRunner.callsign}"></a>
     <a th:unless="${currentRunner}"
        class="btn btn-primary"
        th:href="@{/runners/login}"
        th:text="'Login as another runner'"></a>
-    <form th:if="${currentRunner}" method="post">
-        <button type="submit"
-                class="btn btn-primary"
-                th:text="'Request to be friends with '+${detailedRunner.callsign}"></button>
-
+    <p th:if="${currentRunnerFriendRequestIssued}"
+       th:text="'You have sent a friend request to '+${detailedRunner.callsign}+', but they have not yet accepted'"></p>
+    <div th:if="${detailedRunnerIssuedFriendRequest}">
+        <p th:text="${detailedRunner.callsign}+' has issued you a friend request, you can accept on your detail page'"></p>
+        <div class="centeringDiv">
+            <a class="btn btn-primary"
+               th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}"
+               th:text="'Return to your detail page'"></a>
+        </div>
+    </div>
+    <form th:if="${currentRunner}"
+          th:unless="${currentRunnerFriendRequestIssued} or ${detailedRunnerIssuedFriendRequest}"
+          method="post">
+        <div class="centeringDiv">
+            <button type="submit"
+                    class="btn btn-primary"
+                    th:text="'Request to be friends with '+${detailedRunner.callsign}"></button>
+        </div>
+        <div class="centeringDiv">
+            <small class="form-text text-muted"
+                   style="width:200px; text-align:justify;">Becoming
+                a friend with another runner will allow them
+                to see your details page, as well as
+                comments marked as private</small>
+        </div>
     </form>
+
 </div>
 
 <div class="centeringDiv">
