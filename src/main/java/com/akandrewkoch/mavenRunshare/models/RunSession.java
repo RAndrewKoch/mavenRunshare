@@ -17,7 +17,6 @@ import java.util.List;
 @Entity
 public class RunSession extends AbstractEntity{
 
-    //todo-create a runnerlist for runners on Runsessions
     @NotBlank(message = "Run Session needs to be named")
     @NotNull(message ="Run Session needs to be named")
     private String name;
