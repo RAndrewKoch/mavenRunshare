@@ -33,7 +33,7 @@
 
     <div class = "form-group">
         <label for="messageTitle">Title</label><br>
-        <input width="80%"
+        <input width="80vw;"
                th:field="${newCommentDTO.messageTitle}"
                id="messageTitle" autofocus>
         <p th:errors="${newCommentDTO.messageTitle}"
@@ -73,7 +73,8 @@
     </select>
 
 
-    <div th:unless="${runSessionToCommentOn}" class="form-group">
+    <div th:unless="${runSessionToCommentOn} or ${trailToCommentOn}"
+         class="form-group">
         <label for="runSessionSelector">Attach this
             comment to a Run Session?</label>
         <select
@@ -98,7 +99,8 @@
 
 
 
-    <div class="form-group">
+    <div class="form-group"
+         th:unless="${runSessionToCommentOn}">
         <label for="runnerSelector">Add runners to
             comment?</label>
         <select multiple="multiple" name="runnersList"
@@ -113,11 +115,13 @@
            class="errors"></p>
         <small class="form-text text-muted">Hold
             Ctrl+click to select multiple runners</small>
-        <small th:if="${runSessionToCommentOn}"
-               class="form-text text-muted">Runners
-            associated with this run session are
-            pre-selected</small>
     </div>
+    <small
+            style="margin-bottom:5px;"
+            th:if="${runSessionToCommentOn}"
+           class="form-text text-muted">All runners
+        listed on this run session will be able to
+        view this message even if marked private</small>
     <div class = "form-group">
         <label for="privateMessage">Private Message?</label>
         <input type="checkbox"
@@ -126,10 +130,8 @@
         <p th:errors="${newCommentDTO.privateMessage}"
            class="errors"></p>
         <small class="form-text text-muted">If this
-            is checked, it will only show up on
-            personal runner pages, not community
-            comments, trail pages, or run session
-            pages</small>
+            is checked, this comment will only show
+            up for runners added to the comment.</small>
     </div>
     <button type="submit" class="btn btn-primary">Create Comment</button>
 </form>
