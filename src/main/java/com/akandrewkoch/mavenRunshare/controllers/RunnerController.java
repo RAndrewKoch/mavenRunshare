@@ -221,6 +221,7 @@ public class RunnerController extends MainController {
 //        if no runner is logged in, detail pages cannot be viewed
         if (getRunnerFromSession(session)==null){
             model.addAttribute("detailedRunner", runnerRepository.findById(id).get());
+
             return"runners/runnerDetailsNoAccess";
         }
 
@@ -270,6 +271,16 @@ public class RunnerController extends MainController {
         NewFriendRequestDTO newFriendRequestDTO = new NewFriendRequestDTO();
         model.addAttribute(newFriendRequestDTO);
         model.addAttribute("detailedRunner", runnerRepository.findById(id).get());
+
+//        find out if logged in runner already has a friend Request for the detailed runner, and if so, display that instead of a request friend button
+        if (runnerRepository.findById(id).get().getFriendRequests().contains(runnerRepository.findById(getRunnerFromSession(session).getId()).get())){
+            model.addAttribute("currentRunnerFriendRequestIssued", true);
+        }
+
+//        find out if detailed runner has sent you a friend request already, but you have not accepted.  If so, display button to go to your details page
+        if (runnerRepository.findById(getRunnerFromSession(session).getId()).get().getFriendRequests().contains(runnerRepository.findById(id).get())){
+            model.addAttribute("detailedRunnerIssuedFriendRequest", true);
+        }
         return "runners/runnerDetailsNoAccess";
     }
 
