@@ -81,7 +81,8 @@
 </div>
 
 
-<div style="padding:10px">
+<div style="padding:10px"
+     th:if="${currentRunnerIsDetailedRunner}">
     <div th:if="${comments}" class="centeringDiv">
         <h1 class="runnerDetailsHeader"
             th:text="'Comments for '+${detailedRunner.callsign}"></h1>
