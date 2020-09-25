@@ -302,7 +302,7 @@ public String displayAddSceneryView (@PathVariable int runnerId, @PathVariable i
         editingTrail.setAddress(trailToEdit.getAddress());
         editingTrail.setZipCode(trailToEdit.getZipCode());
         model.addAttribute(editingTrail);
-        return "/trails/editTrail";
+        return "trails/editTrail";
     }
 
     @PostMapping("editTrail/{trailId}")
@@ -310,7 +310,7 @@ public String displayAddSceneryView (@PathVariable int runnerId, @PathVariable i
         setRunnerInModel(request, model);
         if (errors.hasErrors()){
             model.addAttribute("title", "Editing "+trailRepository.findById(trailId).get().getName());
-            return "/trails/editTrail";
+            return "trails/editTrail";
         }
 
         Trail editedTrail = trailRepository.findById(trailId).get();
