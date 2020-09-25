@@ -5,6 +5,8 @@ function displayMilesFromHome (homeZip, trailZip){
     ("distanceFromHomeSpan");
     let distanceButton = document.getElementById
     ("distanceButton");
+    let distanceSpan = document.getElementById
+    ("distanceSpan");
     homeZip=getZipFromNumberZip(homeZip);
     trailZip=getZipFromNumberZip(trailZip);
 
@@ -16,10 +18,19 @@ function displayMilesFromHome (homeZip, trailZip){
         } else {
         const jsonPromise = response.json();
         jsonPromise.then(function(json){
+            if (json.route.distance == null){
+                alert(`Distance between runner home and
+                trail location cannot be determined.
+                Likely invalid zip codes`);
+                distanceButton.remove();
+                distanceFromHomeSpan.remove();
+                distanceSpan.remove();
+            } else {
             distanceButton.setAttribute("hidden", "");
             distanceFromHomeSpan.removeAttribute("hidden");
             console.log(json);
             distanceFromHomeSpan.innerHTML = "Distance from home : "+json.route.distance+" miles";
+            }
             })
         }
     });

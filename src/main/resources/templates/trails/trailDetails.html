@@ -152,7 +152,7 @@
         Weather</button>
     <span hidden id="weatherSpan"></span>
     </span>
-    <span th:if="${currentRunner}">
+    <span th:if="${currentRunner}" id="distanceSpan">
         <button
                 class="btn btn-primary"
                 th:onclick="'displayMilesFromHome('+${currentRunner.numberZipCode}+','+${detailedTrail.numberZipCode}+')'"
