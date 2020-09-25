@@ -52,6 +52,7 @@ public class CommentController extends MainController{
     @GetMapping("/createComment/{entityId}")
     public String displayCreateCommentEntity(@PathVariable Integer entityId, HttpServletRequest request, Model model, HttpSession session){
         setRunnerInModel(request, model);
+        model.addAttribute(new NewCommentDTO());
         List<Runner> runnersToAdd =new ArrayList<>();
         ArrayList<Runner> runnersToDisplay = (ArrayList<Runner>) runnerRepository.findAll();
         runnersToDisplay.remove(runnersToDisplay.indexOf(getRunnerFromSession(session)));
@@ -74,7 +75,12 @@ public class CommentController extends MainController{
             if (runnersToAdd.contains(getRunnerFromSession(session))){
                 runnersToAdd.remove(getRunnerFromSession(session));
             }
+        }
 
+        Optional<Runner> testRunner = runnerRepository.findById(entityId);
+        if (testRunner.isPresent()){
+            Runner runnerToCommentOn = testRunner.get();
+            model.addAttribute("runnerToCommentOn", runnerToCommentOn);
         }
         model.addAttribute("runnersToAdd", runnersToAdd);
         model.addAttribute("title", "Create Comment");
@@ -83,7 +89,7 @@ public class CommentController extends MainController{
         model.addAttribute("runners", runnersToDisplay);
         model.addAttribute("trails", trailRepository.findAll());
         model.addAttribute("runSessions", runSessionRepository.findAll());
-        model.addAttribute(new NewCommentDTO());
+
         return "comments/createComment";
     }
 
@@ -110,6 +116,9 @@ public class CommentController extends MainController{
         HttpSession commentSession = request.getSession();
         Runner commentCreator = getRunnerFromSession(commentSession);
         Comment savedComment = new Comment(newCommentDTO.getMessageTitle(), newCommentDTO.getMessage(), commentCreator, LocalDate.now(), LocalTime.now().minus(Duration.ofHours(5)), newCommentDTO.getTrail(), newCommentDTO.getRunSession(), newCommentDTO.getRunners(), newCommentDTO.getPrivateMessage());
+
+
+
         commentRepository.save(savedComment);
         return "redirect:/comments";
     }
@@ -142,6 +151,12 @@ public class CommentController extends MainController{
                         runnersToAdd.remove(getRunnerFromSession(session));
                     }
                 }
+                Optional<Runner> testRunner = runnerRepository.findById(entityId);
+                if (testRunner.isPresent()){
+                    Runner runnerToCommentOn = testRunner.get();
+                    model.addAttribute("runnerToCommentOn", runnerToCommentOn);
+                }
+
             }
             model.addAttribute("runnersToAdd", runnersToAdd);
             model.addAttribute("title", "Create Comment");
@@ -162,6 +177,11 @@ public class CommentController extends MainController{
         HttpSession commentSession = request.getSession();
         Runner commentCreator = getRunnerFromSession(commentSession);
         Comment savedComment = new Comment(newCommentDTO.getMessageTitle(), newCommentDTO.getMessage(), commentCreator, LocalDate.now(), LocalTime.now().minus(Duration.ofHours(5)), newCommentDTO.getTrail(), newCommentDTO.getRunSession(), newCommentDTO.getRunners(), newCommentDTO.getPrivateMessage());
+        Optional<Runner> testRunner = runnerRepository.findById(entityId);
+        if (testRunner.isPresent()){
+            savedComment.setPrivateMessage(true);
+        }
+
         commentRepository.save(savedComment);
         return "redirect:/comments";
     }
