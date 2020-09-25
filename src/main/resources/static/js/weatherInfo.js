@@ -15,7 +15,7 @@ function getWeather(zip, apiKey){
     response.then(function(response){
         if (response.status === 404){
             alert(`Sorry, there does not seem to be weather data at this trail.  Please check the zip code to see that it is correct`);
-
+            weather.remove();
         } else {
         const jsonPromise = response.json();
         jsonPromise.then(function(json){
