@@ -12,26 +12,31 @@
 <p th:replace="fragments :: navbar"></p>
 <div class="headerBlankSpace"></div>
 <h1
-        style="text-align:center;">Contribute to the conversation!
+        style="text-align:center;">Contribute to the
+    conversation!
 </h1>
 <div th:if="${trailToCommentOn}"
      th:text="'Commenting on '+${trailToCommentOn.name}+' trail'"
      style="text-align:center;"></div>
 <div th:if="${runSessionToCommentOn}"
-     th:text="${runSessionToCommentOn.name}+' run session'" style="text-align:center;"></div>
+     th:text="${runSessionToCommentOn.name}+' run session'"
+     style="text-align:center;"></div>
+<div th:if="${runnerToCommentOn}"
+     th:text="'Sending message to '+${runnerToCommentOn.callsign}"
+     style="text-align:center;"></div>
 <div class="centeringDiv">
     <div th:unless="${currentRunner}"
          style="text-align:center;">
         <p>You must be logged in to add a comment</p>
         <a class="btn btn-primary"
            th:href="@{/runners/login}">Login
-            </a>
+        </a>
     </div>
 
 </div>
 <form th:if=${currentRunner} method="post">
 
-    <div class = "form-group">
+    <div class="form-group">
         <label for="messageTitle">Title</label><br>
         <input width="80vw;"
                th:field="${newCommentDTO.messageTitle}"
@@ -43,7 +48,7 @@
         <label for="message">Create A Message</label><br>
         <textarea class="commentTextArea" rows="5"
                   style="width:90vw;"
-                th:field="${newCommentDTO.message}"
+                  th:field="${newCommentDTO.message}"
                   id="message"></textarea>
         <p th:errors="${newCommentDTO.message}"
            class="errors"></p>
@@ -52,7 +57,8 @@
     </div>
 
 
-    <div th:unless="${trailToCommentOn}" class="form-group">
+    <div th:unless="${trailToCommentOn} or ${runnerToCommentOn}"
+         class="form-group">
         <label for="trailSelector">Attach this
             comment to a trail?</label>
         <select
@@ -63,7 +69,7 @@
                     th:value="${trail.id}"
                     th:text="${trail.name}"></option>
         </select>
-        <p th:errors = "${newCommentDTO.trail}"
+        <p th:errors="${newCommentDTO.trail}"
            class="errors"></p>
     </div>
     <select th:if="${trailToCommentOn}" hidden
@@ -73,7 +79,7 @@
     </select>
 
 
-    <div th:unless="${runSessionToCommentOn} or ${trailToCommentOn}"
+    <div th:unless="${runSessionToCommentOn} or ${trailToCommentOn} or ${runnerToCommentOn}"
          class="form-group">
         <label for="runSessionSelector">Attach this
             comment to a Run Session?</label>
@@ -86,7 +92,7 @@
                     th:value="${runSession.id}"
                     th:text="${runSession.name}"></option>
         </select>
-        <p th:errors = "${newCommentDTO.runSession}"
+        <p th:errors="${newCommentDTO.runSession}"
            class="errors"></p>
     </div>
     <select hidden
@@ -97,21 +103,21 @@
     </select>
 
 
-
-
     <div class="form-group"
-         th:unless="${runSessionToCommentOn}">
+         th:unless="${runSessionToCommentOn} or ${runnerToCommentOn}">
         <label for="runnerSelector">Add runners to
             comment?</label>
         <select multiple="multiple" name="runnersList"
                 id="runnerSelector">
-            <option th:each="runnerToAdd : ${runnersToAdd}" hidden selected th:value="${runnerToAdd.id}"></option>
+            <option th:each="runnerToAdd : ${runnersToAdd}"
+                    hidden selected
+                    th:value="${runnerToAdd.id}"></option>
             <option th:each="runner : ${runners}"
                     th:unless="${runner==currentRunner}"
                     th:value="${runner.id}"
                     th:text="${runner.callsign}"></option>
         </select>
-        <p th:errors = "${newCommentDTO.runners}"
+        <p th:errors="${newCommentDTO.runners}"
            class="errors"></p>
         <small class="form-text text-muted">Hold
             Ctrl+click to select multiple runners</small>
@@ -119,21 +125,38 @@
     <small
             style="margin-bottom:5px;"
             th:if="${runSessionToCommentOn}"
-           class="form-text text-muted">All runners
+            class="form-text text-muted">All runners
         listed on this run session will be able to
         view this message even if marked private</small>
-    <div class = "form-group">
+
+    <div th:if="${runnerToCommentOn}">
+        <select hidden name="runnersList">
+            <option selected
+                    th:value="${runnerToCommentOn.id}"></option>
+        </select>
+    </div>
+
+    <div class="form-group"
+         th:unless="${runnerToCommentOn}">
         <label for="privateMessage">Private Message?</label>
         <input type="checkbox"
                th:field="${newCommentDTO.privateMessage}"
-               id = "privateMessage">
+               id="privateMessage">
         <p th:errors="${newCommentDTO.privateMessage}"
            class="errors"></p>
         <small class="form-text text-muted">If this
             is checked, this comment will only show
             up for runners added to the comment.</small>
     </div>
-    <button type="submit" class="btn btn-primary">Create Comment</button>
+
+    <small th:if="${runnerToCommentOn}"
+           class="form-text text-muted">Direct
+        comments to runners are always marked
+        "Private"</small>
+
+    <button type="submit" class="btn btn-primary">Create
+        Comment
+    </button>
 </form>
 </body>
 </html>

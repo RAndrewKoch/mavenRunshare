@@ -80,6 +80,13 @@
     </div>
 </div>
 
+<div
+        th:unless="${currentRunnerIsDetailedRunner}"
+        class="centeringDiv">
+    <a class="btn btn-primary"
+       th:href="@{'/comments/createComment/'+${detailedRunner.id}}" th:text="'Send a private message to '+${detailedRunner.callsign}"></a>
+
+</div>
 
 <div style="padding:10px"
      th:if="${currentRunnerIsDetailedRunner}">
