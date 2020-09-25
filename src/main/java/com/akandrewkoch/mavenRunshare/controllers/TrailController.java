@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -287,6 +288,41 @@ public String displayAddSceneryView (@PathVariable int runnerId, @PathVariable i
         editedTrail.setScenery(newTrailSceneryDTO.getTrailScenery());
         trailSceneryRatingRepository.save(editedTrail);
         return "redirect:/trails";
+    }
+
+
+    @GetMapping("/editTrail/{trailId}")
+    public String displayEditTrailForm (@PathVariable Integer trailId, Model model, HttpServletRequest request){
+        setRunnerInModel(request, model);
+        model.addAttribute("title", "Editing "+trailRepository.findById(trailId).get().getName());
+        Trail trailToEdit = trailRepository.findById(trailId).get();
+        NewTrailDTO editingTrail = new NewTrailDTO();
+        editingTrail.setName(trailToEdit.getName());
+        editingTrail.setMiles(trailToEdit.getMiles());
+        editingTrail.setAddress(trailToEdit.getAddress());
+        editingTrail.setZipCode(trailToEdit.getZipCode());
+        model.addAttribute(editingTrail);
+        return "/trails/editTrail";
+    }
+
+    @PostMapping("editTrail/{trailId}")
+    public String processEditTrailForm (@ModelAttribute @Valid NewTrailDTO newTrailDTO, Errors errors, @PathVariable Integer trailId, Model model, HttpServletRequest request){
+        setRunnerInModel(request, model);
+        if (errors.hasErrors()){
+            model.addAttribute("title", "Editing "+trailRepository.findById(trailId).get().getName());
+            return "/trails/editTrail";
+        }
+
+        Trail editedTrail = trailRepository.findById(trailId).get();
+        editedTrail.setName(newTrailDTO.getName());
+        editedTrail.setAddress(newTrailDTO.getAddress());
+        editedTrail.setMiles(newTrailDTO.getMiles());
+        editedTrail.setZipCode(newTrailDTO.getZipCode());
+        newTrailDTO.setKilometers();
+        editedTrail.setKilometers(newTrailDTO.getKilometers());
+        trailRepository.save(editedTrail);
+        return "redirect:/trails/trailDetails/"+trailId;
+
     }
 
 }
