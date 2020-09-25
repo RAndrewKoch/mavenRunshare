@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body id="main">
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: runnerbar"></p>
+</div>
+<p th:replace="fragments :: navbar"></p>
+<div class="headerBlankSpace"></div>
+<div class="centeringDiv">
+    <h1 class="trailDetailsHeader"
+        th:text="'Editing '+${newTrailDTO.name}"></h1>\
+</div>
+
+<h3>Need to make some changes?</h3>
+
+<form method="post">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input th:field="${newTrailDTO.name}" id="name"
+               autofocus>
+        <p th:errors="${newTrailDTO.name}"
+           class="errors"></p>
+    </div>
+    <div class="form-group">
+        <label for="miles">Length of trail in miles</label>
+        <input th:field="${newTrailDTO.miles}" id="miles">
+        <p th:errors="${newTrailDTO.miles}"
+           class="errors"></p>
+    </div>
+    <div class="form-group">
+        <label for="address">Location of trail?</label>
+        <input th:field="${newTrailDTO.address}"
+               id="address">
+        <p th:errors="${newTrailDTO.address}"
+           class="errors"></p>
+    </div>
+    <div class="form-group">
+        <label for="zipCode">Zipcode of trail</label>
+        <input th:field="${newTrailDTO.zipCode}"
+               id="zipCode">
+        <p th:errors="${newTrailDTO.zipCode}"
+           class="errors"></p>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit
+        Edits
+    </button>
+</form>
+
+</body>
+</html>

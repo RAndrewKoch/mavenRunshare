@@ -22,15 +22,12 @@ public class NewTrailDTO {
     @Size(max=5, min=5, message="Must use 5-digit zip code")
     private String zipCode;
 
-    private Trail trail;
-
-    public NewTrailDTO (String name, double miles, String address, String zipCode, Trail trail){
+    public NewTrailDTO (String name, double miles, String address, String zipCode){
         this.name=name;
         this.miles=miles;
         this.kilometers= DistanceConversion.milesToKilometers(this.miles);
         this.address=address;
         this.zipCode=zipCode;
-        this.trail=trail;
     }
 
     public NewTrailDTO(){}
@@ -55,8 +52,8 @@ public class NewTrailDTO {
         return kilometers;
     }
 
-    public void setKilometers(double kilometers) {
-        this.kilometers = kilometers;
+    public void setKilometers() {
+        this.kilometers = DistanceConversion.milesToKilometers(this.miles);
     }
 
     public String getAddress() {
@@ -75,7 +72,4 @@ public class NewTrailDTO {
         this.zipCode = zipCode;
     }
 
-    public Trail getTrail() { return trail; }
-
-    public void setTrail(Trail trail) { this.trail = trail; }
 }

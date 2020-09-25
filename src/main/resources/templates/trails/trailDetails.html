@@ -24,6 +24,14 @@
     <h1 class="trailDetailsHeader"
         th:text="${detailedTrail.name}"></h1>
 </div>
+<div class="centeringDiv">
+    <a th:if="${currentRunner}"
+       th:href="@{'/trails/editTrail/'+${detailedTrail.id}}" th:text="'Edit details of '+${detailedTrail.name}" class="btn btn-primary"></a>
+    <a th:unless="${currentRunner}"
+       th:href="@{/runners/login}"
+       th:text="'Log in to edit trail details'"
+       class="btn btn-primary"></a>
+</div>
 
 <div class="centeringDiv" style="margin:5px; padding:5px;">
     <span class="mobileBox"
@@ -141,14 +149,14 @@
 
 
 <div class="centeringDiv" style="margin:5px; padding:5px;">
-    <span th:if="${currentRunner}"><a
+    <span th:if="${currentRunner}" style="margin:3px;"><a
             th:href="@{'/comments/createComment/'+${detailedTrail.id}}"
             class="btn btn-primary"
             th:text="'Comment on '+${detailedTrail.name}"></a>
     </span>
     <span id="weather">
     <button class="btn btn-primary" id="weatherSpanButton"
-            th:onclick="'getWeather('+${detailedTrail.numberZipCode}+',callApiKey())'">Get current
+            th:onclick="'getWeather('+${detailedTrail.numberZipCode}+',callApiKey())'" style="margin:3px;">Get current
         Weather</button>
     <span hidden id="weatherSpan"></span>
     </span>
@@ -156,7 +164,9 @@
         <button
                 class="btn btn-primary"
                 th:onclick="'displayMilesFromHome('+${currentRunner.numberZipCode}+','+${detailedTrail.numberZipCode}+')'"
-                id="distanceButton">Distance from home</button>
+                id="distanceButton"
+                style="margin:3px;">Distance from
+            home</button>
         <span hidden
               id="distanceFromHomeSpan"></span>
     </span>
