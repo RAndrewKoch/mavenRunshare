@@ -146,7 +146,7 @@
             class="btn btn-primary"
             th:text="'Comment on '+${detailedTrail.name}"></a>
     </span>
-    <span>
+    <span id="weather">
     <button class="btn btn-primary" id="weatherSpanButton"
             th:onclick="'getWeather('+${detailedTrail.numberZipCode}+',callApiKey())'">Get current
         Weather</button>
