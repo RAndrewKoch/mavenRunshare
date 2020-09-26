@@ -11,17 +11,26 @@
 
 
 <h1 class="homePageHeader"
-        style="text-align:center;">Welcome
+    style="text-align:center;">Welcome
     to RunShare!</h1>
 <div style="text-align:center">
-<a  class="homePageButton btn btn-primary"
-   th:unless="${currentRunner}"
-   th:href="@{/runners/addRunner}">Create a
-    new Runner account</a>
-<a  class="homePageButton btn btn-primary"
-    th:unless="${currentRunner}"
-   th:href="@{/runners/login}">Log in an existing Runner
-</a>
+    <a class="homePageButton btn btn-primary"
+       th:unless="${currentRunner}"
+       th:href="@{/runners/addRunner}">Create a
+        new Runner account</a>
+    <a class="homePageButton btn btn-primary"
+       th:unless="${currentRunner}"
+       th:href="@{/runners/login}">Log in an existing Runner</a>
+    <a class="homePageButton btn btn-primary"
+       th:if="${currentRunner}"
+       th:href="@{/runners}">Go to Runner list</a>
+    <a class="homePageButton btn btn-primary"
+       th:if="${currentRunner}"
+       th:href="@{/comments}">Go to Comments</a>
+    <a class="homePageButton btn btn-primary"
+       th:if="${currentRunner}"
+       th:href="@{/runSessions}">Go to Run
+        Sessions</a>
 </div>
 <div class="centeringDiv">
     <p th:replace="fragments :: listnavbar"></p>

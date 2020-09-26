@@ -205,11 +205,17 @@ body {
     box-shadow:2px 2px 2px gray;
 }
 
+@media screen and (orientation:landscape) and
+(max-width:900px){
+    .mobileLandscapeDelete{
+        display:none;
+    }
+}
 
 @media screen and (orientation:portrait) and (max-width:
 800px){
     .headerBlankSpace {
-    margin-top:110px;
+        margin-top:110px;
     }
 
     .homeMenuDropdown, .runnerMenuDropdown,

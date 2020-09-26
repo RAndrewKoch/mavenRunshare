@@ -28,7 +28,7 @@ import java.util.Optional;
 @RequestMapping("/comments")
 public class CommentController extends MainController{
 
-    @GetMapping
+    @GetMapping(value={"", "index"})
     public String displayCommentIndex(HttpServletRequest request, Model model){
         setRunnerInModel(request, model);
         model.addAttribute("title", "Comments");

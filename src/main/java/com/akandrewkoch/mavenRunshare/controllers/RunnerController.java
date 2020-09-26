@@ -29,7 +29,7 @@ public class RunnerController extends MainController {
         session.setAttribute(runnerSessionKey, runner.getId());
     }
 
-    @GetMapping(value = {"", "/{sortType}"})
+    @GetMapping(value = {"", "/index", "/{sortType}"})
     public String displayRunnersIndex(@PathVariable(required = false) String sortType, HttpServletRequest request, Model model) {
         setRunnerInModel(request, model);
         model.addAttribute("title", "Runners");

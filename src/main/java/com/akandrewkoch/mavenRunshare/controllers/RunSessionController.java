@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequestMapping("/runSessions")
 public class RunSessionController extends MainController {
     //todo-create an edit view for runSessions
-    @GetMapping(value={"", "/{sortType}"})
+    @GetMapping(value={"", "index", "/{sortType}"})
     public String displayRunSessionsList(@PathVariable(required=false) String sortType, Model model, HttpServletRequest request){
         setRunnerInModel(request, model);
         model.addAttribute("title", "Run Sessions");
