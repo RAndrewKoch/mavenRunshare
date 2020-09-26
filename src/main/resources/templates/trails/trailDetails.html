@@ -34,11 +34,16 @@
 </div>
 
 <div class="centeringDiv" style="margin:5px; padding:5px;">
-    <span class="mobileBox"
+    <span
+            th:unless="${detailedTrail.miles}==0"
+            class="mobileBox"
             th:text="'Trail length: '+${detailedTrail.miles}"></span>
-    <span class="mobileBox"
+    <span
+            th:unless="${detailedTrail.address}==''"
+            class="mobileBox"
             th:text="'Location: '+${detailedTrail.address}"></span>
-    <span class="mobileBox"
+    <span
+            th:unless="${detailedTrail.zipCode}=='00000'" class="mobileBox"
             th:text="'Zip Code: '+${detailedTrail.zipCode}"></span>
 </div>
 
@@ -175,7 +180,7 @@
 
 <div th:each="comment : ${comments}"
      style="border-style:solid"
-     th:if="${comment.privateMessage ==  false or comment.messageCreator == currentRunner}">
+     th:if="${comment.privateMessage ==  false or comment.messageCreator == currentRunner or comment.runners.contains(currentRunner)}">
     <p>
     <span><a
             th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"

@@ -100,11 +100,17 @@ public class RunSession extends AbstractEntity{
 
     public double getDistance() { return distance; }
 
+    public void setDistanceFromDTO () {this.distance = (Math.floor((laps*trail.getMiles())*100)/100);}
+
     public void setDistance(double distance) { this.distance = distance; }
 
     public String getPace() { return TimeConversion.displayTimeAsString(pace); }
 
     public void setPace(Integer pace) { this.pace = pace; }
+
+    public void calculatePace (){Math.round(Math.round(this.time/this.distance));}
+
+    public Integer getTimeInSeconds() {return time;}
 
     public String getTime() {
         return TimeConversion.displayTimeAsString(time);

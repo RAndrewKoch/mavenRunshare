@@ -1,9 +1,11 @@
 package com.akandrewkoch.mavenRunshare.models;
 
+import com.akandrewkoch.mavenRunshare.models.data.RunSessionRepository;
 import com.akandrewkoch.mavenRunshare.models.staticMethods.DateConversion;
 import com.akandrewkoch.mavenRunshare.models.staticMethods.TimeConversion;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -20,6 +22,7 @@ import java.util.List;
 
 @Entity
 public class Comment extends AbstractEntity {
+
 
     @NotBlank(message= "Message title required")
     @Size(max=50, message="Sorry, message titles must be kept under 50 characters")
@@ -120,8 +123,8 @@ public class Comment extends AbstractEntity {
 
     public void addRunner(Runner runner) { this.runners.add(runner);}
 
+    public void setRunners(List<Runner> runners) { this.runners = runners; }
 
-
-
+    public void blankRunners () {this.runners.clear();}
 
 }
