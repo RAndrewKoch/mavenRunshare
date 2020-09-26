@@ -23,9 +23,17 @@
     </div>
 </div>
 <div class="centeringDiv">
-    <form method="post">
+    <form action="?acceptOrDecline=accept" method="post">
         <button type="submit" class="btn btn-primary"
                 th:text="'Accept friend'"></button>
+    </form>
+    <form action="?acceptOrDecline=decline" method="post">
+        <button type="submit" class="btn btn-primary"
+                th:text="'Decline request'"></button>
+    </form>
+    <form action="?acceptOrDecline=later" method="post">
+        <button type="submit" class="btn btn-primary"
+                th:text="'Return to details without choosing'"></button>
     </form>
 </div>
 </body>
