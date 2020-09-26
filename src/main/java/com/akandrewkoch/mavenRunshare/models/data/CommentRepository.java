@@ -13,8 +13,9 @@ public interface CommentRepository extends CrudRepository<Comment, Integer> {
 
     List<Comment> findFirst10ByOrderByDateCreatedDescTimeCreatedDesc();
 
-
     List<Comment> findByTrail_IdOrderByDateCreatedDescTimeCreatedDesc(Integer trail);
+
+    List<Comment> findByRunSession_Id(Integer runSession);
 
     List<Comment> findByRunSession_IdOrderByDateCreatedDescTimeCreatedDesc(Integer runSession);
 

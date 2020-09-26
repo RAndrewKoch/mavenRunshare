@@ -180,7 +180,7 @@
 
 <div th:each="comment : ${comments}"
      style="border-style:solid"
-     th:if="${comment.privateMessage ==  false or comment.messageCreator == currentRunner}">
+     th:if="${comment.privateMessage ==  false or comment.messageCreator == currentRunner or comment.runners.contains(currentRunner)}">
     <p>
     <span><a
             th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"

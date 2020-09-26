@@ -13,8 +13,21 @@
 <div class = "centeringDiv">
     <h1 class="runSessionDetailsHeader"
         th:text="${detailedRunSession.name}">
-
     </h1>
+</div>
+<div class="centeringDiv"
+     th:if="${currentRunner} and ${currentRunner!=detailedRunSession.creator}">
+    <small class="form-text text-muted">Run Sessions
+    can only be edited by their creator</small>
+</div>
+<div class="centeringDiv"
+     th:if="${currentRunner} and ${currentRunner==detailedRunSession.creator}">
+    <a th:href="@{'/runSessions/editRunSession/'+${detailedRunSession.id}}" class="btn btn-primary" th:text="'Edit '+${detailedRunSession.name}"></a>
+</div>
+<div class="centeringDiv"
+     th:unless="${currentRunner}">
+    <a
+            th:href="@{'/runners/login/'+${detailedRunSession.creator.id}}" class="btn btn-primary" th:text="'Login as '+${detailedRunSession.creator.callsign}+' to edit this session'"></a>
 </div>
 <div class="centeringDiv">
     <span class="mobileBox"
@@ -52,7 +65,7 @@
 </div>
 <div th:each="comment : ${comments}"
      style="border-style:solid"
-     th:if="${comment.privateMessage == false or comment.messageCreator == currentRunner }">
+     th:if="${comment.privateMessage == false or comment.messageCreator == currentRunner or comment.runners.contains(currentRunner) }">
     <p>
     <span><a
             th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
