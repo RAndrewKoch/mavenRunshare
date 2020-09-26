@@ -29,65 +29,65 @@ public class RunnerController extends MainController {
         session.setAttribute(runnerSessionKey, runner.getId());
     }
 
-    @GetMapping(value={"", "/{sortType}"})
-    public String displayRunnersIndex(@PathVariable(required = false) String sortType, HttpServletRequest request, Model model){
+    @GetMapping(value = {"", "/{sortType}"})
+    public String displayRunnersIndex(@PathVariable(required = false) String sortType, HttpServletRequest request, Model model) {
         setRunnerInModel(request, model);
         model.addAttribute("title", "Runners");
-       if (sortType!=null){
-           switch (sortType) {
-               case "callsignAsc":
-                   model.addAttribute("sortType", "ascending Callsign");
-                   model.addAttribute("runners", runnerRepository.findAllByOrderByCallsignAsc());
-                   return "runners/index";
-               case "callsignDesc":
-                   model.addAttribute("sortType", "descending Callsign");
-                   model.addAttribute("runners", runnerRepository.findAllByOrderByCallsignDesc());
-                   return "runners/index";
-               case "runnerLevelAsc":
-                   model.addAttribute("sortType", "ascending runner level");
-                   model.addAttribute("runners", runnerRepository.findAllByOrderByRunnerLevelAsc());
-                   return "runners/index";
-               case "runnerLevelDesc":
-                   model.addAttribute("sortType", "descending runner level");
-                   model.addAttribute("runners", runnerRepository.findAllByOrderByRunnerLevelDesc());
-                   return "runners/index";
-               case "firstNameAsc":
-                   model.addAttribute("sortType", "ascending first name");
-                   model.addAttribute("runners",runnerRepository.findAllByOrderByFirstNameAsc());
-                   return "runners/index";
-               case "firstNameDesc":
-                   model.addAttribute("sortType", "descending first name");
-                   model.addAttribute("runners", runnerRepository.findAllByOrderByFirstNameDesc());
-                   return "runners/index";
-               case "lastNameAsc":
-                   model.addAttribute("sortType", "ascending last name");
-                   model.addAttribute("runners", runnerRepository.findAllByOrderByLastNameAsc());
-                   return "runners/index";
-               case "lastNameDesc":
-                   model.addAttribute("sortType", "descending last name");
-                   model.addAttribute("runners", runnerRepository.findAllByOrderByLastNameDesc());
-                   return "runners/index";
-               case "ageAsc":
-                   model.addAttribute("sortType", "ascending age");
-                   model.addAttribute("runners", runnerRepository.findAllByOrderByAgeAsc());
-                   return "runners/index";
-               case "ageDesc":
-                   model.addAttribute("sortType", "descending age");
-                   model.addAttribute("runners", runnerRepository.findAllByOrderByAgeDesc());
-                   return "runners/index";
-           }
-       }
+        if (sortType != null) {
+            switch (sortType) {
+                case "callsignAsc":
+                    model.addAttribute("sortType", "ascending Callsign");
+                    model.addAttribute("runners", runnerRepository.findAllByOrderByCallsignAsc());
+                    return "runners/index";
+                case "callsignDesc":
+                    model.addAttribute("sortType", "descending Callsign");
+                    model.addAttribute("runners", runnerRepository.findAllByOrderByCallsignDesc());
+                    return "runners/index";
+                case "runnerLevelAsc":
+                    model.addAttribute("sortType", "ascending runner level");
+                    model.addAttribute("runners", runnerRepository.findAllByOrderByRunnerLevelAsc());
+                    return "runners/index";
+                case "runnerLevelDesc":
+                    model.addAttribute("sortType", "descending runner level");
+                    model.addAttribute("runners", runnerRepository.findAllByOrderByRunnerLevelDesc());
+                    return "runners/index";
+                case "firstNameAsc":
+                    model.addAttribute("sortType", "ascending first name");
+                    model.addAttribute("runners", runnerRepository.findAllByOrderByFirstNameAsc());
+                    return "runners/index";
+                case "firstNameDesc":
+                    model.addAttribute("sortType", "descending first name");
+                    model.addAttribute("runners", runnerRepository.findAllByOrderByFirstNameDesc());
+                    return "runners/index";
+                case "lastNameAsc":
+                    model.addAttribute("sortType", "ascending last name");
+                    model.addAttribute("runners", runnerRepository.findAllByOrderByLastNameAsc());
+                    return "runners/index";
+                case "lastNameDesc":
+                    model.addAttribute("sortType", "descending last name");
+                    model.addAttribute("runners", runnerRepository.findAllByOrderByLastNameDesc());
+                    return "runners/index";
+                case "ageAsc":
+                    model.addAttribute("sortType", "ascending age");
+                    model.addAttribute("runners", runnerRepository.findAllByOrderByAgeAsc());
+                    return "runners/index";
+                case "ageDesc":
+                    model.addAttribute("sortType", "descending age");
+                    model.addAttribute("runners", runnerRepository.findAllByOrderByAgeDesc());
+                    return "runners/index";
+            }
+        }
 
         model.addAttribute("runners", runnerRepository.findAll());
         return "runners/index";
     }
 
     @GetMapping("/addRunner")
-    public String displayAddRunnerForm(HttpServletRequest request, Model model){
+    public String displayAddRunnerForm(HttpServletRequest request, Model model) {
         setRunnerInModel(request, model);
         model.addAttribute("runnerLevels", RunnerLevel.values());
         model.addAttribute("genders", Gender.values());
-        NewRunnerRegistrationDTO newRunnerRegistrationDTO= new NewRunnerRegistrationDTO();
+        NewRunnerRegistrationDTO newRunnerRegistrationDTO = new NewRunnerRegistrationDTO();
         newRunnerRegistrationDTO.setAge(16);
         model.addAttribute(newRunnerRegistrationDTO);
         model.addAttribute("title", "Add Runner");
@@ -95,9 +95,9 @@ public class RunnerController extends MainController {
     }
 
     @PostMapping("/addRunner")
-    public String processAddRunnerForm(@ModelAttribute @Valid NewRunnerRegistrationDTO newRunnerRegistrationDTO, Errors errors, Model model, HttpServletRequest request){
+    public String processAddRunnerForm(@ModelAttribute @Valid NewRunnerRegistrationDTO newRunnerRegistrationDTO, Errors errors, Model model, HttpServletRequest request) {
         setRunnerInModel(request, model);
-        if (errors.hasErrors()){
+        if (errors.hasErrors()) {
             model.addAttribute("runnerLevels", RunnerLevel.values());
             model.addAttribute("genders", Gender.values());
             model.addAttribute("title", "Add Runner");
@@ -107,7 +107,7 @@ public class RunnerController extends MainController {
 
         Runner checkedRunner = runnerRepository.findByCallsign(newRunnerRegistrationDTO.getCallsign());
 
-        if (checkedRunner != null){
+        if (checkedRunner != null) {
             errors.rejectValue("callsign", "callsign.alreadyExists", "A Runner with this callsign already exists!");
             model.addAttribute("runnerLevels", RunnerLevel.values());
             model.addAttribute("genders", Gender.values());
@@ -117,14 +117,14 @@ public class RunnerController extends MainController {
 
         String password = newRunnerRegistrationDTO.getPassword();
         String verifyPassword = newRunnerRegistrationDTO.getVerifyPassword();
-        if (!password.equals(verifyPassword)){
-            errors.rejectValue("password","password.doesNotMatch","The passwords do not match");
+        if (!password.equals(verifyPassword)) {
+            errors.rejectValue("password", "password.doesNotMatch", "The passwords do not match");
             model.addAttribute("runnerLevels", RunnerLevel.values());
             model.addAttribute("genders", Gender.values());
-            model.addAttribute("title","Add Runner");
+            model.addAttribute("title", "Add Runner");
             return "runners/addRunner";
         }
-        Runner newRunner = new Runner(newRunnerRegistrationDTO.getCallsign(),newRunnerRegistrationDTO.getFirstName(),newRunnerRegistrationDTO.getLastName(),newRunnerRegistrationDTO.isCallsignOnly(),newRunnerRegistrationDTO.getPassword(),newRunnerRegistrationDTO.getAge(),newRunnerRegistrationDTO.getWeight(),newRunnerRegistrationDTO.getGender(),newRunnerRegistrationDTO.getRunnerLevel(), newRunnerRegistrationDTO.getZip());
+        Runner newRunner = new Runner(newRunnerRegistrationDTO.getCallsign(), newRunnerRegistrationDTO.getFirstName(), newRunnerRegistrationDTO.getLastName(), newRunnerRegistrationDTO.isCallsignOnly(), newRunnerRegistrationDTO.getPassword(), newRunnerRegistrationDTO.getAge(), newRunnerRegistrationDTO.getWeight(), newRunnerRegistrationDTO.getGender(), newRunnerRegistrationDTO.getRunnerLevel(), newRunnerRegistrationDTO.getZip());
         runnerRepository.save(newRunner);
         setUserInSession(request.getSession(), newRunner);
 
@@ -133,42 +133,42 @@ public class RunnerController extends MainController {
     }
 
     @GetMapping("/login")
-    public String displayLoginForm(Model model, HttpServletRequest request){
-            setRunnerInModel(request, model);
-            model.addAttribute("runners", runnerRepository.findAll());
-            model.addAttribute(new RunnerLoginDTO());
-            model.addAttribute("title", "Login");
-            return "runners/login";
+    public String displayLoginForm(Model model, HttpServletRequest request) {
+        setRunnerInModel(request, model);
+        model.addAttribute("runners", runnerRepository.findAll());
+        model.addAttribute(new RunnerLoginDTO());
+        model.addAttribute("title", "Login");
+        return "runners/login";
     }
 
     @GetMapping("/login/{id}")
-    public String displayLoginFormWithId(@PathVariable Integer id, Model model, HttpServletRequest request){
+    public String displayLoginFormWithId(@PathVariable Integer id, Model model, HttpServletRequest request) {
         setRunnerInModel(request, model);
         model.addAttribute("selectedRunner", runnerRepository.findById(id).get());
         RunnerLoginDTO listedRunner = new RunnerLoginDTO();
         listedRunner.setCallsign(runnerRepository.findById(id).get().getCallsign());
         model.addAttribute("runnerLoginDTO", listedRunner);
-        model.addAttribute("title", "Login "+listedRunner.getCallsign());
+        model.addAttribute("title", "Login " + listedRunner.getCallsign());
         return "runners/login";
     }
 
     @PostMapping("/login")
-    public String processLoginForm (@ModelAttribute @Valid RunnerLoginDTO runnerLoginDTO, Errors errors, Model model, HttpServletRequest request){
+    public String processLoginForm(@ModelAttribute @Valid RunnerLoginDTO runnerLoginDTO, Errors errors, Model model, HttpServletRequest request) {
         setRunnerInModel(request, model);
         model.addAttribute("title", "Login");
-        if (errors.hasErrors()){
+        if (errors.hasErrors()) {
             model.addAttribute("runners", runnerRepository.findAll());
             return "runners/login";
         }
 
         Runner loginRunner = runnerRepository.findByCallsign(runnerLoginDTO.getCallsign());
 
-        if (loginRunner == null){
+        if (loginRunner == null) {
             errors.rejectValue("callsign", "callsign.notFound", "That Callsign has not been registered!");
             return "runners/login";
         }
 
-        if (!loginRunner.isMatchingPassword(runnerLoginDTO.getPassword())){
+        if (!loginRunner.isMatchingPassword(runnerLoginDTO.getPassword())) {
             errors.rejectValue("password", "password.incorrectPassword", "Password is not correct for this Callsign");
             model.addAttribute("runners", runnerRepository.findAll());
             return "runners/login";
@@ -177,26 +177,26 @@ public class RunnerController extends MainController {
         setUserInSession(request.getSession(), loginRunner);
         setRunnerInModel(request, model);
         model.addAttribute("runners", runnerRepository.findAll());
-        return "redirect:/runners/runnerDetails/"+loginRunner.getId();
+        return "redirect:/runners/runnerDetails/" + loginRunner.getId();
     }
 
     @PostMapping("/login/{id}")
-    public String processLoginForm (@PathVariable Integer id, @ModelAttribute @Valid RunnerLoginDTO runnerLoginDTO, Errors errors, Model model, HttpServletRequest request){
+    public String processLoginForm(@PathVariable Integer id, @ModelAttribute @Valid RunnerLoginDTO runnerLoginDTO, Errors errors, Model model, HttpServletRequest request) {
         setRunnerInModel(request, model);
         model.addAttribute("selectedRunner", runnerRepository.findById(id).get());
         model.addAttribute("title", "Login");
-        if (errors.hasErrors()){
+        if (errors.hasErrors()) {
             return "runners/login";
         }
 
         Runner loginRunner = runnerRepository.findByCallsign(runnerLoginDTO.getCallsign());
 
-        if (loginRunner == null){
+        if (loginRunner == null) {
             errors.rejectValue("callsign", "callsign.notFound", "That Callsign has not been registered!");
             return "runners/login";
         }
 
-        if (!loginRunner.isMatchingPassword(runnerLoginDTO.getPassword())){
+        if (!loginRunner.isMatchingPassword(runnerLoginDTO.getPassword())) {
             errors.rejectValue("password", "password.incorrectPassword", "Password is not correct for this Callsign");
             return "runners/login";
         }
@@ -204,11 +204,11 @@ public class RunnerController extends MainController {
         setUserInSession(request.getSession(), loginRunner);
         model.addAttribute("runners", runnerRepository.findAll());
         setRunnerInModel(request, model);
-        return "redirect:/runners/runnerDetails/"+loginRunner.getId();
+        return "redirect:/runners/runnerDetails/" + loginRunner.getId();
     }
 
     @GetMapping("/logout")
-    private String logoutRunner (Model model, HttpSession session, HttpServletRequest request){
+    private String logoutRunner(Model model, HttpSession session, HttpServletRequest request) {
         model.addAttribute("title", "Home");
         session.removeAttribute(runnerSessionKey);
         request.getSession().invalidate();
@@ -216,20 +216,20 @@ public class RunnerController extends MainController {
     }
 
     @GetMapping("/runnerDetails/{id}")
-    private String displayRunnerDetailsView (@PathVariable Integer id, Model model, HttpServletRequest request, HttpSession session){
+    private String displayRunnerDetailsView(@PathVariable Integer id, Model model, HttpServletRequest request, HttpSession session) {
         setRunnerInModel(request, model);
-//        if no runner is logged in, detail pages cannot be viewed
-        if (getRunnerFromSession(session)==null){
+        //        if no runner is logged in, detail pages cannot be viewed
+        if (getRunnerFromSession(session) == null) {
             model.addAttribute("detailedRunner", runnerRepository.findById(id).get());
 
-            return"runners/runnerDetailsNoAccess";
+            return "runners/runnerDetailsNoAccess";
         }
 
-//        find if the person requesting the details page is the detailed runner, or a friend of the detailed runner
-        if (getRunnerFromSession(session).getId().equals(id)||getRunnerFromSession(session).getFriends().contains(runnerRepository.findById(id).get())) {
+        //        find if the person requesting the details page is the detailed runner, or a friend of the detailed runner
+        if (getRunnerFromSession(session).getId().equals(id) || getRunnerFromSession(session).getFriends().contains(runnerRepository.findById(id).get())) {
             Optional<Runner> testRunner = runnerRepository.findById(id);
 
-            if (getRunnerFromSession(session).getId().equals(id)){
+            if (getRunnerFromSession(session).getId().equals(id)) {
                 model.addAttribute("currentRunnerIsDetailedRunner", true);
             }
 
@@ -260,7 +260,7 @@ public class RunnerController extends MainController {
                 model.addAttribute("friendRequests", detailedRunner.getFriendRequests());
             }
 
-            if (!detailedRunner.getFriends().isEmpty()){
+            if (!detailedRunner.getFriends().isEmpty()) {
                 model.addAttribute("friends", detailedRunner.getFriends());
             }
 
@@ -272,20 +272,20 @@ public class RunnerController extends MainController {
         model.addAttribute(newFriendRequestDTO);
         model.addAttribute("detailedRunner", runnerRepository.findById(id).get());
 
-//        find out if logged in runner already has a friend Request for the detailed runner, and if so, display that instead of a request friend button
-        if (runnerRepository.findById(id).get().getFriendRequests().contains(runnerRepository.findById(getRunnerFromSession(session).getId()).get())){
+        //        find out if logged in runner already has a friend Request for the detailed runner, and if so, display that instead of a request friend button
+        if (runnerRepository.findById(id).get().getFriendRequests().contains(runnerRepository.findById(getRunnerFromSession(session).getId()).get())) {
             model.addAttribute("currentRunnerFriendRequestIssued", true);
         }
 
-//        find out if detailed runner has sent you a friend request already, but you have not accepted.  If so, display button to go to your details page
-        if (runnerRepository.findById(getRunnerFromSession(session).getId()).get().getFriendRequests().contains(runnerRepository.findById(id).get())){
+        //        find out if detailed runner has sent you a friend request already, but you have not accepted.  If so, display button to go to your details page
+        if (runnerRepository.findById(getRunnerFromSession(session).getId()).get().getFriendRequests().contains(runnerRepository.findById(id).get())) {
             model.addAttribute("detailedRunnerIssuedFriendRequest", true);
         }
         return "runners/runnerDetailsNoAccess";
     }
 
     @GetMapping("/runnerDetails")
-    private String displayRunnerDetailsBlank (Model model, HttpServletRequest request){
+    private String displayRunnerDetailsBlank(Model model, HttpServletRequest request) {
         setRunnerInModel(request, model);
         model.addAttribute("title", "Blank Details");
         model.addAttribute("detailedRunner", new Runner());
@@ -293,7 +293,7 @@ public class RunnerController extends MainController {
     }
 
     @PostMapping("/runnerDetails/{id}")
-    private String processFriendRequestDTO (@PathVariable int id, Model model, HttpServletRequest request, HttpSession session){
+    private String processFriendRequestDTO(@PathVariable int id, Model model, HttpServletRequest request, HttpSession session) {
         setRunnerInModel(request, model);
         Runner requestedFriend = runnerRepository.findById(id);
         requestedFriend.addFriendRequest(getRunnerFromSession(session));
@@ -302,10 +302,10 @@ public class RunnerController extends MainController {
     }
 
     @GetMapping("/editRunner/{id}")
-    private String displayEditRunnerView (@PathVariable Integer id, Model model, HttpServletRequest request, HttpSession session){
+    private String displayEditRunnerView(@PathVariable Integer id, Model model, HttpServletRequest request, HttpSession session) {
         setRunnerInModel(request, model);
         Optional<Runner> runnerTest = runnerRepository.findById(id);
-        if (runnerTest.isEmpty()){
+        if (runnerTest.isEmpty()) {
             return "runners/index";
         }
 
@@ -325,19 +325,19 @@ public class RunnerController extends MainController {
         model.addAttribute(newRunnerRegistrationDTO);
         model.addAttribute("genders", Gender.values());
         model.addAttribute("runnerLevels", RunnerLevel.values());
-        model.addAttribute("title", "Editing Runner "+newRunnerRegistrationDTO.getCallsign());
+        model.addAttribute("title", "Editing Runner " + newRunnerRegistrationDTO.getCallsign());
         return "runners/editRunner";
 
     }
 
     @PostMapping("/editRunner/{id}")
-    private String processEditRunnerForm (@ModelAttribute @Valid NewRunnerRegistrationDTO newRunnerRegistrationDTO, Errors errors, Model model, HttpServletRequest request, @PathVariable Integer id){
+    private String processEditRunnerForm(@ModelAttribute @Valid NewRunnerRegistrationDTO newRunnerRegistrationDTO, Errors errors, Model model, HttpServletRequest request, @PathVariable Integer id) {
         setRunnerInModel(request, model);
-        if (errors.hasErrors()){
+        if (errors.hasErrors()) {
             model.addAttribute("newRunnerRegistrationDTO", newRunnerRegistrationDTO);
             model.addAttribute("runnerLevels", RunnerLevel.values());
             model.addAttribute("genders", Gender.values());
-            model.addAttribute("title", "Editing Runner"+newRunnerRegistrationDTO.getCallsign());
+            model.addAttribute("title", "Editing Runner" + newRunnerRegistrationDTO.getCallsign());
             return "runners/editRunner";
         }
         Runner updatedRunner = runnerRepository.findById(id).get();
@@ -352,11 +352,11 @@ public class RunnerController extends MainController {
         updatedRunner.setZip(newRunnerRegistrationDTO.getZip());
         updatedRunner.setNumberZipCode(Integer.parseInt(newRunnerRegistrationDTO.getZip()));
         runnerRepository.save(updatedRunner);
-        return "redirect:/runners/runnerDetails/"+updatedRunner.getId();
+        return "redirect:/runners/runnerDetails/" + updatedRunner.getId();
     }
 
     @GetMapping("/friendRequest/{requester}/{requested}")
-    private String displayFriendRequestView (@PathVariable Integer requester, @PathVariable Integer requested, Model model, HttpServletRequest request){
+    private String displayFriendRequestView(@PathVariable Integer requester, @PathVariable Integer requested, Model model, HttpServletRequest request) {
         setRunnerInModel(request, model);
         model.addAttribute("title", "Accept Friend");
         Runner friendRequested = runnerRepository.findById(requested).get();
@@ -367,16 +367,27 @@ public class RunnerController extends MainController {
     }
 
     @PostMapping("/friendRequest/{requester}/{requested}")
-    private String processFriendRequestForm (@PathVariable Integer requester, @PathVariable Integer requested, Model model, HttpServletRequest request){
+    private String processFriendRequestForm(@PathVariable Integer requester, @PathVariable Integer requested, @RequestParam String acceptOrDecline, Model model, HttpServletRequest request) {
         setRunnerInModel(request, model);
-        model.addAttribute("title", "AcceptFriend");
-        Runner runnerAccepting = runnerRepository.findById(requested).get();
-        Runner runnerRequesting = runnerRepository.findById(requester).get();
-        runnerAccepting.addFriend(runnerRequesting);
-        runnerRequesting.addFriend(runnerAccepting);
-        runnerAccepting.removeFriendRequest(runnerRequesting);
-        runnerRepository.save(runnerAccepting);
-        runnerRepository.save(runnerRequesting);
-        return "redirect:/runners/runnerDetails/"+runnerAccepting.getId();
+        if (acceptOrDecline.equals("accept")) {
+            model.addAttribute("title", "AcceptFriend");
+            Runner runnerAccepting = runnerRepository.findById(requested).get();
+            Runner runnerRequesting = runnerRepository.findById(requester).get();
+            runnerAccepting.addFriend(runnerRequesting);
+            runnerRequesting.addFriend(runnerAccepting);
+            runnerAccepting.removeFriendRequest(runnerRequesting);
+            runnerRepository.save(runnerAccepting);
+            runnerRepository.save(runnerRequesting);
+            return "redirect:/runners/runnerDetails/" + runnerAccepting.getId();
+        } else if (acceptOrDecline.equals("decline")){
+            Runner runnerDeclining = runnerRepository.findById(requested).get();
+            Runner runnerRequestiong = runnerRepository.findById(requester).get();
+            runnerDeclining.removeFriendRequest(runnerRequestiong);
+            runnerRepository.save(runnerDeclining);
+            return "redirect:/runners/runnerDetails/"+runnerDeclining.getId();
+        } else {
+            Runner runnerDeferring = runnerRepository.findById(requested).get();
+            return "redirect:/runners/runnerDetails/"+runnerDeferring.getId();
+        }
     }
 }
