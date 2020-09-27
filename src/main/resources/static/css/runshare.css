@@ -175,9 +175,19 @@ body {
     transition: all 0.3s;
 }
 
+@keyframes fadeIn {
+    0% {opacity:0; font-size:00px; }
+    80% { font-size:auto;}
+    100% {opacity: 100;}
+}
+
+
+
 .homePageHeader {
     font-size:8vw;
-    padding-top:40vh;
+    margin-top:40vh;
+    animation-name:fadeIn;
+    animation-duration: 2s;
 }
 
 .homePageButton {
@@ -199,6 +209,34 @@ body {
 .column {
     width:50%;
 
+}
+
+@keyframes shadowMove {
+    0% {box-shadow: 2px 2px 2px gray; }
+    50% {box-shadow: -5px -5px 2px gray;}
+    100% {box-shadow: 2px 2px 2px gray;}
+
+}
+
+@keyframes wobble {
+    0% {transform: rotate(0deg);}
+    10% {transform: rotate(1deg);}
+    30% {transform: rotate(0deg);}
+    50% {transform: rotate(-1deg);}
+    60% {transform: rotate(0deg);}
+    70% {transform: rotate(1deg);}
+    80% {transform: rotate(0deg);}
+    90% {transform: rotate(-1deg);}
+    100% {transform: rotate(0deg);}
+}
+
+
+
+
+
+.btn-primary:hover {
+    animation-name:wobble;
+    animation-duration:.25s;
 }
 
 .btn-primary {
