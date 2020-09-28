@@ -5,7 +5,6 @@ import com.akandrewkoch.mavenRunshare.models.Comment;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewRunSessionDTO;
 import com.akandrewkoch.mavenRunshare.models.RunSession;
 import com.akandrewkoch.mavenRunshare.models.Runner;
-import com.akandrewkoch.mavenRunshare.models.data.RunSessionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;

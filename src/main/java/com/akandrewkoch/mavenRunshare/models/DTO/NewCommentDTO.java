@@ -1,14 +1,11 @@
 package com.akandrewkoch.mavenRunshare.models.DTO;
 
 
-
 import com.akandrewkoch.mavenRunshare.models.RunSession;
 import com.akandrewkoch.mavenRunshare.models.Runner;
 import com.akandrewkoch.mavenRunshare.models.Trail;
 
-
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
