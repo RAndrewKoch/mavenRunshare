@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class RunSession extends AbstractEntity{
 
     @NotBlank(message = "Run Session needs to be named")
     @NotNull(message ="Run Session needs to be named")
+    @Size(max=50, message="Sorry, session titles must be kept under 50 characters")
     private String name;
 
     @NotNull
@@ -124,4 +126,18 @@ public class RunSession extends AbstractEntity{
 
 //    public String getDisplayMiles () {return (Math.floor((this.laps*this.trail.getMiles())*100)/100)+" miles";}
 
+    public String runSessionDisplayString () {
+        String displayString="";
+        displayString += this.creator.getCallsign()+" recorded the "+this.getName()+" Run Session on "+this.getDisplayDate()+".";
+        String runnerString="";
+        if (!this.runners.isEmpty()){
+            for (Runner runner : this.runners){
+                runnerString += runner.getCallsign()+" ";
+            }
+        displayString += "  They were joined by: "+runnerString+".";
+        }
+        displayString += "  The run was "+this.distance+" miles, over "+this.laps+" laps on the "+this.trail.getName()+" trail.";
+        displayString += "  Total time was "+this.getTime()+", with a pace of "+this.getPace()+"/mile.";
+        return displayString;
+    }
 }

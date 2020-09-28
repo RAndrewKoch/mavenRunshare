@@ -25,7 +25,7 @@ public class Comment extends AbstractEntity {
 
 
     @NotBlank(message= "Message title required")
-    @Size(max=50, message="Sorry, message titles must be kept under 50 characters")
+    @Size(max=100, message="Sorry, message titles must be kept under 100 characters")
     private String messageTitle;
 
     @NotBlank(message="A message is requred")

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -95,6 +97,14 @@ public class RunSessionController extends MainController {
 
         RunSession newRunSession = new RunSession(newRunSessionDTO.getName(), newRunSessionDTO.getRunners(), newRunSessionDTO.getDate(),  getRunnerFromSession(session), newRunSessionDTO.getTrail(),  newRunSessionDTO.getLaps(), (newRunSessionDTO.getSeconds()+(newRunSessionDTO.getMinutes()*60)+(newRunSessionDTO.getHours()*3600)));
         runSessionRepository.save(newRunSession);
+        RunSession runSessionToNotify = runSessionRepository.findByName(newRunSession.getName());
+        Comment runSessionNotification = new Comment("New Run: "+newRunSession.getName(),newRunSession.runSessionDisplayString(),newRunSession.getCreator(),LocalDate.now(),LocalTime.now(),trailRepository.findById(newRunSession.getTrail().getId()).get(),newRunSession,new ArrayList<Runner>(),true);
+            List<Runner> runnersToAddToComment = runSessionRepository.findByName(newRunSession.getName()).getRunners();
+        for (Runner runner : runnersToAddToComment){
+            runSessionNotification.addRunner(runner);
+        }
+        runSessionNotification.addRunner(newRunSession.getCreator());
+        commentRepository.save(runSessionNotification);
         model.addAttribute("title", "Run Sessions");
         model.addAttribute("runSessions", runSessionRepository.findAll());
 

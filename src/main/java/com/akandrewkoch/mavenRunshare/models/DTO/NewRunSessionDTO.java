@@ -6,12 +6,14 @@ import com.akandrewkoch.mavenRunshare.models.Trail;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NewRunSessionDTO extends AbstractEntity {
 
     @NotBlank(message="Run Session needs to be named")
+    @Size(max=50, message="Sorry, session titles must be kept under 50 characters")
     private String name;
 
     public List<Runner> runners = new ArrayList<>();
