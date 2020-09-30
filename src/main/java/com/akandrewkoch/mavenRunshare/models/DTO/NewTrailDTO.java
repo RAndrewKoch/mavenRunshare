@@ -1,6 +1,5 @@
 package com.akandrewkoch.mavenRunshare.models.DTO;
 
-import com.akandrewkoch.mavenRunshare.models.Trail;
 import com.akandrewkoch.mavenRunshare.models.staticMethods.DistanceConversion;
 
 import javax.validation.constraints.Min;

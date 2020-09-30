@@ -1,11 +1,9 @@
 package com.akandrewkoch.mavenRunshare.models;
 
-import com.akandrewkoch.mavenRunshare.models.data.RunSessionRepository;
 import com.akandrewkoch.mavenRunshare.models.staticMethods.DateConversion;
 import com.akandrewkoch.mavenRunshare.models.staticMethods.TimeConversion;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -68,7 +66,6 @@ public class Comment extends AbstractEntity {
         this.runSession=runsession;
         this.runners = runners;
         this.privateMessage = privateMessage;
-
     }
 
 //    getters

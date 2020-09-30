@@ -1,7 +1,5 @@
 package com.akandrewkoch.mavenRunshare.models.DTO;
 
-import com.akandrewkoch.mavenRunshare.models.Runner;
-
 public class NewFriendRequestDTO {
 
     private int runner;
