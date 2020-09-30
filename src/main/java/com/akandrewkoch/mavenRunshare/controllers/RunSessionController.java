@@ -56,7 +56,7 @@ public class RunSessionController extends MainController {
                     return "runSessions/index";
             }
         }
-        model.addAttribute("runSessions", runSessionRepository.findAll());
+        model.addAttribute("runSessions", runSessionRepository.findAllByOrderByDateDesc());
         return "runSessions/index";
     }
 
