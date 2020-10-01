@@ -30,8 +30,13 @@ public class RunnerController extends MainController {
     }
 
     @GetMapping(value = {"", "/index", "/{sortType}"})
-    public String displayRunnersIndex(@PathVariable(required = false) String sortType, HttpServletRequest request, Model model) {
+    public String displayRunnersIndex(@PathVariable(required = false) String sortType, @RequestParam(required = false) String friendsList, HttpServletRequest request, HttpSession session, Model model) {
         setRunnerInModel(request, model);
+        if (friendsList != null) {
+            if (friendsList.equals("true")) {
+                model.addAttribute("friendsList", runnerRepository.findById(getRunnerFromSession(session).getId()).get().getFriends());
+            }
+        }
         model.addAttribute("title", "Runners");
         if (sortType != null) {
             switch (sortType) {
@@ -379,15 +384,15 @@ public class RunnerController extends MainController {
             runnerRepository.save(runnerAccepting);
             runnerRepository.save(runnerRequesting);
             return "redirect:/runners/runnerDetails/" + runnerAccepting.getId();
-        } else if (acceptOrDecline.equals("decline")){
+        } else if (acceptOrDecline.equals("decline")) {
             Runner runnerDeclining = runnerRepository.findById(requested).get();
             Runner runnerRequestiong = runnerRepository.findById(requester).get();
             runnerDeclining.removeFriendRequest(runnerRequestiong);
             runnerRepository.save(runnerDeclining);
-            return "redirect:/runners/runnerDetails/"+runnerDeclining.getId();
+            return "redirect:/runners/runnerDetails/" + runnerDeclining.getId();
         } else {
             Runner runnerDeferring = runnerRepository.findById(requested).get();
-            return "redirect:/runners/runnerDetails/"+runnerDeferring.getId();
+            return "redirect:/runners/runnerDetails/" + runnerDeferring.getId();
         }
     }
 }

@@ -11,12 +11,16 @@
 
 
 <div class="headerBlankSpace"></div>
-<h1 style="text-align:center;" >Registered
+<h1 style="text-align:center;"
+    th:unless="${friendsList}">Registered
     Runners</h1>
-<div class="centeringDiv">
+<h1 style="text-align:center;" th:if="${friendsList}"
+    th:text="'Friends of '+${currentRunner.callsign}"
+    th:unless="${friendsList} and ${friendsList.isEmpty()}"></h1>
+<div class="centeringDiv" th:unless="${friendsList}">
     <span>
          <span><a class="btn btn-primary"
-                    style="align-items:center; margin:5px; padding:5px;"
+                  style="align-items:center; margin:5px; padding:5px;"
                   th:href="@{'/runners/addRunner'}">Create</a></span>
          <span>a new Runner</span>
     </span>
@@ -27,67 +31,62 @@
        style="text-align:center;"><a
         th:href="@{'/runners/'}">Remove Sorting</a></small>
 
-<table class="runnertable">
+<table class="runnertable"
+       th:unless="${friendsList} and ${friendsList.isEmpty()}">
     <tr class="runnertablehead">
-        <th th:if="${currentRunner}" class="mobilePortraitDelete">Logged In</th>
-        <th th:unless="${currentRunner}" class="mobilePortraitDelete">Log in Runner</th>
-        <th><span>Callsign</span><span><a
+        <th><span>Callsign</span><span
+                th:unless="${friendsList}"><a
                 th:href="@{'/runners/callsignAsc'}">&#8593;
-        </a></span><span><a
+        </a></span><span th:unless="${friendsList}"><a
                 th:href="@{'/runners/callsignDesc'}">&#8595;
         </a></span>
         </th>
-        <th><span>Runner Level</span><span><a
+        <th><span>Runner Level</span><span
+                th:unless="${friendsList}"><a
                 th:href="@{'/runners/runnerLevelAsc'}">&#8593;
-        </a></span><span><a
+        </a></span><span th:unless="${friendsList}"><a
                 th:href="@{'/runners/runnerLevelDesc'}">
             &#8595;</a></span>
         </th>
 
         <th class="mobilePortraitDelete">
-            <span>Name</span><br>
-            <span>
+            <span>Name</span><br th:unless="${friendsList}">
+            <span th:unless="${friendsList}">
                 <a th:href="@{'/runners/firstNameAsc'}">&#8593;</a>
             </span>
-            <span>first</span>
-            <span>
+            <span th:unless="${friendsList}">first</span>
+            <span th:unless="${friendsList}">
                 <a th:href="@{'/runners/firstNameDesc'}">
                     &#8595;</a>
             </span><br>
-            <span >
+            <span th:unless="${friendsList}">
                 <a th:href="@{'/runners/lastNameAsc'}">
                     &#8593;</a>
             </span>
-            <span>last</span>
-            <span>
+            <span th:unless="${friendsList}">last</span>
+            <span th:unless="${friendsList}">
                 <a th:href="@{'/runners/lastNameDesc'}">
                     &#8595;</a>
             </span>
         </th>
-        <th class="mobilePortraitDelete"><span>Age</span><span><a
-                th:href="@{'/runners/ageAsc'}">&#8593;
-        </a></span><span><a
-                th:href="@{'/runners/ageDesc'}">&#8595;
+        <th class="mobilePortraitDelete"><span>Age
+        </span>
+            <span th:unless="${friendsList}"><a
+                    th:href="@{'/runners/ageAsc'}">&#8593;
+        </a></span><span th:unless="${friendsList}"><a
+                    th:href="@{'/runners/ageDesc'}">&#8595;
         </a></span>
         </th>
         <th class="mobilePortraitDelete">Zip Code</th>
     </tr>
+
+
     <tr class="runnertableline"
-        th:each="runner : ${runners}">
-        <td class="mobilePortraitDelete">
-            <span th:if="${currentRunner}">
-                <a class="btn btn-primary"
-                      th:if="${currentRunner.callsign==runner.callsign}" th:href="@{'/runners/editRunner/'+${runner.id}}" th:text="'Edit Runner'">
-                </a>
-            </span>
-            <span th:unless="${currentRunner}">
-                <a class="btn btn-primary"
-                   th:href="@{'/runners/login/'+${runner.id}}"
-                   th:text="Login"></a>
-            </span>
-        </td>
+        th:each="runner : ${runners}"
+        th:unless="${friendsList}">
         <td>
-                <a th:text="${runner.callsign}" th:href="@{'/runners/runnerDetails/'+${runner.id}}"></a>
+            <a th:text="${runner.callsign}"
+               th:href="@{'/runners/runnerDetails/'+${runner.id}}"></a>
         </td>
         <td th:text="${runner.runnerLevel.getDisplayName()}">
         </td>
@@ -98,20 +97,56 @@
             Callsign-only privacy mode'"></td>
         <td class="mobilePortraitDelete"
             th:unless="${runner.callsignOnly}"
-                th:text="${runner.firstName}+' '+${runner.lastName}"></td>
+            th:text="${runner.firstName}+' '+${runner.lastName}"></td>
         <td class="mobilePortraitDelete"
             th:unless="${runner.callsignOnly}"
             th:text="${runner.age}"></td>
         <td class="mobilePortraitDelete"
             th:unless="${runner.callsignOnly}">
-            <span th:unless="${runner.zip}==0" th:text="${runner.zip}"></span>
+            <span th:unless="${runner.zip}==0"
+                  th:text="${runner.zip}"></span>
         </td>
 
     </tr>
+    <tr class="runnertableline"
+        th:each="runner : ${friendsList}"
+        th:if="${friendsList}">
+        <td>
+            <a th:text="${runner.callsign}"
+               th:href="@{'/runners/runnerDetails/'+${runner.id}}"></a>
+        </td>
+        <td th:text="${runner.runnerLevel.getDisplayName()}">
+        </td>
+        <td class="mobilePortraitDelete"
+            th:if="${runner.callsignOnly}"
+            style="text-align:center; border-style:outset; background-color:silver; color:black;"
+            colspan="3" th:text="'Runner has chosen
+            Callsign-only privacy mode'"></td>
+        <td class="mobilePortraitDelete"
+            th:unless="${runner.callsignOnly}"
+            th:text="${runner.firstName}+' '+${runner.lastName}"></td>
+        <td class="mobilePortraitDelete"
+            th:unless="${runner.callsignOnly}"
+            th:text="${runner.age}"></td>
+        <td class="mobilePortraitDelete"
+            th:unless="${runner.callsignOnly}">
+            <span th:unless="${runner.zip}==0"
+                  th:text="${runner.zip}"></span>
+        </td>
+    </tr>
 
 </table>
+<div class="centeringDiv"
+     th:if="${friendsList} and ${friendsList.isEmpty()}">
+    <h1>Looks like you haven't added any friends yet</h1>
+</div>
+<div class="centeringDiv" th:if="${friendsList}">
+    <a th:href="@{/runners}" class="btn btn-primary"
+       th:text="'See complete runner catalog'"
+       style="margin:5px;"></a>
+</div>
 <div class="centeringDiv">
-<p th:replace="fragments :: listnavbar"></p>
+    <p th:replace="fragments :: listnavbar"></p>
 </div>
 </body>
 </html>
