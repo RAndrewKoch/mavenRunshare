@@ -17,13 +17,30 @@
 <h1 style="text-align:center;" th:if="${friendsList}"
     th:text="'Friends of '+${currentRunner.callsign}"
     th:unless="${friendsList} and ${friendsList.isEmpty()}"></h1>
-<div class="centeringDiv" th:unless="${friendsList}">
+<div class="centeringDiv"
+     th:if="${currentRunner} and !${friendsList} and ${!currentRunner.friends.isEmpty()}">
+    <small  class="form-text text-muted"
+            style="text-align:center;">&#9733:Friends</small>
+</div>
+<div class="centeringDiv"
+     th:unless="${friendsList} or ${currentRunner}">
     <span>
          <span><a class="btn btn-primary"
                   style="align-items:center; margin:5px; padding:5px;"
                   th:href="@{'/runners/addRunner'}">Create</a></span>
          <span>a new Runner</span>
     </span>
+</div>
+<div class="centeringDiv"
+     th:if="${currentRunner} and ${!currentRunner.friends.isEmpty()} and !${friendsList}">
+    <a th:href="@{/runners?friendsList=true}"
+       th:text="'List friends only'"
+       class="btn btn-primary" style="margin:3px;"></a>
+</div>
+<div class="centeringDiv" th:if="${friendsList}">
+    <a th:href="@{/runners}" class="btn btn-primary"
+       th:text="'See complete runner catalog'"
+       style="margin:5px;"></a>
 </div>
 <h3 style="text-align:center;" th:if="${sortType}"
     th:text="'Sorted by '+${sortType}"></h3>
@@ -34,6 +51,8 @@
 <table class="runnertable"
        th:unless="${friendsList} and ${friendsList.isEmpty()}">
     <tr class="runnertablehead">
+        <th th:unless="${friendsList} or !${currentRunner}"
+            style="width:5vw"></th>
         <th><span>Callsign</span><span
                 th:unless="${friendsList}"><a
                 th:href="@{'/runners/callsignAsc'}">&#8593;
@@ -83,7 +102,11 @@
 
     <tr class="runnertableline"
         th:each="runner : ${runners}"
-        th:unless="${friendsList}">
+        th:unless="${friendsList} or ${currentRunner.equals(runner)}">
+        <td th:if="${currentRunner}">
+             <span
+                     th:each="possibleFriend : ${currentRunner.friends}" th:if="${runner.equals(possibleFriend)}">&#9733</span>
+        </td>
         <td>
             <a th:text="${runner.callsign}"
                th:href="@{'/runners/runnerDetails/'+${runner.id}}"></a>
@@ -140,11 +163,7 @@
      th:if="${friendsList} and ${friendsList.isEmpty()}">
     <h1>Looks like you haven't added any friends yet</h1>
 </div>
-<div class="centeringDiv" th:if="${friendsList}">
-    <a th:href="@{/runners}" class="btn btn-primary"
-       th:text="'See complete runner catalog'"
-       style="margin:5px;"></a>
-</div>
+
 <div class="centeringDiv">
     <p th:replace="fragments :: listnavbar"></p>
 </div>
