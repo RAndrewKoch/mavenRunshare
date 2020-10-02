@@ -110,7 +110,7 @@ public class RunSession extends AbstractEntity{
 
     public void setPace(Integer pace) { this.pace = pace; }
 
-    public void calculatePace (){Math.round(Math.round(this.time/this.distance));}
+    public void calculatePace (){this.pace = Math.round(Math.round(this.time/this.distance));}
 
     public Integer getTimeInSeconds() {return time;}
 
