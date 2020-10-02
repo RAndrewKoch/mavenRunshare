@@ -52,21 +52,12 @@
         Details</a>
 </div>
 
-<div th:if="${currentRunnerIsDetailedRunner}">
-    <div class="centeringDiv" th:if="${friends}">
-        <h1 class="runnerDetailsHeader">Friends List</h1>
-    </div>
-</div>
-<div th:if="${currentRunnerIsDetailedRunner}">
-    <div class="centeringDiv" th:if="${friends}">
-        <div>
-            <a th:each="friend : ${friends}"
-               th:href="@{'/runners/runnerDetails/'+${friend.id}}"
-               th:text="${friend.callsign}"
-               style="padding-left:5px; padding-right:5px; border-style:solid; margin:5px;">
-            </a>
-        </div>
-    </div>
+
+<div th:if="${currentRunnerIsDetailedRunner}"
+     class="centeringDiv">
+    <a th:href="@{/runners?friendsList=true}"
+       class="btn btn-primary"
+       th:text="${'View friends'}"></a>
 </div>
 
 <div th:if="${currentRunnerIsDetailedRunner}">
