@@ -49,7 +49,11 @@
                 comments marked as private</small>
         </div>
     </form>
-
+</div>
+<div th:if="${currentRunnerFriendRequestIssued}"
+     class="centeringDiv">
+    <a th:href="@{/runners}" class="btn btn-primary"
+       th:text="'Return to runner catalog'"></a>
 </div>
 
 <div class="centeringDiv">
