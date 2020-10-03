@@ -13,6 +13,8 @@ public interface RunnerRepository extends CrudRepository<Runner, Integer> {
 
     Runner findById(int id);
 
+    List<Runner> findAllByFriendRequests(Integer id);
+
 
     List<Runner> findAllByOrderByCallsignAsc();
     List<Runner> findAllByOrderByCallsignDesc();

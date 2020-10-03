@@ -19,9 +19,23 @@
     th:unless="${friendsList} and ${friendsList.isEmpty()}"></h1>
 <div class="centeringDiv"
      th:if="${currentRunner} and !${friendsList} and ${!currentRunner.friends.isEmpty()}">
-    <small  class="form-text text-muted"
-            style="text-align:center;">&#9733:Friends</small>
+    <small class="form-text text-muted"
+           style="text-align:center;">&#9733
+        :Friends</small></div>
+<div class="centeringDiv"
+     th:if="${currentRunner} and !${friendsList} and ${!runnersWithFriendRequests.isEmpty()}">
+    <small class="form-text text-muted"
+           style="text-align:center;">&#9734
+        :Requested friends who have not accepted
+        yet</small></div>
+<div class="centeringDiv"
+     th:if="${currentRunner} and !${friendsList} and ${!runnersWhoHaveSentCurrentRunnerFriendRequest.isEmpty()}">
+    <small class="form-text text-muted"
+           style="text-align:center;">&oast;
+        :Runners who have requested to be your
+        friend</small>
 </div>
+
 <div class="centeringDiv"
      th:unless="${friendsList} or ${currentRunner}">
     <span>
@@ -105,7 +119,10 @@
         th:unless="${friendsList} or ${currentRunner.equals(runner)}">
         <td th:if="${currentRunner}">
              <span
-                     th:each="possibleFriend : ${currentRunner.friends}" th:if="${runner.equals(possibleFriend)}">&#9733</span>
+                     th:each="possibleFriend : ${currentRunner.friends}"
+                     th:if="${runner.equals(possibleFriend)}">&#9733</span>
+            <span th:if="${runnersWithFriendRequests}"><span th:if="${runnersWithFriendRequests.contains(runner)}">&#9734</span></span>
+            <span th:if="${runnersWhoHaveSentCurrentRunnerFriendRequest}"><span th:if="${runnersWhoHaveSentCurrentRunnerFriendRequest.contains(runner)}">&oast;</span></span>
         </td>
         <td>
             <a th:text="${runner.callsign}"
