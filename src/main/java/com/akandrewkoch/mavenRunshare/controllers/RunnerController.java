@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,19 @@ public class RunnerController extends MainController {
                 model.addAttribute("friendsList", runnerRepository.findById(getRunnerFromSession(session).getId()).get().getFriends());
             }
         }
+        List<Runner> runners= (List<Runner>) runnerRepository.findAll();
+        List<Runner> runnersWithFriendRequests = new ArrayList<>();
+        if (getRunnerFromSession(session)!=null){
+            for(Runner runner : runners){
+                if (runner.getFriendRequests().contains(getRunnerFromSession(session))){
+                    runnersWithFriendRequests.add(runner);
+                }
+            }
+            model.addAttribute("runnersWithFriendRequests", runnersWithFriendRequests);
+            model.addAttribute("runnersWhoHaveSentCurrentRunnerFriendRequest", getRunnerFromSession(session).getFriendRequests());
+        }
+        model.addAttribute("runners", runners);
+
         model.addAttribute("title", "Runners");
         if (sortType != null) {
             switch (sortType) {
@@ -83,7 +97,6 @@ public class RunnerController extends MainController {
             }
         }
 
-        model.addAttribute("runners", runnerRepository.findAll());
         return "runners/index";
     }
 
