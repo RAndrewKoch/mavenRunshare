@@ -31,13 +31,18 @@ public class RunnerController extends MainController {
     }
 
     @GetMapping(value = {"", "/index", "/{sortType}"})
-    public String displayRunnersIndex(@PathVariable(required = false) String sortType, @RequestParam(required = false) String friendsList, HttpServletRequest request, HttpSession session, Model model) {
+    public String displayRunnersIndex(@PathVariable(required = false) String sortType, @RequestParam(required = false) String friendsList, @RequestParam(required = false) String runnerLevel, HttpServletRequest request, HttpSession session, Model model) {
         setRunnerInModel(request, model);
         if (friendsList != null) {
             if (friendsList.equals("true")) {
                 model.addAttribute("friendsList", runnerRepository.findById(getRunnerFromSession(session).getId()).get().getFriends());
             }
         }
+
+        if (runnerLevel != null){
+            model.addAttribute("runnerLevel", runnerLevel);
+        }
+
         List<Runner> runners= (List<Runner>) runnerRepository.findAll();
         List<Runner> runnersWithFriendRequests = new ArrayList<>();
         if (getRunnerFromSession(session)!=null){
