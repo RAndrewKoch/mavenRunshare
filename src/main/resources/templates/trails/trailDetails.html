@@ -186,13 +186,13 @@
             th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
             th:text="${comment.messageCreator.callsign}"></a></span>
         <span th:text="' said'"></span>
-        <span th:if="${comment.trail}"
+        <span th:if="${comment.runSession}"
               th:text="' about the '"></span>
-        <span th:if="${comment.trail}"><a
-                th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}"
-                th:text="${comment.trail.name}"></a></span>
-        <span th:if="${comment.trail}"
-              th:text="' trail'"></span>
+        <span
+                th:if="${comment.runSession}"><a
+                th:href="@{'../../runSessions/runSessionDetails/'+${comment.runSession.id}}" th:text="${comment.runSession.name}"></a></span>
+        <span th:if="${comment.runSession}"
+              th:text="' session'"></span>
         <span th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}"></span>
     </p>
     <p th:text="'Title: '+${comment.messageTitle}"></p>
