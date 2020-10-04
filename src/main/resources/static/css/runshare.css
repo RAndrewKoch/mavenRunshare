@@ -39,6 +39,11 @@ body {
     transition:0.5s;
 }
 
+.dropMenuHeader {
+        font-size:25px;
+         color:white;
+    }
+
 .homeMenuDropdown, .runnerMenuDropdown,
     .commentsMenuDropdown, .trailMenuDropdown,
     .runSessionMenuDropdown, .loginMenuDropdown{
