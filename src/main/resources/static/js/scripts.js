@@ -37,7 +37,6 @@ function openMenu(menuId){
 
 function closeMenu(menuId){
     let runnerMenu = document.getElementById(menuId);
-    console.log("closeRunners fired");
     runnerMenu.style.display = "none";
     ;
 }
