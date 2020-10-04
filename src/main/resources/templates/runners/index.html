@@ -12,11 +12,13 @@
 
 <div class="headerBlankSpace"></div>
 <h1 style="text-align:center;"
-    th:unless="${friendsList}">Registered
+    th:unless="${friendsList} or ${runnerLevel}">Registered
     Runners</h1>
 <h1 style="text-align:center;" th:if="${friendsList}"
     th:text="'Friends of '+${currentRunner.callsign}"
     th:unless="${friendsList} and ${friendsList.isEmpty()}"></h1>
+<h1 style="text-align:center;" th:if="${runnerLevel}"
+    th:text="${runnerLevel}+ ' level runners'"></h1>
 <div class="centeringDiv"
      th:if="${currentRunner} and !${friendsList} and ${!currentRunner.friends.isEmpty()}">
     <small class="form-text text-muted"
@@ -37,7 +39,7 @@
 </div>
 
 <div class="centeringDiv"
-     th:unless="${friendsList} or ${currentRunner}">
+     th:unless="${friendsList} or ${currentRunner} or ${runnerLevel}">
     <span>
          <span><a class="btn btn-primary"
                   style="align-items:center; margin:5px; padding:5px;"
@@ -45,17 +47,26 @@
          <span>a new Runner</span>
     </span>
 </div>
-<div class="centeringDiv"
-     th:if="${currentRunner} and ${!currentRunner.friends.isEmpty()} and !${friendsList}">
+<div class="centeringDiv">
+     <div th:if="${currentRunner} and ${!currentRunner.friends.isEmpty()} and !${friendsList}">
     <a th:href="@{/runners?friendsList=true}"
        th:text="'List friends only'"
        class="btn btn-primary" style="margin:3px;"></a>
+     </div>
+    <div th:if="${currentRunner} and !${runnerLevel}">
+        <a
+                th:href="@{'/runners?runnerLevel='+${currentRunner.runnerLevel.getDisplayName()}}" class="btn btn-primary"
+                th:text="'List runners of your level'"
+                style="margin:3px;"></a>
+    </div>
+    <div class="centeringDiv"
+         th:if="${friendsList} or ${runnerLevel}">
+        <a th:href="@{/runners}" class="btn btn-primary"
+           th:text="'See complete runner catalog'"
+           style="margin:3px;"></a>
+    </div>
 </div>
-<div class="centeringDiv" th:if="${friendsList}">
-    <a th:href="@{/runners}" class="btn btn-primary"
-       th:text="'See complete runner catalog'"
-       style="margin:5px;"></a>
-</div>
+
 <h3 style="text-align:center;" th:if="${sortType}"
     th:text="'Sorted by '+${sortType}"></h3>
 <small th:if="${sortType}" class="form-text text-muted"
@@ -63,18 +74,20 @@
         th:href="@{'/runners/'}">Remove Sorting</a></small>
 
 <table class="runnertable"
-       th:unless="${friendsList} and ${friendsList.isEmpty()}">
+       th:unless="${friendsList} and ${friendsList.isEmpty()}" style="margin:3px;">
     <tr class="runnertablehead">
         <th th:unless="${friendsList} or !${currentRunner}"
             style="width:5vw"></th>
         <th><span>Callsign</span><span
-                th:unless="${friendsList}"><a
+                th:unless="${friendsList} or ${runnerLevel}"><a
                 th:href="@{'/runners/callsignAsc'}">&#8593;
-        </a></span><span th:unless="${friendsList}"><a
+        </a></span><span
+                th:unless="${friendsList} or ${runnerLevel}"><a
                 th:href="@{'/runners/callsignDesc'}">&#8595;
         </a></span>
         </th>
-        <th><span>Runner Level</span><span
+        <th th:unless="${runnerLevel}"><span>Runner
+            Level</span><span
                 th:unless="${friendsList}"><a
                 th:href="@{'/runners/runnerLevelAsc'}">&#8593;
         </a></span><span th:unless="${friendsList}"><a
@@ -83,30 +96,41 @@
         </th>
 
         <th class="mobilePortraitDelete">
-            <span>Name</span><br th:unless="${friendsList}">
-            <span th:unless="${friendsList}">
+            <span>Name</span><br
+                th:unless="${friendsList} or ${runnerLevel}">
+            <span
+                    th:unless="${friendsList} or ${runnerLevel}">
                 <a th:href="@{'/runners/firstNameAsc'}">&#8593;</a>
             </span>
-            <span th:unless="${friendsList}">first</span>
-            <span th:unless="${friendsList}">
+            <span
+                    th:unless="${friendsList} or ${runnerLevel}">first
+            </span>
+            <span
+                    th:unless="${friendsList} or ${runnerLevel}">
                 <a th:href="@{'/runners/firstNameDesc'}">
                     &#8595;</a>
             </span><br>
-            <span th:unless="${friendsList}">
+            <span
+                    th:unless="${friendsList} or ${runnerLevel}">
                 <a th:href="@{'/runners/lastNameAsc'}">
                     &#8593;</a>
             </span>
-            <span th:unless="${friendsList}">last</span>
-            <span th:unless="${friendsList}">
+            <span
+                    th:unless="${friendsList} or ${runnerLevel}">last
+            </span>
+            <span
+                    th:unless="${friendsList} or ${runnerLevel}">
                 <a th:href="@{'/runners/lastNameDesc'}">
                     &#8595;</a>
             </span>
         </th>
         <th class="mobilePortraitDelete"><span>Age
         </span>
-            <span th:unless="${friendsList}"><a
+            <span
+                    th:unless="${friendsList} or ${runnerLevel}"><a
                     th:href="@{'/runners/ageAsc'}">&#8593;
-        </a></span><span th:unless="${friendsList}"><a
+        </a></span><span
+                    th:unless="${friendsList} or ${runnerLevel}"><a
                     th:href="@{'/runners/ageDesc'}">&#8595;
         </a></span>
         </th>
@@ -116,7 +140,7 @@
 
     <tr class="runnertableline"
         th:each="runner : ${runners}"
-        th:unless="${friendsList} or ${currentRunner.equals(runner)}">
+        th:unless="${friendsList} or ${currentRunner.equals(runner)} or ${runnerLevel}">
         <td th:if="${currentRunner}">
              <span
                      th:each="possibleFriend : ${currentRunner.friends}"
@@ -156,6 +180,38 @@
                th:href="@{'/runners/runnerDetails/'+${runner.id}}"></a>
         </td>
         <td th:text="${runner.runnerLevel.getDisplayName()}">
+        </td>
+        <td class="mobilePortraitDelete"
+            th:if="${runner.callsignOnly}"
+            style="text-align:center; border-style:outset; background-color:silver; color:black;"
+            colspan="3" th:text="'Runner has chosen
+            Callsign-only privacy mode'"></td>
+        <td class="mobilePortraitDelete"
+            th:unless="${runner.callsignOnly}"
+            th:text="${runner.firstName}+' '+${runner.lastName}"></td>
+        <td class="mobilePortraitDelete"
+            th:unless="${runner.callsignOnly}"
+            th:text="${runner.age}"></td>
+        <td class="mobilePortraitDelete"
+            th:unless="${runner.callsignOnly}">
+            <span th:unless="${runner.zip}==0"
+                  th:text="${runner.zip}"></span>
+        </td>
+    </tr>
+
+    <tr class="runnertableline"
+        th:each="runner : ${runners}"
+        th:if="${runnerLevel} and ${runner.runnerLevel.getDisplayName().equals(runnerLevel)} and ${!runner.equals(currentRunner)}">
+        <td th:if="${currentRunner}">
+             <span
+                     th:each="possibleFriend : ${currentRunner.friends}"
+                     th:if="${runner.equals(possibleFriend)}">&#9733</span>
+            <span th:if="${runnersWithFriendRequests}"><span th:if="${runnersWithFriendRequests.contains(runner)}">&#9734</span></span>
+            <span th:if="${runnersWhoHaveSentCurrentRunnerFriendRequest}"><span th:if="${runnersWhoHaveSentCurrentRunnerFriendRequest.contains(runner)}">&oast;</span></span>
+        </td>
+        <td>
+            <a th:text="${runner.callsign}"
+               th:href="@{'/runners/runnerDetails/'+${runner.id}}"></a>
         </td>
         <td class="mobilePortraitDelete"
             th:if="${runner.callsignOnly}"

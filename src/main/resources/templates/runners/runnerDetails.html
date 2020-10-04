@@ -57,7 +57,11 @@
      class="centeringDiv">
     <a th:href="@{/runners?friendsList=true}"
        class="btn btn-primary"
-       th:text="${'View friends'}"></a>
+       th:text="${'View friends'}" style="margin:3px;"></a>
+    <a
+            th:href="@{'/runners?runnerLevel='+${currentRunner.runnerLevel.getDisplayName()}}"
+            class="btn btn-primary"
+            th:text="'View other runners of level: '+${currentRunner.runnerLevel.getDisplayName()}" style="margin:3px;"></a>
 </div>
 
 <div th:if="${currentRunnerIsDetailedRunner}">

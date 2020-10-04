@@ -52,6 +52,8 @@
                     <div
                             th:if="${currentRunner} and ${!currentRunner.friends.isEmpty()}"><a
                             th:href="@{/runners?friendsList=true}" th:text="'List friends of '+${currentRunner.callsign}"></a></div>
+                    <div th:if="${currentRunner}"><a
+                         th:href="@{'/runners?runnerLevel='+${currentRunner.runnerLevel.getDisplayName()}}" th:text="'List runners of same level: '+${currentRunner.runnerLevel.getDisplayName()}"></a></div>
                     <div><a th:href="@{/runners/addRunner}">Register
                         a new Runner</a></div>
                     <div th:unless="${currentRunner}"><a
