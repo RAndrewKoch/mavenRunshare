@@ -16,20 +16,22 @@
 <div style="text-align:center">
     <a class="homePageButton btn btn-primary"
        th:unless="${currentRunner}"
-       th:href="@{/runners/addRunner}">Create a
+       th:href="@{/runners/addRunner}"
+       style="margin:3px;">Create a
         new Runner account</a>
     <a class="homePageButton btn btn-primary"
        th:unless="${currentRunner}"
-       th:href="@{/runners/login}">Log in an existing Runner</a>
+       th:href="@{/runners/login}" style="margin:3px;">Log in an existing
+        Runner</a>
     <a class="homePageButton btn btn-primary"
        th:if="${currentRunner}"
-       th:href="@{/runners}">Go to Runner list</a>
+       th:href="@{/runners}" style="margin:3px;">Go to Runner list</a>
     <a class="homePageButton btn btn-primary"
        th:if="${currentRunner}"
-       th:href="@{/comments}">Go to Comments</a>
+       th:href="@{/comments}" style="margin:3px;">Go to Comments</a>
     <a class="homePageButton btn btn-primary"
        th:if="${currentRunner}"
-       th:href="@{/runSessions}">Go to Run
+       th:href="@{/runSessions}" style="margin:3px;">Go to Run
         Sessions</a>
 </div>
 <div class="centeringDiv">
