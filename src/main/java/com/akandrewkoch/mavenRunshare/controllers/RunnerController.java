@@ -5,6 +5,7 @@ import com.akandrewkoch.mavenRunshare.models.Comment;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewFriendRequestDTO;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewRunnerRegistrationDTO;
 import com.akandrewkoch.mavenRunshare.models.DTO.RunnerLoginDTO;
+import com.akandrewkoch.mavenRunshare.models.JavaEmail;
 import com.akandrewkoch.mavenRunshare.models.RunSession;
 import com.akandrewkoch.mavenRunshare.models.Runner;
 import com.akandrewkoch.mavenRunshare.models.enums.Gender;
@@ -147,8 +148,18 @@ public class RunnerController extends MainController {
             model.addAttribute("title", "Add Runner");
             return "runners/addRunner";
         }
-        Runner newRunner = new Runner(newRunnerRegistrationDTO.getCallsign(), newRunnerRegistrationDTO.getFirstName(), newRunnerRegistrationDTO.getLastName(), newRunnerRegistrationDTO.isCallsignOnly(), newRunnerRegistrationDTO.getPassword(), newRunnerRegistrationDTO.getAge(), newRunnerRegistrationDTO.getWeight(), newRunnerRegistrationDTO.getGender(), newRunnerRegistrationDTO.getRunnerLevel(), newRunnerRegistrationDTO.getZip());
+        Runner newRunner = new Runner(newRunnerRegistrationDTO.getCallsign(), newRunnerRegistrationDTO.getFirstName(), newRunnerRegistrationDTO.getLastName(), newRunnerRegistrationDTO.isCallsignOnly(), newRunnerRegistrationDTO.getPassword(), newRunnerRegistrationDTO.getAge(), newRunnerRegistrationDTO.getWeight(), newRunnerRegistrationDTO.getGender(), newRunnerRegistrationDTO.getRunnerLevel(), newRunnerRegistrationDTO.getZip(), newRunnerRegistrationDTO.getEmail());
         runnerRepository.save(newRunner);
+        JavaEmail javaEmail = new JavaEmail();
+        String welcomeMessage = "<head>"+
+                "<style type=\"text/css\">"+
+                "</style>"+
+                "<body style=\"text-align:center\">"+
+                "<h1>Welcome to RunShare, "+newRunner.getCallsign()+"!</h1><br/>"+
+                "<h2>Login to your new account here!<h2><br/>"+
+                "<a style=\"border-style:solid; background-color:#2A2773; border-radius:10px; padding:5px;\" href=\""+System.getenv("ENVIRONMENT_URL")+"/runners/login/"+newRunner.getId()+"\">Join us on the trail!</a><br/>"+
+                "</body>";
+        javaEmail.sendEmail( newRunner.getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "Welcome, "+newRunner.getCallsign()+"!", welcomeMessage);
         setUserInSession(request.getSession(), newRunner);
 
 
@@ -345,6 +356,7 @@ public class RunnerController extends MainController {
         newRunnerRegistrationDTO.setGender(runnerToEdit.getGender());
         newRunnerRegistrationDTO.setRunnerLevel(runnerToEdit.getRunnerLevel());
         newRunnerRegistrationDTO.setZip(runnerToEdit.getZip());
+        newRunnerRegistrationDTO.setEmail(runnerToEdit.getEmail());
         model.addAttribute(newRunnerRegistrationDTO);
         model.addAttribute("genders", Gender.values());
         model.addAttribute("runnerLevels", RunnerLevel.values());
@@ -374,6 +386,7 @@ public class RunnerController extends MainController {
         updatedRunner.setRunningLevel(newRunnerRegistrationDTO.getRunnerLevel());
         updatedRunner.setZip(newRunnerRegistrationDTO.getZip());
         updatedRunner.setNumberZipCode(Integer.parseInt(newRunnerRegistrationDTO.getZip()));
+        updatedRunner.setEmail(newRunnerRegistrationDTO.getEmail());
         runnerRepository.save(updatedRunner);
         return "redirect:/runners/runnerDetails/" + updatedRunner.getId();
     }

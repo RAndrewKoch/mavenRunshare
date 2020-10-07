@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -51,6 +52,9 @@ public class Runner extends AbstractEntity{
     @NotNull(message="Zip code cannot be null")
     private String zip;
 
+    @Email
+    private String email;
+
     @OneToMany(mappedBy="creator")
     private final List<RunSession> runSessions= new ArrayList<>();
 
@@ -74,11 +78,13 @@ public class Runner extends AbstractEntity{
     private final List<Runner> friendRequests = new ArrayList<>();
 
 
+
+
     //Constructors
     public Runner() {
     }
 
-    public Runner (String callsign, String firstName, String lastName, Boolean callsignOnly, String password, int age, int weight, Gender gender, RunnerLevel runnerLevel, String zip){
+    public Runner (String callsign, String firstName, String lastName, Boolean callsignOnly, String password, int age, int weight, Gender gender, RunnerLevel runnerLevel, String zip, String email){
         this.callsign= Jsoup.clean(callsign, Whitelist.none());
         this.firstName= Jsoup.clean(firstName, Whitelist.none());
         this.lastName= Jsoup.clean(lastName, Whitelist.none());
@@ -90,6 +96,7 @@ public class Runner extends AbstractEntity{
         this.runnerLevel= runnerLevel;
         this.zip = Jsoup.clean(zip, Whitelist.basic());
         this.numberZipCode = Integer.parseInt(zip);
+        this.email = email;
     }
 
 //getters
@@ -131,6 +138,8 @@ public class Runner extends AbstractEntity{
     public List<Runner> getFriendRequests() { return friendRequests; }
 
     public List<Runner> getFriends() { return friends; }
+
+    public String getEmail() {return email; }
 
     //setters
 
@@ -176,6 +185,8 @@ public class Runner extends AbstractEntity{
     }
 
     public void setNumberZipCode(Integer numberZipCode) { this.numberZipCode = numberZipCode; }
+
+    public void setEmail(String email) { this.email = email; }
 
     public boolean isMatchingPassword(String password){
         return encoder.matches(password, pwHash);

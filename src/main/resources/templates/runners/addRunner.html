@@ -140,6 +140,15 @@
             in pounds</small>
     </div>
     <div class="form-group">
+        <label for="email">Email</label>
+        <input th:field="${newRunnerRegistrationDTO.email}"
+               id="email">
+        <p th:errors="${newRunnerRegistrationDTO.email}"
+           class="errors"></p>
+        <small class="form-text text-muted">Email
+            used for notifications from RunShare</small>
+    </div>
+    <div class="form-group">
         <label for="callsignOnly">Callsign only</label>
         <input
                 th:field="${newRunnerRegistrationDTO.callsignOnly}"
