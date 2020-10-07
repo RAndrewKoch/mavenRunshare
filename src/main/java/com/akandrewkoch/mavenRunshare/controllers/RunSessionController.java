@@ -3,6 +3,7 @@ package com.akandrewkoch.mavenRunshare.controllers;
 
 import com.akandrewkoch.mavenRunshare.models.Comment;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewRunSessionDTO;
+import com.akandrewkoch.mavenRunshare.models.JavaEmail;
 import com.akandrewkoch.mavenRunshare.models.RunSession;
 import com.akandrewkoch.mavenRunshare.models.Runner;
 import org.springframework.stereotype.Controller;
@@ -24,11 +25,11 @@ import java.util.Optional;
 @RequestMapping("/runSessions")
 public class RunSessionController extends MainController {
     //todo-create an edit view for runSessions
-    @GetMapping(value={"", "index", "/{sortType}"})
-    public String displayRunSessionsList(@PathVariable(required=false) String sortType, Model model, HttpServletRequest request){
+    @GetMapping(value = {"", "index", "/{sortType}"})
+    public String displayRunSessionsList(@PathVariable(required = false) String sortType, Model model, HttpServletRequest request) {
         setRunnerInModel(request, model);
         model.addAttribute("title", "Run Sessions");
-        if (sortType!=null) {
+        if (sortType != null) {
             switch (sortType) {
                 case "nameAsc":
                     model.addAttribute("runSessions", runSessionRepository.findAllByOrderByNameAsc());
@@ -61,7 +62,7 @@ public class RunSessionController extends MainController {
     }
 
     @GetMapping("/addRunSession")
-    public String displayAddRunSessionsForm(Model model, HttpServletRequest request, HttpSession session){
+    public String displayAddRunSessionsForm(Model model, HttpServletRequest request, HttpSession session) {
         setRunnerInModel(request, model);
         model.addAttribute("title", "Add Run Session");
         NewRunSessionDTO newRunSessionDTO = new NewRunSessionDTO();
@@ -75,9 +76,9 @@ public class RunSessionController extends MainController {
     }
 
     @PostMapping("/addRunSession")
-    public String processAddRunSessionForm (@ModelAttribute @Valid NewRunSessionDTO newRunSessionDTO, Errors errors, Model model, HttpServletRequest request, HttpSession session){
+    public String processAddRunSessionForm(@ModelAttribute @Valid NewRunSessionDTO newRunSessionDTO, Errors errors, Model model, HttpServletRequest request, HttpSession session) {
         setRunnerInModel(request, model);
-        if (errors.hasErrors()){
+        if (errors.hasErrors()) {
             model.addAttribute("title", "Add Run Session");
             model.addAttribute("runners", runnerRepository.findAll());
             model.addAttribute("trails", trailRepository.findAll());
@@ -86,7 +87,7 @@ public class RunSessionController extends MainController {
 
         RunSession checkedRunSession = runSessionRepository.findByName(newRunSessionDTO.getName());
 
-        if (checkedRunSession!=null){
+        if (checkedRunSession != null) {
             errors.rejectValue("name", "runSession.alreadyExists", "That Run Session name has already been used");
             model.addAttribute("runners", runnerRepository.findAll());
             model.addAttribute("trails", trailRepository.findAll());
@@ -94,16 +95,26 @@ public class RunSessionController extends MainController {
             return "runSessions/addRunSession";
         }
 
-        RunSession newRunSession = new RunSession(newRunSessionDTO.getName(), newRunSessionDTO.getRunners(), newRunSessionDTO.getDate(),  getRunnerFromSession(session), newRunSessionDTO.getTrail(),  newRunSessionDTO.getLaps(), (newRunSessionDTO.getSeconds()+(newRunSessionDTO.getMinutes()*60)+(newRunSessionDTO.getHours()*3600)));
+        RunSession newRunSession = new RunSession(newRunSessionDTO.getName(), newRunSessionDTO.getRunners(), newRunSessionDTO.getDate(), getRunnerFromSession(session), newRunSessionDTO.getTrail(), newRunSessionDTO.getLaps(), (newRunSessionDTO.getSeconds() + (newRunSessionDTO.getMinutes() * 60) + (newRunSessionDTO.getHours() * 3600)));
         runSessionRepository.save(newRunSession);
         RunSession runSessionToNotify = runSessionRepository.findByName(newRunSession.getName());
-        Comment runSessionNotification = new Comment("New Run: "+newRunSession.getName(),newRunSession.runSessionDisplayString(),newRunSession.getCreator(),LocalDate.now(),LocalTime.now(),trailRepository.findById(newRunSession.getTrail().getId()).get(),newRunSession,new ArrayList<Runner>(),true);
-            List<Runner> runnersToAddToComment = runSessionRepository.findByName(newRunSession.getName()).getRunners();
-        for (Runner runner : runnersToAddToComment){
+        Comment runSessionNotification = new Comment("New Run: " + newRunSession.getName(), newRunSession.runSessionDisplayString(), newRunSession.getCreator(), LocalDate.now(), LocalTime.now(), trailRepository.findById(newRunSession.getTrail().getId()).get(), newRunSession, new ArrayList<Runner>(), true);
+        List<Runner> runnersToAddToComment = runSessionRepository.findByName(newRunSession.getName()).getRunners();
+        for (Runner runner : runnersToAddToComment) {
             runSessionNotification.addRunner(runner);
         }
         runSessionNotification.addRunner(newRunSession.getCreator());
         commentRepository.save(runSessionNotification);
+        for (Runner runner : runnersToAddToComment) {
+            JavaEmail javaEmail = new JavaEmail();
+            if (runner.getEmail()!=null) {
+                javaEmail.sendEmail(runner.getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "New Run Session Logged", "Hey, " + runner.getCallsign() + ", " + runSessionNotification.getMessageCreator().getCallsign() + " logged a new Run Session with you!");
+            }
+        }
+        if (runSessionNotification.getMessageCreator().getEmail()!=null) {
+            JavaEmail javaEmail = new JavaEmail();
+            javaEmail.sendEmail(runSessionNotification.getMessageCreator().getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "Great Run Session, " + runSessionNotification.getMessageCreator().getCallsign() + "!", "Hey, " + runSessionNotification.getMessageCreator().getCallsign() + ", your " + newRunSession.getName() + " session has been logged on RunShare!");
+        }
         model.addAttribute("title", "Run Sessions");
         model.addAttribute("runSessions", runSessionRepository.findAll());
 
@@ -112,12 +123,12 @@ public class RunSessionController extends MainController {
     }
 
     @GetMapping("/runSessionDetails/{id}")
-    public String displayRunSessionDetails (@PathVariable Integer id, Model model, HttpServletRequest request){
+    public String displayRunSessionDetails(@PathVariable Integer id, Model model, HttpServletRequest request) {
         setRunnerInModel(request, model);
 
         Optional<RunSession> testRunSession = runSessionRepository.findById(id);
 
-        if (testRunSession.isEmpty()){
+        if (testRunSession.isEmpty()) {
             return "runSessions/index";
         }
 
@@ -126,10 +137,10 @@ public class RunSessionController extends MainController {
         model.addAttribute("title", "Details " + detailedRunSession.getName());
         model.addAttribute("detailedRunSession", detailedRunSession);
         List<Runner> otherRunners = runnerRepository.findAllByRunSessionPackId(id);
-        String runnerString="";
+        String runnerString = "";
         if (!otherRunners.isEmpty()) {
-            if (otherRunners.size()==1){
-                runnerString= otherRunners.get(0).getCallsign();
+            if (otherRunners.size() == 1) {
+                runnerString = otherRunners.get(0).getCallsign();
             } else {
                 runnerString += otherRunners.get(0).getCallsign();
                 if (otherRunners.size() > 1) {
@@ -147,7 +158,7 @@ public class RunSessionController extends MainController {
     }
 
     @GetMapping("/runSessionDetails")
-    public String displayBlankRunSessionDetails (Model model, HttpServletRequest request){
+    public String displayBlankRunSessionDetails(Model model, HttpServletRequest request) {
         setRunnerInModel(request, model);
         model.addAttribute("title", "Blank Details");
         model.addAttribute("detailedRunSession", new RunSession());
@@ -155,9 +166,9 @@ public class RunSessionController extends MainController {
     }
 
     @GetMapping("/editRunSession/{runSessionId}")
-    public String displayEditRunSession (@PathVariable Integer runSessionId, Model model, HttpServletRequest request, HttpSession session){
-        setRunnerInModel(request,model);
-        model.addAttribute("title", "edit "+runSessionRepository.findById(runSessionId).get().getName()+" run session");
+    public String displayEditRunSession(@PathVariable Integer runSessionId, Model model, HttpServletRequest request, HttpSession session) {
+        setRunnerInModel(request, model);
+        model.addAttribute("title", "edit " + runSessionRepository.findById(runSessionId).get().getName() + " run session");
         RunSession runSessionToEdit = runSessionRepository.findById(runSessionId).get();
         NewRunSessionDTO newRunSessionDTO = new NewRunSessionDTO();
         newRunSessionDTO.setName(runSessionToEdit.getName());
@@ -165,11 +176,11 @@ public class RunSessionController extends MainController {
         newRunSessionDTO.setDate(runSessionToEdit.getDate());
         newRunSessionDTO.setTrail(runSessionToEdit.getTrail());
         newRunSessionDTO.setLaps(runSessionToEdit.getLaps());
-        Integer hours = (int) (Math.floor(runSessionToEdit.getTimeInSeconds()/3600));
+        Integer hours = (int) (Math.floor(runSessionToEdit.getTimeInSeconds() / 3600));
         newRunSessionDTO.setHours(hours);
-        Integer minutes = (int) Math.floor((runSessionToEdit.getTimeInSeconds()-(hours*3600))/60);
+        Integer minutes = (int) Math.floor((runSessionToEdit.getTimeInSeconds() - (hours * 3600)) / 60);
         newRunSessionDTO.setMinutes(minutes);
-        Integer seconds = runSessionToEdit.getTimeInSeconds()-(hours*3600)-(minutes*60);
+        Integer seconds = runSessionToEdit.getTimeInSeconds() - (hours * 3600) - (minutes * 60);
         newRunSessionDTO.setSeconds(seconds);
         model.addAttribute(newRunSessionDTO);
         if (!newRunSessionDTO.runners.isEmpty()) {
@@ -177,7 +188,7 @@ public class RunSessionController extends MainController {
         }
         List<Runner> notChosenRunners = (List<Runner>) runnerRepository.findAll();
         notChosenRunners.removeAll(newRunSessionDTO.runners);
-        if (notChosenRunners.contains(getRunnerFromSession(session))){
+        if (notChosenRunners.contains(getRunnerFromSession(session))) {
             notChosenRunners.remove(getRunnerFromSession(session));
         }
         if (!notChosenRunners.isEmpty()) {
@@ -188,16 +199,16 @@ public class RunSessionController extends MainController {
     }
 
     @PostMapping("/editRunSession/{runSessionId}")
-    public String processEditRunSessionForm(@ModelAttribute @Valid NewRunSessionDTO newRunSessionDTO, Errors errors, Model model, @PathVariable Integer runSessionId, HttpSession session, HttpServletRequest request){
-        setRunnerInModel(request,model);
-        if (errors.hasErrors()){
-            model.addAttribute("title", "edit "+runSessionRepository.findById(runSessionId).get().getName()+" run session");
+    public String processEditRunSessionForm(@ModelAttribute @Valid NewRunSessionDTO newRunSessionDTO, Errors errors, Model model, @PathVariable Integer runSessionId, HttpSession session, HttpServletRequest request) {
+        setRunnerInModel(request, model);
+        if (errors.hasErrors()) {
+            model.addAttribute("title", "edit " + runSessionRepository.findById(runSessionId).get().getName() + " run session");
             if (!newRunSessionDTO.runners.isEmpty()) {
                 model.addAttribute("previousRunners", newRunSessionDTO.runners);
             }
             List<Runner> notChosenRunners = (List<Runner>) runnerRepository.findAll();
             notChosenRunners.removeAll(newRunSessionDTO.runners);
-            if (notChosenRunners.contains(getRunnerFromSession(session))){
+            if (notChosenRunners.contains(getRunnerFromSession(session))) {
                 notChosenRunners.remove(getRunnerFromSession(session));
             }
             if (!notChosenRunners.isEmpty()) {
@@ -213,14 +224,14 @@ public class RunSessionController extends MainController {
         editedRunSession.setTrail(newRunSessionDTO.getTrail());
         editedRunSession.setLaps(newRunSessionDTO.getLaps());
         editedRunSession.setDistanceFromDTO();
-        editedRunSession.setTime(newRunSessionDTO.getSeconds()+(newRunSessionDTO.getMinutes()*60)+(newRunSessionDTO.getHours()*3600));
+        editedRunSession.setTime(newRunSessionDTO.getSeconds() + (newRunSessionDTO.getMinutes() * 60) + (newRunSessionDTO.getHours() * 3600));
         editedRunSession.calculatePace();
         runSessionRepository.save(editedRunSession);
         List<Comment> runSessionComments = commentRepository.findByRunSession_Id(runSessionId);
-        for (Comment comment : runSessionComments){
+        for (Comment comment : runSessionComments) {
             comment.blankRunners();
             List<Runner> runnersToAddToComment = runSessionRepository.findById(runSessionId).get().getRunners();
-            for (Runner runner : runnersToAddToComment){
+            for (Runner runner : runnersToAddToComment) {
                 comment.addRunner(runner);
             }
             comment.addRunner(runSessionRepository.findById(runSessionId).get().getCreator());
@@ -228,6 +239,6 @@ public class RunSessionController extends MainController {
         }
 
 
-        return "redirect:/runSessions/runSessionDetails/"+runSessionId;
+        return "redirect:/runSessions/runSessionDetails/" + runSessionId;
     }
 }

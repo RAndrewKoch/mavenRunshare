@@ -5,6 +5,7 @@ package com.akandrewkoch.mavenRunshare.models.DTO;
 import com.akandrewkoch.mavenRunshare.models.enums.Gender;
 import com.akandrewkoch.mavenRunshare.models.enums.RunnerLevel;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -46,6 +47,9 @@ public class NewRunnerRegistrationDTO extends RunnerLoginDTO {
     @NotNull(message="Zip Code cannot be null")
     @Size(min=5, max=5, message="Must use 5-digit zip code")
     private String zip;
+
+    @Email(message="Email provided must be valid")
+    private String email;
 
     public NewRunnerRegistrationDTO(){}
 
@@ -117,7 +121,6 @@ public class NewRunnerRegistrationDTO extends RunnerLoginDTO {
         this.runnerLevel = runningLevel;
     }
 
-
     public String getZip() {
         return zip;
     }
@@ -125,4 +128,8 @@ public class NewRunnerRegistrationDTO extends RunnerLoginDTO {
     public void setZip(String zip) {
         this.zip = zip;
     }
+
+    public String getEmail() {return email; }
+
+    public void setEmail(String email) {this.email = email; }
 }

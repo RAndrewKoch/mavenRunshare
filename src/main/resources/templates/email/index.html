@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body id="main">
+
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: runnerbar"></p>
+</div>
+
+<p th:replace="fragments :: navbar"></p>
+<div class="headerBlankSpace"></div>
+<div th:if="${currentRunner}">
+    <h1 style="text-align:center;"
+        th:text="'Resetting password for '+${currentRunner.callsign}"></h1>
+</div>
+<div class="centeringDiv">
+    <form method="post">
+        <button type="submit" class="btn btn-primary"
+                th:text="'submit for email'"></button>
+    </form>
+</div>
+</body>
+</html>
