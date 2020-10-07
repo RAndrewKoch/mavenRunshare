@@ -157,7 +157,7 @@ public class RunnerController extends MainController {
                 "<body style=\"text-align:center\">"+
                 "<h1>Welcome to RunShare, "+newRunner.getCallsign()+"!</h1><br/>"+
                 "<h2>Login to your new account here!<h2><br/>"+
-                "<a style=\"border-style:solid; background-color:#2A2773; border-radius:10px; padding:5px;\" href=\""+System.getenv("ENVIRONMENT_URL")+"/runners/login/"+newRunner.getId()+"\">Join us on the trail!</a><br/>"+
+                "<a style=\"border-style:solid; background-color:#2A2773; border-radius:10px; padding:5px; color:white;\" href=\""+System.getenv("ENVIRONMENT_URL")+"/runners/login/"+newRunner.getId()+"\">Join us on the trail!</a><br/>"+
                 "</body>";
         javaEmail.sendEmail( newRunner.getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "Welcome, "+newRunner.getCallsign()+"!", welcomeMessage);
         setUserInSession(request.getSession(), newRunner);
