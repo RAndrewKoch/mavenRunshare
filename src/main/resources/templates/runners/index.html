@@ -152,13 +152,14 @@
             <a th:text="${runner.callsign}"
                th:href="@{'/runners/runnerDetails/'+${runner.id}}"></a>
         </td>
-        <td th:text="${runner.runnerLevel.getDisplayName()}">
-        </td>
         <td class="mobilePortraitDelete"
             th:if="${runner.callsignOnly}"
             style="text-align:center; border-style:outset; background-color:silver; color:black;"
-            colspan="3" th:text="'Runner has chosen
+            colspan="4" th:text="'Runner has chosen
             Callsign-only privacy mode'"></td>
+        <td th:unless="${runner.callsignOnly}"
+            th:text="${runner.runnerLevel.getDisplayName()}">
+        </td>
         <td class="mobilePortraitDelete"
             th:unless="${runner.callsignOnly}"
             th:text="${runner.firstName}+' '+${runner.lastName}"></td>
@@ -179,13 +180,14 @@
             <a th:text="${runner.callsign}"
                th:href="@{'/runners/runnerDetails/'+${runner.id}}"></a>
         </td>
-        <td th:text="${runner.runnerLevel.getDisplayName()}">
-        </td>
         <td class="mobilePortraitDelete"
             th:if="${runner.callsignOnly}"
             style="text-align:center; border-style:outset; background-color:silver; color:black;"
-            colspan="3" th:text="'Runner has chosen
+            colspan="4" th:text="'Runner has chosen
             Callsign-only privacy mode'"></td>
+        <td th:unless="${runner.callsignOnly}"
+                th:text="${runner.runnerLevel.getDisplayName()}">
+        </td>
         <td class="mobilePortraitDelete"
             th:unless="${runner.callsignOnly}"
             th:text="${runner.firstName}+' '+${runner.lastName}"></td>
