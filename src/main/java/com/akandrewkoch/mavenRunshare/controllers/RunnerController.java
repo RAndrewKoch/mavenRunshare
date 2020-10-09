@@ -432,7 +432,7 @@ public class RunnerController extends MainController {
         List<Runner> runners = (List<Runner>) runnerRepository.findAll();
         model.addAttribute("title", "forgotten password");
         model.addAttribute("runners", runners);
-        return "/runners/forgottenPassword";
+        return "runners/forgottenPassword";
     }
 
     @PostMapping("/forgottenPassword")
