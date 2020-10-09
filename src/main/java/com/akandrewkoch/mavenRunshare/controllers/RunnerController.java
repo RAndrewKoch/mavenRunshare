@@ -426,4 +426,18 @@ public class RunnerController extends MainController {
             return "redirect:/runners/runnerDetails/" + runnerDeferring.getId();
         }
     }
+
+    @GetMapping("/forgottenPassword")
+    public String displayForgottenPasswordForm(Model model){
+        List<Runner> runners = (List<Runner>) runnerRepository.findAll();
+        model.addAttribute("title", "forgotten password");
+        model.addAttribute("runners", runners);
+        return "/runners/forgottenPassword";
+    }
+
+    @PostMapping("/forgottenPassword")
+    public String processForgottenPasswordForm (@RequestParam Integer id){
+
+        return "redirect:/email/passwordResetRequest/"+id;
+    }
 }

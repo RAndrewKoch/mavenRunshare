@@ -37,6 +37,8 @@ public class Runner extends AbstractEntity{
     @NotNull
     private String pwHash;
 
+    private String previousPWHash;
+
     @NotNull(message="Age cannot be null")
     private int age;
 
@@ -64,6 +66,8 @@ public class Runner extends AbstractEntity{
     private Integer numberZipCode;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    private String passwordTempRequest;
 
     @ManyToMany(mappedBy = "runners")
     private final List<Comment> comments = new ArrayList<>();
@@ -141,6 +145,10 @@ public class Runner extends AbstractEntity{
 
     public String getEmail() {return email; }
 
+    public String getPasswordTempRequest() {return passwordTempRequest;}
+
+    public String getPreviousPWHash() { return previousPWHash; }
+
     //setters
 
     public void setCallsign(String callsign) {
@@ -162,6 +170,8 @@ public class Runner extends AbstractEntity{
     public void setPassword(String password) {
         this.pwHash = encoder.encode(password);
     }
+
+    public void setPreviousPWHash (String previousPWHash) {this.previousPWHash = previousPWHash;}
 
     public void setAge(int age) {
         this.age = age;
@@ -188,9 +198,13 @@ public class Runner extends AbstractEntity{
 
     public void setEmail(String email) { this.email = email; }
 
+    public void setPasswordTempRequest (String passwordTempRequest){this.passwordTempRequest=passwordTempRequest;}
+
     public boolean isMatchingPassword(String password){
         return encoder.matches(password, pwHash);
     }
+
+    public boolean isMatchingPreviousPWHash (String password){ return encoder.matches(password, previousPWHash);}
 
     public void addComment (Comment comment){this.comments.add(comment);}
 

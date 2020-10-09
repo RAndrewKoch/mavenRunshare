@@ -145,8 +145,12 @@
                id="email">
         <p th:errors="${newRunnerRegistrationDTO.email}"
            class="errors"></p>
-        <small class="form-text text-muted">Email
-            used for notifications from RunShare</small>
+        <small class="form-text text-muted"
+               style="color:red !Important">
+            Important Note:
+            password resets require a valid email,
+            so it is highly recommended, but not
+            required.</small>
     </div>
     <div class="form-group">
         <label for="callsignOnly">Callsign only</label>
