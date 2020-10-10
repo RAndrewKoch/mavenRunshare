@@ -40,7 +40,18 @@ public class EmailController extends MainController {
         JavaEmail javaEmail = new JavaEmail();
         String passwordTempRequest = encoder.encode(resettingRunner.getPwHash());
         String subjectLine = "Hey " + resettingRunner.getCallsign() + ", heard you lost your password!";
-        String content = "<h1 style=\"text-align:center;\">" + resettingRunner.getCallsign() + ", we were notified you were requesting to reset your password for RunShare.</h1>" + "<div style=\"text-align:center;\">Sorry to hear about that, let's get you back up and running.</div>" + "<div style=\"text-align:center;\">Click the link below to reset your password, and let's get you back on the trail!</div>" + "<a href=\"" + System.getenv("ENVIRONMENT_URL") + "/email/passwordReset?id=" + resettingRunner.getId() + "&pwhash=" + passwordTempRequest + "\">Reset Password</a>";
+        String content = "<body style=\"text-align:center;\">"+
+                "<h1>" + resettingRunner.getCallsign() + ", we were notified you were requesting to reset your password for RunShare.</h1>" +
+                "<div>Sorry to hear about that, let's get you back up and running.</div>" +
+                "<div>Click the link below to reset your password, and let's get you back on the trail!</div>" +
+                "<a href=\"" + System.getenv("ENVIRONMENT_URL") + "/email/passwordReset?id=" + resettingRunner.getId() + "&pwhash=" + passwordTempRequest + "\">Reset Password</a>"+
+                "<br/>"+
+                "<small>If you did not request a password reset, you may ignore this email</small> "+
+                "</body>";
+
+        if (System.getenv("ENVIRONMENT_URL").equals("http://localhost:8080")){
+            content+="sent via development mode";
+        }
         javaEmail.sendEmail(resettingRunner.getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), subjectLine, content);
         resettingRunner.setPasswordTempRequest(passwordTempRequest);
         runnerRepository.save(resettingRunner);
@@ -106,6 +117,9 @@ public class EmailController extends MainController {
                 "<p>If you did not reset your password, please go to your account and reset your password immediately, and contact a RunShare administrator<p>"+
                 "<a href=\""+System.getenv("ENVIRONMENT_URL")+"\">Go to RunShare</a>"+
                 "</body>";
+        if (System.getenv("ENVIRONMENT_URL").equals("http://localhost:8080")){
+            passwordResetMessage+="sent via development mode";
+        }
         javaEmail.sendEmail(resettingRunner.getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "Password reset for "+resettingRunner.getCallsign(), passwordResetMessage);
         setUserInSession(request.getSession(), resettingRunner);
         return "redirect:/runners";

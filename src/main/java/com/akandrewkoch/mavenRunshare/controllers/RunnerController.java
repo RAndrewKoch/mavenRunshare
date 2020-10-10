@@ -159,6 +159,10 @@ public class RunnerController extends MainController {
                 "<h2>Login to your new account here!<h2><br/>"+
                 "<a style=\"border-style:solid; background-color:#2A2773; border-radius:10px; padding:5px; color:white;\" href=\""+System.getenv("ENVIRONMENT_URL")+"/runners/login/"+newRunner.getId()+"\">Join us on the trail!</a><br/>"+
                 "</body>";
+
+        if (System.getenv("ENVIRONMENT_URL").equals("http://localhost:8080")){
+            welcomeMessage+="sent via development mode";
+        }
         javaEmail.sendEmail( newRunner.getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "Welcome, "+newRunner.getCallsign()+"!", welcomeMessage);
         setUserInSession(request.getSession(), newRunner);
 
