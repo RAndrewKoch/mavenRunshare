@@ -114,7 +114,9 @@ public class EmailController extends MainController {
                 "<h1>Password reset!</h1>"+
                 "<h2>Congratulations "+resettingRunner.getCallsign()+", your password has been reset!</h2>"+
                 "<p>If you did not reset your password, please go to your account and reset your password immediately, and contact a RunShare administrator<p>"+
+                "<div style=\"text-align:center\">"+
                 "<a href=\""+System.getenv("ENVIRONMENT_URL")+"\">Go to RunShare</a>"+
+                "</div>"+
                 "</body>";
         if (System.getenv("ENVIRONMENT_URL").equals("http://localhost:8080")){
             passwordResetMessage+="sent via development mode";
