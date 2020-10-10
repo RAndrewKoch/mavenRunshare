@@ -123,6 +123,9 @@ public class RunSessionController extends MainController {
                     "</h3>"+
                     "</div>"+
                     "</body>";
+            if (System.getenv("ENVIRONMENT_URL").equals("http://localhost:8080")){
+                runnerMessage+="sent via development mode";
+            }
 
             if (runner.getEmail()!=null) {
                 javaEmail.sendEmail(runner.getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "New Run Session Logged", runnerMessage );
@@ -139,6 +142,10 @@ public class RunSessionController extends MainController {
                     "</h3>"+
                     "</div>"+
                     "</body>";
+            if (System.getenv("ENVIRONMENT_URL").equals("http://localhost:8080")){
+                creatorMessage+="sent via development mode";
+            }
+
             javaEmail.sendEmail(runSessionNotification.getMessageCreator().getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "Great Run Session, " + runSessionNotification.getMessageCreator().getCallsign() + "!", creatorMessage);
         }
         model.addAttribute("title", "Run Sessions");
