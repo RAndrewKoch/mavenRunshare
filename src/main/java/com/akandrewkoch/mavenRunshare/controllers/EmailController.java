@@ -44,7 +44,9 @@ public class EmailController extends MainController {
                 "<h1>" + resettingRunner.getCallsign() + ", we were notified you were requesting to reset your password for RunShare.</h1>" +
                 "<div>Sorry to hear about that, let's get you back up and running.</div>" +
                 "<div>Click the link below to reset your password, and let's get you back on the trail!</div>" +
+                "<div style=\"text-align:center;\">"+
                 "<a href=\"" + System.getenv("ENVIRONMENT_URL") + "/email/passwordReset?id=" + resettingRunner.getId() + "&pwhash=" + passwordTempRequest + "\">Reset Password</a>"+
+                "</div>"+
                 "<br/>"+
                 "<small>If you did not request a password reset, you may ignore this email</small> "+
                 "</body>";
@@ -108,10 +110,7 @@ public class EmailController extends MainController {
         resettingRunner.setPassword(newPasswordDTO.getPassword());
         runnerRepository.save(resettingRunner);
         JavaEmail javaEmail = new JavaEmail();
-        String passwordResetMessage = "<head>"+
-                "<style type=\"text/css\">"+
-                "</style>"+
-                "<body style=\"text-align:center\">"+
+        String passwordResetMessage = "<body style=\"text-align:center\">"+
                 "<h1>Password reset!</h1>"+
                 "<h2>Congratulations "+resettingRunner.getCallsign()+", your password has been reset!</h2>"+
                 "<p>If you did not reset your password, please go to your account and reset your password immediately, and contact a RunShare administrator<p>"+
