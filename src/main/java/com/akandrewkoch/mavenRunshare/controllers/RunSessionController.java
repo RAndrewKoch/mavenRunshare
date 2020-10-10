@@ -6,6 +6,8 @@ import com.akandrewkoch.mavenRunshare.models.DTO.NewRunSessionDTO;
 import com.akandrewkoch.mavenRunshare.models.JavaEmail;
 import com.akandrewkoch.mavenRunshare.models.RunSession;
 import com.akandrewkoch.mavenRunshare.models.Runner;
+import com.akandrewkoch.mavenRunshare.models.enums.Hours;
+import com.akandrewkoch.mavenRunshare.models.enums.SecondsAndMinutes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -70,6 +72,8 @@ public class RunSessionController extends MainController {
         newRunSessionDTO.setMinutes(0);
         newRunSessionDTO.setSeconds(0);
         model.addAttribute(newRunSessionDTO);
+        model.addAttribute("secondsAndMinutes", SecondsAndMinutes.values());
+        model.addAttribute("hours", Hours.values());
         model.addAttribute("runners", runnerRepository.findAll());
         model.addAttribute("trails", trailRepository.findAll());
         return "runSessions/addRunSession";
@@ -80,6 +84,8 @@ public class RunSessionController extends MainController {
         setRunnerInModel(request, model);
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Run Session");
+            model.addAttribute("secondsAndMinutes", SecondsAndMinutes.values());
+            model.addAttribute("hours", Hours.values());
             model.addAttribute("runners", runnerRepository.findAll());
             model.addAttribute("trails", trailRepository.findAll());
             return "runSessions/addRunSession";
