@@ -30,8 +30,6 @@
             th:href="@{'/runners/login/'+${detailedRunSession.creator.id}}" class="btn btn-primary" th:text="'Login as '+${detailedRunSession.creator.callsign}+' to edit this session'"></a>
 </div>
 <div class="centeringDiv">
-    <span class="mobileBox"
-            th:text="'Date: '+${detailedRunSession.date}"></span>
     <span class="mobileBox"><a
             th:href="@{'/runners/runnerDetails/'+${detailedRunSession.creator.id}}"
             th:text="'Creator: '+${detailedRunSession.creator.callsign}"></a></span>
@@ -62,6 +60,11 @@
        class="btn btn-primary" style="margin:3px;">Login to
         create a
         comment</a>
+</div>
+<div th:unless="${currentRunner}" class="centeringDiv">
+    <small class="form-text text-muted">Private
+        comments on this session may be hidden if
+        not logged in</small>
 </div>
 <div th:each="comment : ${comments}"
      style="border-style:solid"

@@ -6,6 +6,8 @@ import com.akandrewkoch.mavenRunshare.models.DTO.NewRunSessionDTO;
 import com.akandrewkoch.mavenRunshare.models.JavaEmail;
 import com.akandrewkoch.mavenRunshare.models.RunSession;
 import com.akandrewkoch.mavenRunshare.models.Runner;
+import com.akandrewkoch.mavenRunshare.models.enums.Hours;
+import com.akandrewkoch.mavenRunshare.models.enums.SecondsAndMinutes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -57,7 +59,7 @@ public class RunSessionController extends MainController {
                     return "runSessions/index";
             }
         }
-        model.addAttribute("runSessions", runSessionRepository.findAllByOrderByDateDesc());
+        model.addAttribute("runSessions", runSessionRepository.findAllByOrderByDateDescTimeDesc());
         return "runSessions/index";
     }
 
@@ -70,6 +72,8 @@ public class RunSessionController extends MainController {
         newRunSessionDTO.setMinutes(0);
         newRunSessionDTO.setSeconds(0);
         model.addAttribute(newRunSessionDTO);
+        model.addAttribute("secondsAndMinutes", SecondsAndMinutes.values());
+        model.addAttribute("hours", Hours.values());
         model.addAttribute("runners", runnerRepository.findAll());
         model.addAttribute("trails", trailRepository.findAll());
         return "runSessions/addRunSession";
@@ -80,26 +84,29 @@ public class RunSessionController extends MainController {
         setRunnerInModel(request, model);
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Run Session");
+            model.addAttribute("secondsAndMinutes", SecondsAndMinutes.values());
+            model.addAttribute("hours", Hours.values());
             model.addAttribute("runners", runnerRepository.findAll());
             model.addAttribute("trails", trailRepository.findAll());
             return "runSessions/addRunSession";
         }
 
-        RunSession checkedRunSession = runSessionRepository.findByName(newRunSessionDTO.getName());
-
-        if (checkedRunSession != null) {
-            errors.rejectValue("name", "runSession.alreadyExists", "That Run Session name has already been used");
-            model.addAttribute("runners", runnerRepository.findAll());
-            model.addAttribute("trails", trailRepository.findAll());
-            model.addAttribute("title", "Add Run Session");
-            return "runSessions/addRunSession";
-        }
+        //---This code makes it so only one run session can have a given name.  It's not really needed, but left here in case I change my mind
+//        RunSession checkedRunSession = runSessionRepository.findByName(newRunSessionDTO.getName());
+//
+//        if (checkedRunSession != null) {
+//            errors.rejectValue("name", "runSession.alreadyExists", "That Run Session name has already been used");
+//            model.addAttribute("runners", runnerRepository.findAll());
+//            model.addAttribute("trails", trailRepository.findAll());
+//            model.addAttribute("title", "Add Run Session");
+//            return "runSessions/addRunSession";
+//        }
 
         RunSession newRunSession = new RunSession(newRunSessionDTO.getName(), newRunSessionDTO.getRunners(), newRunSessionDTO.getDate(), getRunnerFromSession(session), newRunSessionDTO.getTrail(), newRunSessionDTO.getLaps(), (newRunSessionDTO.getSeconds() + (newRunSessionDTO.getMinutes() * 60) + (newRunSessionDTO.getHours() * 3600)));
         runSessionRepository.save(newRunSession);
-        RunSession runSessionToNotify = runSessionRepository.findByName(newRunSession.getName());
+//        RunSession runSessionToNotify = runSessionRepository.findById(newRunSession.getId()).get();
         Comment runSessionNotification = new Comment("New Run: " + newRunSession.getName(), newRunSession.runSessionDisplayString(), newRunSession.getCreator(), LocalDate.now(), LocalTime.now(), trailRepository.findById(newRunSession.getTrail().getId()).get(), newRunSession, new ArrayList<Runner>(), true);
-        List<Runner> runnersToAddToComment = runSessionRepository.findByName(newRunSession.getName()).getRunners();
+        List<Runner> runnersToAddToComment = runSessionRepository.findById(newRunSession.getId()).get().getRunners();
         for (Runner runner : runnersToAddToComment) {
             runSessionNotification.addRunner(runner);
         }
@@ -107,13 +114,32 @@ public class RunSessionController extends MainController {
         commentRepository.save(runSessionNotification);
         for (Runner runner : runnersToAddToComment) {
             JavaEmail javaEmail = new JavaEmail();
+            String runnerMessage = "<body>"+
+                    "<h1 style=\"text-align:center;\">Hey, " + runner.getCallsign() + ", " + runSessionNotification.getMessageCreator().getCallsign() + " logged a new Run Session with you!</h1>"+
+                    "<h2 style=\"text-align:center;\">Check it out here:</h2>"+
+                    "<div style=\"text-align:center;\">"+
+                    "<h3>"+
+                    "<a style=\"text-align:center;\" href=\""+System.getenv("ENVIRONMENT_URL")+"/runSessions/runSessionDetails/"+newRunSession.getId()+"\">View "+newRunSession.getName()+"</a>"+
+                    "</h3>"+
+                    "</div>"+
+                    "</body>";
+
             if (runner.getEmail()!=null) {
-                javaEmail.sendEmail(runner.getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "New Run Session Logged", "Hey, " + runner.getCallsign() + ", " + runSessionNotification.getMessageCreator().getCallsign() + " logged a new Run Session with you!");
+                javaEmail.sendEmail(runner.getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "New Run Session Logged", runnerMessage );
             }
         }
         if (runSessionNotification.getMessageCreator().getEmail()!=null) {
             JavaEmail javaEmail = new JavaEmail();
-            javaEmail.sendEmail(runSessionNotification.getMessageCreator().getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "Great Run Session, " + runSessionNotification.getMessageCreator().getCallsign() + "!", "Hey, " + runSessionNotification.getMessageCreator().getCallsign() + ", your " + newRunSession.getName() + " session has been logged on RunShare!");
+            String creatorMessage = "<body>"+
+                    "<h1 style=\"text-align:center;\">Hey, " + runSessionNotification.getMessageCreator().getCallsign() + ", your " + newRunSession.getName() + " session has been logged on RunShare!"+
+                    "<h2 style=\"text-align:center;\">Check it out here:</h2>"+
+                    "<div style=\"text-align:center;\">"+
+                    "<h3>"+
+                    "<a style=\"text-align:center;\" href=\""+System.getenv("ENVIRONMENT_URL")+"/runSessions/runSessionDetails/"+newRunSession.getId()+"\">View "+newRunSession.getName()+"</a>"+
+                    "</h3>"+
+                    "</div>"+
+                    "</body>";
+            javaEmail.sendEmail(runSessionNotification.getMessageCreator().getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "Great Run Session, " + runSessionNotification.getMessageCreator().getCallsign() + "!", creatorMessage);
         }
         model.addAttribute("title", "Run Sessions");
         model.addAttribute("runSessions", runSessionRepository.findAll());

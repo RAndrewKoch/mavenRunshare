@@ -10,84 +10,116 @@
 <p th:replace="fragments :: navbar"></p>
 
 <div class="headerBlankSpace"></div>
-<h1 th:text="${'Log a run, '+currentRunner.callsign+'!'}"></h1>
 
-<form method="post">
-    <div class="form-group">
-        <label for="name">Name your session</label>
-        <input th:field="${newRunSessionDTO.name}"
-               id="name" autofocus>
-        <p th:errors="${newRunSessionDTO.name}"
-           class="errors"></p>
-        <small class="form-text text-muted">Name it
-            whatever you want!</small>
-    </div>
-    <div class="form-group" >
-        <label for="otherRunners"
-               >Did anybody
-            run
-            with you?</label>
-        <select multiple="multiple" name="otherRunners"
-                id="otherRunners"
-                th:field="${newRunSessionDTO.runners}">
-            <option th:each="runner : ${runners}"
-                    th:unless="${runner==currentRunner}"
-                    th:value="${runner.id}"
-                    th:text="${runner.callsign}"></option>
-        </select>
-        <p th:errors="${newRunSessionDTO.runners}"
-           class="errors"></p>
-        <small class="form-text text-muted">Hold
-            Ctrl+click to select multiple runners</small>
-    </div>
-    <div class="form-group">
-        <label for="date">Date of Run</label>
-        <input th:field="${newRunSessionDTO.date}"
-              type="date" id="date">
-        <p th:errors="${newRunSessionDTO.date}"
-           class="errors"></p>
-        <small class="form-text text-muted"></small>
-    </div>
-    <div class="form-group">
-        <label for="trail">Pick your Trail</label>
-        <select id="trail"
-                th:field="*{newRunSessionDTO.trail}">
-            <option th:each="trail : ${trails}"
-                    th:text="${trail.name}"
-                    th:value="${trail.id}"></option>
-        </select>
-        <p th:errors="${newRunSessionDTO.trail}"
-           class="errors"></p>
-        <small class="form-text text-muted">If your
-            trail isn't listed, create it in the
-            Trails section before creating your Run
-            Session</small>
-    </div>
-    <div class="form-group">
-         <label for="laps">Number of laps?</label>
-        <input id="laps" type="number" min="0" step="0.1"
-               th:field="${newRunSessionDTO.laps}">
-        <p th:errors="${newRunSessionDTO.laps}"
-           class="errors"></p>
-    </div>
-    <div class="form-group">
-        <label>Enter Run Session Time:</label>
-        <input type="number" min="0" max="24"
-               style="width:40px;"
-               th:field="${newRunSessionDTO.hours}">
-        <span>:</span>
-        <input type="number" min="0" max="59"
-               style="width:40px;"
-               th:field="${newRunSessionDTO.minutes}">
-        <span>:</span>
-        <input type="number" min="0" max="59"
-               style="width:40px;"
-               th:field="${newRunSessionDTO.seconds}">
+<div th:if="${currentRunner}">
+    <h1 th:text="${'Log a run, '+currentRunner.callsign+'!'}"></h1>
 
+    <form method="post">
+        <div class="form-group">
+            <label for="name">Name your session</label>
+            <input th:field="${newRunSessionDTO.name}"
+                   id="name" autofocus>
+            <p th:errors="${newRunSessionDTO.name}"
+               class="errors"></p>
+            <small class="form-text text-muted">Name it
+                whatever you want!</small>
+        </div>
+        <div class="form-group">
+            <label for="otherRunners"
+            >Did anybody
+                run
+                with you?</label>
+            <select multiple="multiple" name="otherRunners"
+                    id="otherRunners"
+                    th:field="${newRunSessionDTO.runners}">
+                <option th:each="runner : ${runners}"
+                        th:unless="${runner==currentRunner}"
+                        th:value="${runner.id}"
+                        th:text="${runner.callsign}"></option>
+            </select>
+            <p th:errors="${newRunSessionDTO.runners}"
+               class="errors"></p>
+            <small class="form-text text-muted">Hold
+                Ctrl+click to select multiple
+                runners</small>
+        </div>
+        <div class="form-group">
+            <label for="date">Date of Run</label>
+            <input th:field="${newRunSessionDTO.date}"
+                   type="date" id="date">
+            <p th:errors="${newRunSessionDTO.date}"
+               class="errors"></p>
+            <small class="form-text text-muted"></small>
+        </div>
+        <div class="form-group">
+            <label for="trail">Pick your Trail</label>
+            <select id="trail"
+                    th:field="*{newRunSessionDTO.trail}">
+                <option th:each="trail : ${trails}"
+                        th:text="${trail.name}"
+                        th:value="${trail.id}"></option>
+            </select>
+            <p th:errors="${newRunSessionDTO.trail}"
+               class="errors"></p>
+            <small class="form-text text-muted">If your
+                trail isn't listed, create it in the
+                Trails section before creating your Run
+                Session</small>
+        </div>
+        <div class="form-group">
+            <label for="laps">Number of laps?</label>
+            <input id="laps" type="number" min="0"
+                   step="0.1"
+                   th:field="${newRunSessionDTO.laps}">
+            <p th:errors="${newRunSessionDTO.laps}"
+               class="errors"></p>
+        </div>
+        <div class="form-group">
+            <label>Enter Run Session Time:</label>
+            <select style="width:40px;"
+                   th:field="${newRunSessionDTO.hours}">
+                <option th:each="hour : ${hours}"
+                        th:text="${hour.numberStringNumber}"
+                        th:value="${hour.numberIntegerNumber}">
+                </option>
+            </select>
+            <span>:</span>
+            <select style="width:40px;"
+                   th:field="${newRunSessionDTO.minutes}">
+                <option
+                        th:each="secondsAndMinute : ${secondsAndMinutes}" th:text="${secondsAndMinute.numberStringNumber}"
+                        th:value="${secondsAndMinute.numberIntegerNumber}">
+                </option>
+            </select>
+            <span>:</span>
+            <select style="width:40px;"
+                   th:field="${newRunSessionDTO.seconds}">
+                <option
+                        th:each="secondsAndMinute : ${secondsAndMinutes}" th:text="${secondsAndMinute.numberStringNumber}"
+                        th:value="${secondsAndMinute.numberIntegerNumber}">
+                </option>
+            </select>
+
+        </div>
+        <button type="submit" class="btn btn-primary">Log
+            this run
+        </button>
+    </form>
+</div>
+
+<div th:unless="${currentRunner}">
+    <div class="centeringDiv">
+        <h1>We're sorry, but you must be logged into an
+            account to log a
+            run</h1>
     </div>
-    <button type="submit" class="btn btn-primary">Log
-        this run
-    </button>
-</form>
+    <div class="centeringDiv">
+        <a th:href="@{/runners/login}"
+           class="btn btn-primary">Go to login screen</a>
+        <a th:href="@{/runSessions}"
+           class="btn btn-primary">Go to run session
+            catalog</a>
+    </div>
+</div>
 </body>
 </html>
