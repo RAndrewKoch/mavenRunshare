@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head">
+</head>
+<body id="main">
+
+<div class="centeringDiv">
+    <p th:replace="fragments :: runnerbar"></p>
+</div>
+<p th:replace="fragments :: navbar"></p>
+<div class="headerBlankSpace"></div>
+
+<div th:unless="${currentRunner}">
+    <div class="centeringDiv">
+        <h1 style="text-align:justify; width:60%">Sorry,
+            but you must be logged in with a valid
+            account to contact an administrator.
+        </h1>
+    </div>
+    <div class="centeringDiv">
+        <a class="btn btn-primary" th:href="@{/}"
+           th:text="'Return to Home'"></a>
+        <a class="btn btn-primary"
+           th:href="@{/runners/login}"
+           th:text="'Go to log in page'"></a>
+    </div>
+</div>
+<div th:if="${currentRunner}">
+    <div class="centeringDiv">
+        <h1
+                th:text="'We want to hear what you have to say, '+${currentRunner.callsign}"></h1>
+    </div>
+    <form method="post">
+        <div class="form-group">
+        <label for="subject">Subject Line:</label>
+        <input name="subject" id="subject">
+        </div>
+        <div class="form-group">
+            <label for="content">Message for Admins:</label>
+            <textarea id="content" name="content" rows="4"
+                      cols="50"></textarea>
+        </div>
+        <button type="submit"
+                class="btn btn-primary">Submit
+            your
+            message</button>
+    </form>
+</div>
+</body>
+</html>

@@ -7,13 +7,19 @@
           content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <link th:href="@{/css/runshare.css}" rel="stylesheet"/>
-    <link rel="icon" type="image/png"
-          href="../../images/favicon.png"/>
+    <link th:href="@{/css/runshare.css}"
+          rel="stylesheet"/>
     <script type="text/javascript"
             th:src="@{/js/scripts.js}"></script>
+
+
+    <link rel="icon" type="image/png"
+          href="../../images/favicon.png"/>
+
     <title
             th:text="'Runshare ' + ${title}">Runshare
     </title>
@@ -24,7 +30,7 @@
      style="position:sticky; top:50px;">
     <div class="sideNav" id="sideNav"
          style="padding-top:50px;">
-        <div class="topOfSideNav" >
+        <div class="topOfSideNav">
             <img
                     th:src="@{../../../../images/RunshareLogo.jpg}"
                     width="150" height="150"/>
@@ -51,10 +57,15 @@
                     <div><a th:href="@{/runners}">Runner
                         List</a></div>
                     <div
-                            th:if="${currentRunner} and ${!currentRunner.friends.isEmpty()}"><a
-                            th:href="@{/runners?friendsList=true}" th:text="'List friends of '+${currentRunner.callsign}"></a></div>
+                            th:if="${currentRunner} and ${!currentRunner.friends.isEmpty()}">
+                        <a
+                                th:href="@{/runners?friendsList=true}"
+                                th:text="'List friends of '+${currentRunner.callsign}"></a>
+                    </div>
                     <div th:if="${currentRunner}"><a
-                         th:href="@{'/runners?runnerLevel='+${currentRunner.runnerLevel.getDisplayName()}}" th:text="'List runners of same level: '+${currentRunner.runnerLevel.getDisplayName()}"></a></div>
+                            th:href="@{'/runners?runnerLevel='+${currentRunner.runnerLevel.getDisplayName()}}"
+                            th:text="'List runners of same level: '+${currentRunner.runnerLevel.getDisplayName()}"></a>
+                    </div>
                     <div><a th:href="@{/runners/addRunner}">Register
                         a new Runner</a></div>
                     <div th:unless="${currentRunner}"><a
@@ -128,6 +139,14 @@
                 </div>
             </div>
 
+            <div class="contactAdminDropdown"
+                 th:if="${currentRunner}">
+                <a th:href="@{/email/contactAdmin}">
+                    <span class="dropMenuHeader">Contact
+                        Admin</span>
+                </a>
+            </div>
+
             <div class="loginMenuDropdown">
                 <div th:unless="${currentRunner}"><a
                         th:href="@{/runners/login}"><span
@@ -158,23 +177,17 @@
 <!--RUNNERBAR-->
 <p th:if="${currentRunner}" th:fragment="runnerbar"
    class="runnerbar">
-    <span class="runnerbarspan"
-          th:text="'Callsign: '+${currentRunner.callsign}">
-    </span>
-    <span class="runnerbarspan mobilePortraitDelete"
-          th:if="${!currentRunner.callsignOnly}"
-          th:text="'Runner name: '+${currentRunner.firstName}+' '+${currentRunner.lastName}">
-    </span>
-    <span class="runnerbarspan mobilePortraitDelete"
-          th:if="${!currentRunner.callsignOnly}"
-          th:text="'Runner age: '+${currentRunner.age}">
-    </span>
     <span><a
-            th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}" class="btn btn-primary" th:text="'Details'" style="margin:2px;"></a></span>
+            th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}"
+            class="btn btn-primary" th:text="'Your Details'"
+            style="margin:2px; margin-right:20px;"></a></span>
+    <span class="runnerbarspan"
+          th:text="${currentRunner.callsign}+' is logged in'">
+    </span>
     <span><a th:href="@{'/runners/logout'}"
              class="btn btn-primary"
              th:text="'Logout'"
-             style="margin:2px;"></a></span>
+             style="margin:2px; margin-left:20px;"></a></span>
 </p>
 
 
@@ -185,4 +198,6 @@
     <a th:href="@{/runners}">Runners</a>
     <a th:href="@{/trails}">Trails</a>
     <a th:href="@{/comments}">Comments</a>
+    <a th:if="${currentRunner}"
+       th:href="@{/email/contactAdmin}">Contact Us!</a>
 </p>

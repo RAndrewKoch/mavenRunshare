@@ -46,7 +46,8 @@ body {
 
 .homeMenuDropdown, .runnerMenuDropdown,
     .commentsMenuDropdown, .trailMenuDropdown,
-    .runSessionMenuDropdown, .loginMenuDropdown{
+    .runSessionMenuDropdown, .loginMenuDropdown,
+    .contactAdminDropdown {
     }
 
 .sideNavLinkList{
@@ -90,7 +91,7 @@ body {
     z-index:999;
     position: fixed;
     top: 0;
-    width: 90%;
+    width: auto;
     align-content: center;
     background-color:#2A2773;
     border:outset;
@@ -250,6 +251,11 @@ body {
 
 @media screen and (orientation:landscape) and
 (max-width:900px){
+
+    body {
+    background-color:#0A0A0A;
+    }
+
     .mobileLandscapeDelete{
         display:none;
     }
@@ -261,6 +267,10 @@ body {
 
 @media screen and (orientation:portrait) and (max-width:
 800px){
+    body {
+    background-color:#0A0A0A;
+    }
+
     .headerBlankSpace {
         margin-top:110px;
     }

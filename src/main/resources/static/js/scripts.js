@@ -56,3 +56,54 @@ function loop (){
     })
     scroll(loop);
 }
+
+function makeDisappear (element){
+    element.style.display="none";
+}
+
+function toggleComments (){
+    var topCommentsButtonSpan = document
+    .getElementById
+    ("topCommentsButtonSpan");
+    var bottomCommentsButtonSpan = document.getElementById
+    ("bottomCommentsButtonSpan");
+    var comments = document.getElementById("comments");
+    var bottomCommentsButton = document.getElementById
+    ("bottomCommentsButton")
+    if (comments.hasAttribute("hidden")){
+        topCommentsButtonSpan.innerHTML="Hide";
+        bottomCommentsButtonSpan.innerHTML="Hide";
+        comments.removeAttribute("hidden");
+        bottomCommentsButton.removeAttribute("hidden");
+    } else if (!comments.hasAttribute("hidden")){
+        topCommentsButtonSpan.innerHTML="Display";
+        bottomCommentsButtonSpan.innerHTML="Display";
+        comments.setAttribute("hidden", true);
+        bottomCommentsButton.setAttribute("hidden", true);
+    }
+}
+
+function toggleRunSessions (){
+    var topRunSessionsButtonSpan = document .getElementById
+    ("topRunSessionsButtonSpan");
+    var bottomRunSessionsButtonSpan = document.getElementById("bottomRunSessionsButtonSpan");
+    var runSessions = document.getElementById
+    ("runSessionsList");
+    var runSessionsJoined = document.getElementById
+    ("runSessionsListJoined");
+    var bottomRunSessionsButton = document.getElementById
+    ("bottomRunSessionsButton")
+    if (runSessions.hasAttribute("hidden")){
+        topRunSessionsButtonSpan.innerHTML="Hide";
+        bottomRunSessionsButtonSpan.innerHTML="Hide";
+        runSessions.removeAttribute("hidden");
+        runSessionsJoined.removeAttribute("hidden");
+        bottomRunSessionsButton.removeAttribute("hidden");
+    } else if (!runSessions.hasAttribute("hidden")){
+        topRunSessionsButtonSpan.innerHTML="Display";
+        bottomRunSessionsButtonSpan.innerHTML="Display";
+        runSessions.setAttribute("hidden", true);
+        runSessionsJoined.setAttribute("hidden", true);
+        bottomRunSessionsButton.setAttribute("hidden", true);
+    }
+}
