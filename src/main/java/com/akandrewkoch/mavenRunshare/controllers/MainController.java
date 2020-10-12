@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
 import java.util.Optional;
 
 @Controller
@@ -56,4 +57,5 @@ public class MainController {
             model.addAttribute("currentRunner", false);
         }
     }
+
 }

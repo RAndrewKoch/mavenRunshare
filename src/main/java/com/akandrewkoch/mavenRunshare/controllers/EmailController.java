@@ -4,6 +4,8 @@ import com.akandrewkoch.mavenRunshare.models.DTO.NewPasswordDTO;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewRunnerRegistrationDTO;
 import com.akandrewkoch.mavenRunshare.models.JavaEmail;
 import com.akandrewkoch.mavenRunshare.models.Runner;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -126,4 +128,29 @@ public class EmailController extends MainController {
         return "redirect:/runners";
     }
 
+    @GetMapping("/contactAdmin")
+    public String displayContactAdminForm (Model model, HttpServletRequest request){
+        setRunnerInModel(request, model);
+        model.addAttribute("title", "contact Admins");
+        return "email/contactAdmin";
+    }
+
+    @PostMapping("/contactAdmin")
+    public String processContactAdminForm (@RequestParam String subject, @RequestParam String content, Model model, HttpSession session){
+        Runner contactingRunner = getRunnerFromSession(session);
+        subject = Jsoup.clean(subject, Whitelist.none());
+        content = Jsoup.clean(content, Whitelist.none());
+        content = "<body>"+
+                "<h1>"+content+"</h1>"+
+                "<h2>From: "+contactingRunner.getCallsign()+"</h2>"+
+                "<h3>At: "+contactingRunner.getEmail()+"</h3>"+
+                "</body>";
+        JavaEmail javaEmail = new JavaEmail();
+        if (System.getenv("ENVIRONMENT_URL").equals("http://localhost:8080")){
+            content += "sent via development mode";
+        }
+        javaEmail.sendEmail(System.getenv("SENDING_EMAIL_ADDRESS"), contactingRunner.getEmail(), subject, content);
+        return "redirect:/runners/runnerDetails/"+contactingRunner.getId()+"?emailSent="+subject;
+
+    }
 }

@@ -10,6 +10,21 @@
 
 <div class="headerBlankSpace"></div>
 
+<div th:if="${emailSent}"
+     style="background-color:#2A2773; color: #f1f1f1; cursor: pointer;"
+     onclick="makeDisappear(this)">
+    <div class="centeringDiv">
+        <div>
+            <span style="font-style:italic;"
+                  th:text="${emailSent}"></span>
+            <span th:text="' sent to Admin'"></span>
+        </div>
+    </div>
+    <div class="centeringDiv">
+        <div th:text="'Click bar to remove'"></div>
+    </div>
+</div>
+
 <div class="centeringDiv"
      th:unless="${currentRunnerIsDetailedRunner}">
     <small class="form-text text-muted">Viewing
@@ -19,7 +34,7 @@
 <div class="centeringDiv">
     <h1 class="runnerDetailsHeader"
         th:text="${detailedRunner.Callsign}"
-        style="margin-bottom:10px;">
+        style="margin-bottom:10px; padding:4px;">
     </h1>
 </div>
 
@@ -67,7 +82,8 @@
     <a
             th:href="@{'/runners?runnerLevel='+${currentRunner.runnerLevel.getDisplayName()}}"
             class="btn btn-primary"
-            th:text="'View other runners of level: '+${currentRunner.runnerLevel.getDisplayName()}" style="margin:3px;"></a>
+            th:text="'View other runners of level: '+${currentRunner.runnerLevel.getDisplayName()}"
+            style="margin:3px;"></a>
 </div>
 
 <div th:if="${currentRunnerIsDetailedRunner}">
@@ -85,17 +101,35 @@
         th:unless="${currentRunnerIsDetailedRunner}"
         class="centeringDiv">
     <a class="btn btn-primary"
-       th:href="@{'/comments/createComment/'+${detailedRunner.id}}" th:text="'Send a private message to '+${detailedRunner.callsign}"></a>
+       th:href="@{'/comments/createComment/'+${detailedRunner.id}}"
+       th:text="'Send a private message to '+${detailedRunner.callsign}"></a>
 
+</div>
+
+<div class="centeringDiv" style="margin:5px;">
+    <div th:if="${comments}">
+        <h1 class="btn btn-primary"
+            style="padding:4px;"
+            onclick="toggleComments()">
+            <span id="topCommentsButtonSpan">Display
+            </span>
+            <span th:text="'Comments for '+${detailedRunner.callsign}"></span>
+        </h1>
+    </div>
+    <div th:if="${runSessions}">
+        <h1 class="btn btn-primary" style="padding:4px;"
+            onclick="toggleRunSessions()">
+            <span id="topRunSessionsButtonSpan">Display</span>
+            <span th:text="'Run sessions for '+${detailedRunner.callsign}"></span>
+        </h1>
+    </div>
 </div>
 
 <div style="padding:10px"
      th:if="${currentRunnerIsDetailedRunner}">
-    <div th:if="${comments}" class="centeringDiv">
-        <h1 class="runnerDetailsHeader"
-            th:text="'Comments for '+${detailedRunner.callsign}"></h1>
-    </div>
-    <div th:if="${comments}">
+
+    <div th:if="${comments}"
+         id="comments" hidden>
         <div th:each="comment : ${comments}"
              style="border-style:solid">
             <p>
@@ -107,7 +141,8 @@
                       th:text="' about the '"></span>
                 <span
                         th:if="${comment.runSession}"><a
-                        th:href="@{'../../runSessions/runSessionDetails/'+${comment.runSession.id}}" th:text="${comment.runSession.name}"></a></span>
+                        th:href="@{'../../runSessions/runSessionDetails/'+${comment.runSession.id}}"
+                        th:text="${comment.runSession.name}"></a></span>
                 <span th:if="${comment.runSession}"
                       th:text="' session'"></span>
                 <span th:if="${comment.trail}"
@@ -130,9 +165,19 @@
         </div>
     </div>
 </div>
+<div class="centeringDiv">
+    <h1 class="btn btn-primary"
+        style="padding:4px;"
+        onclick="toggleComments()" hidden
+        id="bottomCommentsButton">
+        <span id="bottomCommentsButtonSpan">Display</span>
+        <span th:text="'Comments for '+${detailedRunner.callsign}"></span>
+    </h1>
+</div>
 
-<div th:if="${runSessions}" style="border-style:solid;
-     padding:20px; margin:5px;">
+<div id="runSessionsList" th:if="${runSessions}"
+     style="border-style:solid;
+     padding:20px; margin:5px;" hidden>
     <div class="centeringDiv">
         <h1 class="runnerDetailsHeader"
             th:text="'Run Sessions '+${detailedRunner.callsign}+' led'">
@@ -163,8 +208,10 @@
     </div>
 </div>
 
+
 <div th:if="${otherSessions}" style="border-style:solid;
-     padding:20px; margin:5px;">
+     padding:20px; margin:5px;"
+     id="runSessionsListJoined" hidden>
     <div th:if="${otherSessions}" class="centeringDiv">
         <h1 class="runnerDetailsHeader"
             th:text="'Run Sessions '+${detailedRunner.callsign}+' joined'">
@@ -193,6 +240,16 @@
             </tr>
         </table>
     </div>
+</div>
+<div class="centeringDiv" id="bottomRunSessionsButton"
+     hidden>
+    <h1 class="btn btn-primary" style="padding:4px;"
+        onclick="toggleRunSessions()">
+        <span id="bottomRunSessionsButtonSpan">Display
+        </span>
+        <span
+                th:text="'Run sessions for '+${detailedRunner.callsign}"></span>
+    </h1>
 </div>
 
 

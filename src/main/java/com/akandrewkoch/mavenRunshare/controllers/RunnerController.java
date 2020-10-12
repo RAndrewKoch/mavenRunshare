@@ -254,8 +254,12 @@ public class RunnerController extends MainController {
     }
 
     @GetMapping("/runnerDetails/{id}")
-    private String displayRunnerDetailsView(@PathVariable Integer id, Model model, HttpServletRequest request, HttpSession session) {
+    private String displayRunnerDetailsView(@PathVariable Integer id, @RequestParam(required = false) String emailSent, Model model, HttpServletRequest request, HttpSession session) {
         setRunnerInModel(request, model);
+//        check if we just sent an admin email
+        if (emailSent != null){
+            model.addAttribute("emailSent", emailSent);
+        }
         //        if no runner is logged in, detail pages cannot be viewed
         if (getRunnerFromSession(session) == null) {
             model.addAttribute("detailedRunner", runnerRepository.findById(id).get());
