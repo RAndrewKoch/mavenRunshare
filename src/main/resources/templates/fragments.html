@@ -180,14 +180,14 @@
     <span><a
             th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}"
             class="btn btn-primary" th:text="'Your Details'"
-            style="margin:2px;"></a></span>
+            style="margin:2px; margin-right:20px;"></a></span>
     <span class="runnerbarspan"
           th:text="${currentRunner.callsign}+' is logged in'">
     </span>
     <span><a th:href="@{'/runners/logout'}"
              class="btn btn-primary"
              th:text="'Logout'"
-             style="margin:2px;"></a></span>
+             style="margin:2px; margin-left:20px;"></a></span>
 </p>
 
 

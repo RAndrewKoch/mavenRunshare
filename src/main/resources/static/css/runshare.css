@@ -91,7 +91,7 @@ body {
     z-index:999;
     position: fixed;
     top: 0;
-    width: 90%;
+    width: auto;
     align-content: center;
     background-color:#2A2773;
     border:outset;
