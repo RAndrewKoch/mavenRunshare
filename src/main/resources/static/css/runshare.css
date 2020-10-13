@@ -278,7 +278,9 @@ body {
     .homeMenuDropdown, .runnerMenuDropdown,
     .commentsMenuDropdown, .trailMenuDropdown,
     .runSessionMenuDropdown, .loginMenuDropdown,
-    .runnerMenu, .commentsMenu, .trailMenu, .runSessionMenu {
+    .runnerMenu, .commentsMenu, .trailMenu, .runSessionMenu,
+    .contactAdminDropdown
+     {
          text-align:center;
      }
     .dropMenuHeader {
