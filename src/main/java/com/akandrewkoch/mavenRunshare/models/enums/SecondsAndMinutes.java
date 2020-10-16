@@ -2,6 +2,7 @@ package com.akandrewkoch.mavenRunshare.models.enums;
 
 public enum SecondsAndMinutes {
 
+    ZERO("Zero", "00", 0),
     ONE("One","01", 1),
     TWO("Two", "02", 2),
     THREE("Three","03", 3),
