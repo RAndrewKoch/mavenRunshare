@@ -120,7 +120,8 @@
 </div>
 
 <div class="centeringDiv" style="margin:5px;">
-    <div th:if="${comments}">
+    <div
+            th:if="${comments} and ${currentRunner==detailedRunner}">
         <h1 class="btn btn-primary"
             style="padding:4px;"
             onclick="toggleComments()">
