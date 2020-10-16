@@ -15,7 +15,7 @@ public enum SecondsAndMinutes {
     TEN("Ten","10", 10),
     ELEVEN("Eleven","11", 11),
     TWELVE("Twelve","12",12),
-    THIRTEEN("Thirteeen", "13", 13),
+    THIRTEEN("Thirteen", "13", 13),
     FOURTEEN("Fourteen","14",14),
     FIFTEEN("Fifteen", "15", 15),
     SIXTEEN("Sixteen", "16", 16),

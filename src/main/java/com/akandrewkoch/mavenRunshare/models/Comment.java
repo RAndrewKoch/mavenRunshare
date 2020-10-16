@@ -52,6 +52,8 @@ public class Comment extends AbstractEntity {
 
     private Boolean privateMessage;
 
+    private Boolean deletedComment;
+
 
 //    constructors
     public Comment (){}
@@ -66,6 +68,7 @@ public class Comment extends AbstractEntity {
         this.runSession=runsession;
         this.runners = runners;
         this.privateMessage = privateMessage;
+        this.deletedComment = false;
     }
 
 //    getters
@@ -88,6 +91,8 @@ public class Comment extends AbstractEntity {
     public List<Runner> getRunners() { return runners; }
 
     public Boolean getPrivateMessage() { return privateMessage; }
+
+    public Boolean getDeletedComment() { return deletedComment; }
 
     //    Setters
 
@@ -123,5 +128,7 @@ public class Comment extends AbstractEntity {
     public void setRunners(List<Runner> runners) { this.runners = runners; }
 
     public void blankRunners () {this.runners.clear();}
+
+    public void deleteComment () {this.deletedComment = true;}
 
 }

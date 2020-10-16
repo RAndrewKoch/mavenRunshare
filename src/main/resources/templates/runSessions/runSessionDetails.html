@@ -10,6 +10,21 @@
 <p th:replace="fragments :: navbar"></p>
 
 <div class="headerBlankSpace"></div>
+
+<div th:if="${commentDeleted}"  style="background-color:#2A2773; color: #f1f1f1; cursor: pointer;"
+     onclick="makeDisappear(this)">
+    <div class="centeringDiv">
+        <div>
+            <span style="font-style:italic;"
+                  th:text="${commentDeleted}"></span>
+            <span th:text="' comment deleted'"></span>
+        </div>
+    </div>
+    <div class="centeringDiv">
+        <div th:text="'Click bar to remove'"></div>
+    </div>
+</div>
+
 <div class = "centeringDiv">
     <h1 class="runSessionDetailsHeader"
         th:text="${detailedRunSession.name}">
@@ -68,8 +83,13 @@
 </div>
 <div th:each="comment : ${comments}"
      style="border-style:solid"
-     th:if="${comment.privateMessage == false or comment.messageCreator == currentRunner or comment.runners.contains(currentRunner) }">
+     th:if="${(comment.privateMessage == false or comment.messageCreator == currentRunner or comment.runners.contains(currentRunner)) and (comment.deletedComment!=true) }">
     <p>
+        <small
+                th:if="${comment.privateMessage == true}"
+                class="form-text text-muted" style="text-align:right; margin-right:5px;">Private
+            Message
+        </small>
     <span><a
             th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
              th:text="${comment.messageCreator.callsign}"></a></span>
@@ -85,11 +105,14 @@
     <p th:text="${comment.message}"></p>
     <span style="padding-right:10px;"
           th:text="'Created on: '+${comment.displayStringDate()}"></span><span th:text="'At: '+${comment.displayStringTime()}"></span>
-    <small
-            th:if="${comment.privateMessage == true}"
-            class="form-text text-muted">Private
-        Message
-    </small>
+    <div
+            th:if="${comment.messageCreator == currentRunner}"
+            style="text-align:right;">
+        <a class="btn btn-primary"
+           style="margin:5px; background-color:red !important;"
+           th:href="@{'/runSessions/runSessionDetails/'+${detailedRunSession.id}+'?deleteComment='+${comment.id}}">Delete
+            Comment</a>
+    </div>
 </div>
 
 <div class="centeringDiv">

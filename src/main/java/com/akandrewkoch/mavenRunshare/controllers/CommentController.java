@@ -29,7 +29,13 @@ import java.util.Optional;
 public class CommentController extends MainController{
 
     @GetMapping(value={"", "index"})
-    public String displayCommentIndex(HttpServletRequest request, Model model){
+    public String displayCommentIndex(@RequestParam(required=false) Integer deleteComment, HttpServletRequest request, Model model){
+        if (deleteComment != null){
+            Comment commentToDelete = commentRepository.findById(deleteComment).get();
+            commentToDelete.deleteComment();
+            commentRepository.save(commentToDelete);
+        }
+
         setRunnerInModel(request, model);
         model.addAttribute("title", "Comments");
         model.addAttribute("comments", commentRepository.findFirst10ByOrderByDateCreatedDescTimeCreatedDesc());

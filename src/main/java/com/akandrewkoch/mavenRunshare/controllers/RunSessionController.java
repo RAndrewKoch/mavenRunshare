@@ -156,13 +156,20 @@ public class RunSessionController extends MainController {
     }
 
     @GetMapping("/runSessionDetails/{id}")
-    public String displayRunSessionDetails(@PathVariable Integer id, Model model, HttpServletRequest request) {
+    public String displayRunSessionDetails(@PathVariable Integer id, Model model, @RequestParam(required=false) Integer deleteComment, HttpServletRequest request) {
         setRunnerInModel(request, model);
 
         Optional<RunSession> testRunSession = runSessionRepository.findById(id);
 
         if (testRunSession.isEmpty()) {
             return "runSessions/index";
+        }
+
+        if (deleteComment!=null){
+            Comment commentToDelete = commentRepository.findById(deleteComment).get();
+            commentToDelete.deleteComment();
+            model.addAttribute("commentDeleted", commentToDelete.getMessageTitle());
+            commentRepository.save(commentToDelete);
         }
 
         RunSession detailedRunSession = testRunSession.get();

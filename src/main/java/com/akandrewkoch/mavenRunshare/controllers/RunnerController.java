@@ -254,11 +254,19 @@ public class RunnerController extends MainController {
     }
 
     @GetMapping("/runnerDetails/{id}")
-    private String displayRunnerDetailsView(@PathVariable Integer id, @RequestParam(required = false) String emailSent, Model model, HttpServletRequest request, HttpSession session) {
+    private String displayRunnerDetailsView(@PathVariable Integer id, @RequestParam(required = false) String emailSent, @RequestParam(required=false) Integer deleteComment, Model model, HttpServletRequest request, HttpSession session) {
         setRunnerInModel(request, model);
 //        check if we just sent an admin email
         if (emailSent != null){
             model.addAttribute("emailSent", emailSent);
+        }
+
+        if (deleteComment!=null){
+            Comment commentToDelete = commentRepository.findById(deleteComment).get();
+            model.addAttribute("commentDeleted", commentToDelete.getMessageTitle());
+            commentToDelete.deleteComment();
+            commentRepository.save(commentToDelete);
+
         }
         //        if no runner is logged in, detail pages cannot be viewed
         if (getRunnerFromSession(session) == null) {
