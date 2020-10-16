@@ -2,6 +2,7 @@ package com.akandrewkoch.mavenRunshare.models.enums;
 
 public enum Hours {
 
+    ZERO("Zero", "0", 0),
     ONE("One","1", 1),
     TWO("Two", "2", 2),
     THREE("Three","3", 3),

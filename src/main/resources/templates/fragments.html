@@ -139,9 +139,9 @@
                 </div>
             </div>
 
-            <div class="contactAdminDropdown"
-                 th:if="${currentRunner}">
-                <a th:href="@{/email/contactAdmin}">
+            <div >
+                <a th:href="@{/email/contactAdmin}"
+                   class="contactAdminDropdown" th:if="${currentRunner}">
                     <span class="dropMenuHeader">Contact
                         Admin</span>
                 </a>

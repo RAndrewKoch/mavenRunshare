@@ -24,6 +24,19 @@
         <div th:text="'Click bar to remove'"></div>
     </div>
 </div>
+<div th:if="${commentDeleted}"  style="background-color:#2A2773; color: #f1f1f1; cursor: pointer;"
+     onclick="makeDisappear(this)">
+    <div class="centeringDiv">
+        <div>
+            <span style="font-style:italic;"
+                  th:text="${commentDeleted}"></span>
+            <span th:text="' comment deleted'"></span>
+        </div>
+    </div>
+    <div class="centeringDiv">
+        <div th:text="'Click bar to remove'"></div>
+    </div>
+</div>
 
 <div class="centeringDiv"
      th:unless="${currentRunnerIsDetailedRunner}">
@@ -131,11 +144,19 @@
     <div th:if="${comments}"
          id="comments" hidden>
         <div th:each="comment : ${comments}"
+             th:unless="${comment.deletedComment}"
              style="border-style:solid">
             <p>
-        <span><a
-                th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
-                th:text="${comment.messageCreator.callsign}"></a></span>
+                <small
+                        th:if="${comment.privateMessage == true}"
+                        class="form-text text-muted"
+                        style="text-align:right; margin-right:5px;"
+                >Private
+                    Message
+                </small>
+                <span><a
+                        th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
+                        th:text="${comment.messageCreator.callsign}"></a></span>
                 <span th:text="' said'"></span>
                 <span th:if="${comment.runSession}"
                       th:text="' about the '"></span>
@@ -157,11 +178,14 @@
             </p>
             <p th:text="'Title: '+${comment.messageTitle}"></p>
             <p th:text="${comment.message}"></p>
-            <small
-                    th:if="${comment.privateMessage == true}"
-                    class="form-text text-muted">Private
-                Message
-            </small>
+            <div
+                    th:if="${comment.messageCreator == detailedRunner}"
+                    style="text-align:right;">
+                <a class="btn btn-primary"
+                   style="margin:5px; background-color:red !important;"
+                   th:href="@{'/runners/runnerDetails/'+${currentRunner.id}+'?deleteComment='+${comment.id}}">Delete
+                    Comment</a>
+            </div>
         </div>
     </div>
 </div>
@@ -256,5 +280,6 @@
 <div class="centeringDiv">
     <p th:replace="fragments :: listnavbar"></p>
 </div>
+<script th:if="${commentDeleted}">toggleComments();</script>
 </body>
 </html>

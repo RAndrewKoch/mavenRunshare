@@ -1,6 +1,7 @@
 package com.akandrewkoch.mavenRunshare.controllers;
 
 
+import com.akandrewkoch.mavenRunshare.models.Comment;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewTrailDTO;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewTrailDifficultyDTO;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewTrailSceneryDTO;
@@ -124,8 +125,15 @@ public class TrailController extends MainController{
 
 
     @GetMapping("/trailDetails/{id}")
-    public String displayTrailDetails (@PathVariable Integer id, Model model, HttpServletRequest request, HttpSession session){
+    public String displayTrailDetails (@PathVariable Integer id, Model model, @RequestParam(required=false) Integer deleteComment, HttpServletRequest request, HttpSession session){
         setRunnerInModel(request, model);
+
+        if (deleteComment!=null){
+            Comment commentToDelete = commentRepository.findById(deleteComment).get();
+            commentToDelete.deleteComment();
+            model.addAttribute("commentDeleted", commentToDelete.getMessageTitle());
+            commentRepository.save(commentToDelete);
+        }
 
         //testing to make sure the id is a real trail and reuturning the trail index if not
         Optional<Trail> testTrail = trailRepository.findById(id);

@@ -31,7 +31,8 @@
         Comment</a>
 </div>
 <div th:each="comment : ${comments}">
-    <div th:unless="${comment.privateMessage == true}"
+    <div
+            th:unless="${comment.privateMessage == true} or ${comment.deletedComment}"
          style="border-style:solid">
         <p>
         <span><a
@@ -55,6 +56,13 @@
         </p>
         <p th:text="'Title: '+${comment.messageTitle}"></p>
         <p th:text="${comment.message}"></p>
+        <div th:if="${currentRunner}"
+             style="text-align:right;">
+            <a style="background-color:red !important; margin:5px;"
+               class="btn btn-primary "
+                    th:if="${currentRunner} == ${comment.messageCreator}"
+                    th:href="@{'/comments/index?deleteComment='+${comment.id}}">Delete Comment</a>
+        </div>
     </div>
 </div>
 <div class="centeringDiv">
