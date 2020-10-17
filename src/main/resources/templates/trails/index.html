@@ -10,6 +10,25 @@
 <p th:replace="fragments :: navbar"></p>
 
 <div class="headerBlankSpace"></div>
+
+<div th:if="${deleteTrail}"
+     style="background-color:#2A2773; color: #f1f1f1; cursor: pointer;"
+     onclick="makeDisappear(this)">
+    <div class="centeringDiv">
+        <div>
+            <span style="font-style:italic;"
+                  th:text="${deleteTrail}"></span>
+            <span th:text="' trail deleted'"></span>
+        </div>
+    </div>
+    <div class="centeringDiv">Note: Comments and
+        RunSessions associated
+        with this trail are not deleted</div>
+    <div class="centeringDiv">
+        <div th:text="'Click bar to remove'"></div>
+    </div>
+</div>
+
 <h1 style="text-align:center;">Trail
     Catalog</h1>
 
@@ -59,7 +78,9 @@
         <th>Scenery Rating</th>
         <th class="mobilePortraitDelete">Ratings</th>
     </tr>
-    <tr class="trailtableline" th:each="trail : ${trails}">
+    <tr class="trailtableline"
+        th:each="trail : ${trails}"
+        th:unless="${trail.deletedTrail}">
         <td>
             <a th:href="@{'trails/trailDetails/'+${trail.id}}"
                th:text="${trail.name}"></a>
