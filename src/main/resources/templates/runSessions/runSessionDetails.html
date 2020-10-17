@@ -11,7 +11,7 @@
 
 <div class="headerBlankSpace"></div>
 
-<div th:if="${commentDeleted}"  style="background-color:#2A2773; color: #f1f1f1; cursor: pointer;"
+<div th:if="${commentDeleted}" style="background-color:#2A2773; color: #f1f1f1; cursor: pointer;"
      onclick="makeDisappear(this)">
     <div class="centeringDiv">
         <div>
@@ -25,98 +25,127 @@
     </div>
 </div>
 
-<div class = "centeringDiv">
-    <h1 class="runSessionDetailsHeader"
-        th:text="${detailedRunSession.name}">
-    </h1>
-</div>
-<div class="centeringDiv"
-     th:if="${currentRunner} and ${currentRunner!=detailedRunSession.creator}">
-    <small class="form-text text-muted">Run Sessions
-    can only be edited by their creator</small>
-</div>
-<div class="centeringDiv"
-     th:if="${currentRunner} and ${currentRunner==detailedRunSession.creator}">
-    <a th:href="@{'/runSessions/editRunSession/'+${detailedRunSession.id}}" class="btn btn-primary" th:text="'Edit '+${detailedRunSession.name}"></a>
-</div>
-<div class="centeringDiv"
-     th:unless="${currentRunner}">
-    <a
-            th:href="@{'/runners/login/'+${detailedRunSession.creator.id}}" class="btn btn-primary" th:text="'Login as '+${detailedRunSession.creator.callsign}+' to edit this session'"></a>
-</div>
-<div class="centeringDiv">
+<div th:unless="${detailedRunSession.deletedRunSession}">
+    <div class="centeringDiv">
+        <h1 class="runSessionDetailsHeader"
+            th:text="${detailedRunSession.name}">
+        </h1>
+    </div>
+    <div class="centeringDiv"
+         th:if="${currentRunner} and ${currentRunner!=detailedRunSession.creator}">
+        <small class="form-text text-muted">Run Sessions
+            can only be edited or deleted by their creator</small>
+    </div>
+    <div class="centeringDiv">
+        <div th:if="${currentRunner} and ${currentRunner==detailedRunSession.creator}">
+            <a th:href="@{'/runSessions/editRunSession/'+${detailedRunSession.id}}" class="btn btn-primary"
+               th:text="'Edit '+${detailedRunSession.name}"></a>
+        </div>
+        <div th:if="${currentRunner} and ${currentRunner==detailedRunSession.creator}">
+            <button class="btn btn-primary" th:text="'Delete run session'"
+                    onclick="changeToConfirmationButton(this, document.getElementById('confirmDeleteRunSession'))"></button>
+            <a hidden id="confirmDeleteRunSession"
+               th:href="@{'/runSessions?deleteRunSession='+${detailedRunSession.id}}"
+            class="btn
+            btn-primary"
+               th:text="'Confirm Delete'" style="background-color:red !important;"></a>
+        </div>
+    </div>
+    <div class="centeringDiv"
+         th:unless="${currentRunner}">
+        <a
+                th:href="@{'/runners/login/'+${detailedRunSession.creator.id}}" class="btn btn-primary"
+                th:text="'Login as '+${detailedRunSession.creator.callsign}+' to edit this session'"></a>
+    </div>
+    <div class="centeringDiv">
     <span class="mobileBox"><a
             th:href="@{'/runners/runnerDetails/'+${detailedRunSession.creator.id}}"
             th:text="'Creator: '+${detailedRunSession.creator.callsign}"></a></span>
-    <span class="mobileBox"><a
-            th:href="@{'/trails/trailDetails/'+${detailedRunSession.trail.id}}"
-            th:text="'Trail: '+${detailedRunSession.trail.name}"></a></span>
-</div>
-<div class="centeringDiv">
+        <span class="mobileBox"><a
+                th:href="@{'/trails/trailDetails/'+${detailedRunSession.trail.id}}"
+                th:text="'Trail: '+${detailedRunSession.trail.name}"></a></span>
+    </div>
+    <div class="centeringDiv">
     <span class="mobileBox"
-            th:text="'Run Time: '+${detailedRunSession.time}"></span>
-    <span class="mobileBox"
-            th:text="'Date: '+${detailedRunSession.getDisplayDate()}"></span>
-</div>
-<div th:if=${runners} class="centeringDiv">
+          th:text="'Run Time: '+${detailedRunSession.time}"></span>
         <span class="mobileBox"
-                th:text="'Other Runners on this Run Session: '+${runners}"></span>
-</div>
+              th:text="'Date: '+${detailedRunSession.getDisplayDate()}"></span>
+    </div>
+    <div th:if=${runners} class="centeringDiv">
+        <span class="mobileBox"
+              th:text="'Other Runners on this Run Session: '+${runners}"></span>
+    </div>
 
-<div class="centeringDiv" th:if="${currentRunner}">
-    <a th:href="@{'/comments/createComment/'+${detailedRunSession.id}}"
-       class="btn btn-primary" style="margin:3px;">Comment on this session</a>
-</div>
+    <div class="centeringDiv" th:if="${currentRunner}">
+        <a th:href="@{'/comments/createComment/'+${detailedRunSession.id}}"
+           class="btn btn-primary" style="margin:3px;">Comment on this session</a>
+    </div>
 
 
-<div th:unless="${currentRunner}"
-     class="centeringDiv" >
-    <a th:href="@{/runners/login}"
-       class="btn btn-primary" style="margin:3px;">Login to
-        create a
-        comment</a>
-</div>
-<div th:unless="${currentRunner}" class="centeringDiv">
-    <small class="form-text text-muted">Private
-        comments on this session may be hidden if
-        not logged in</small>
-</div>
-<div th:each="comment : ${comments}"
-     style="border-style:solid"
-     th:if="${(comment.privateMessage == false or comment.messageCreator == currentRunner or comment.runners.contains(currentRunner)) and (comment.deletedComment!=true) }">
-    <p>
-        <small
-                th:if="${comment.privateMessage == true}"
-                class="form-text text-muted" style="text-align:right; margin-right:5px;">Private
-            Message
-        </small>
-    <span><a
-            th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
-             th:text="${comment.messageCreator.callsign}"></a></span>
-        <span th:text = "' said'"></span>
-        <span th:if="${comment.trail}"
-              th:text="' about the '"></span>
-        <span th:if="${comment.trail}"><a
-                th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}" th:text="${comment.trail.name}"></a></span>
-        <span th:if="${comment.trail}" th:text="' trail'"></span>
-        <span th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}"></span>
-    </p>
-    <p th:text="'Title: '+${comment.messageTitle}"></p>
-    <p th:text="${comment.message}"></p>
-    <span style="padding-right:10px;"
-          th:text="'Created on: '+${comment.displayStringDate()}"></span><span th:text="'At: '+${comment.displayStringTime()}"></span>
-    <div
-            th:if="${comment.messageCreator == currentRunner}"
-            style="text-align:right;">
-        <a class="btn btn-primary"
-           style="margin:5px; background-color:red !important;"
-           th:href="@{'/runSessions/runSessionDetails/'+${detailedRunSession.id}+'?deleteComment='+${comment.id}}">Delete
-            Comment</a>
+    <div th:unless="${currentRunner}"
+         class="centeringDiv">
+        <a th:href="@{/runners/login}"
+           class="btn btn-primary" style="margin:3px;">Login to
+            create a
+            comment</a>
+    </div>
+    <div th:unless="${currentRunner}" class="centeringDiv">
+        <small class="form-text text-muted">Private
+            comments on this session may be hidden if
+            not logged in</small>
+    </div>
+    <div th:each="comment : ${comments}"
+         style="border-style:solid"
+         th:if="${(comment.privateMessage == false or comment.messageCreator == currentRunner or comment.runners.contains(currentRunner)) and (comment.deletedComment!=true) }">
+        <p>
+            <small
+                    th:if="${comment.privateMessage == true}"
+                    class="form-text text-muted" style="text-align:right; margin-right:5px;">Private
+                Message
+            </small>
+            <span><a
+                    th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
+                    th:text="${comment.messageCreator.callsign}"></a></span>
+            <span th:text="' said'"></span>
+            <span th:if="${comment.trail}"
+                  th:text="' about the '"></span>
+            <span th:if="${comment.trail}"><a
+                    th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}"
+                    th:text="${comment.trail.name}"></a></span>
+            <span th:if="${comment.trail}" th:text="' trail'"></span>
+            <span th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}"></span>
+        </p>
+        <p th:text="'Title: '+${comment.messageTitle}"></p>
+        <p th:text="${comment.message}"></p>
+        <span style="padding-right:10px;"
+              th:text="'Created on: '+${comment.displayStringDate()}"></span><span
+            th:text="'At: '+${comment.displayStringTime()}"></span>
+        <div
+                th:if="${comment.messageCreator == currentRunner}"
+                style="text-align:right;">
+            <a class="btn btn-primary"
+               style="margin:5px; background-color:red !important;"
+               th:href="@{'/runSessions/runSessionDetails/'+${detailedRunSession.id}+'?deleteComment='+${comment.id}}">Delete
+                Comment</a>
+        </div>
     </div>
 </div>
 
+<div th:if="${detailedRunSession.deletedRunSession}">
+    <div class="centeringDiv">
+        <div>We are sorry, but this run session has been
+            deleted by its creator</div>
+    </div>
+    <div class="centeringDiv">
+        <a th:href="@{/runSessions}"
+           class="btn btn-primary">Return to run session index
+        </a>
+    </div>
+</div>
+
+
 <div class="centeringDiv">
-<p th:replace="fragments :: listnavbar"></p>
+    <p th:replace="fragments :: listnavbar"></p>
 </div>
 </body>
 </html>

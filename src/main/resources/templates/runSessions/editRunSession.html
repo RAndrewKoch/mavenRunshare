@@ -68,7 +68,7 @@
                 th:field="*{newRunSessionDTO.trail}">
         <option th:each="trail : ${trails}"
                 th:text="${trail.name}"
-                th:value="${trail.id}"></option>
+                th:value="${trail.id}" th:unless="${trail.deletedTrail}"></option>
         </select>
         <p th:errors="${newRunSessionDTO.trail}"
            class="errors"></p>

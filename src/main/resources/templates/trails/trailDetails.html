@@ -49,8 +49,11 @@
            th:href="@{/runners/login}"
            th:text="'Log in to edit trail details'"
            class="btn btn-primary"></a>
-        <a th:if="${currentRunner==detailedTrail.trailCreator}"
-           th:text="'Delete trail'" class="btn btn-primary"
+        <button th:if="${currentRunner==detailedTrail.trailCreator}"
+                onclick="changeToConfirmationButton(this, document.getElementById('confirmDeleteTrail'))"
+                th:text="'Delete Trail'"  class="btn btn-primary"></button>
+        <a hidden id="confirmDeleteTrail" th:if="${currentRunner==detailedTrail.trailCreator}"
+           th:text="'Confirm delete trail'" class="btn btn-primary"
            style="background-color:red !important"
            th:href="@{'/trails?deleteTrail='+${detailedTrail.id}}"></a>
     </div>
