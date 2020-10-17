@@ -1,13 +1,10 @@
 package com.akandrewkoch.mavenRunshare.controllers;
 
 
-import com.akandrewkoch.mavenRunshare.models.Comment;
+import com.akandrewkoch.mavenRunshare.models.*;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewTrailDTO;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewTrailDifficultyDTO;
 import com.akandrewkoch.mavenRunshare.models.DTO.NewTrailSceneryDTO;
-import com.akandrewkoch.mavenRunshare.models.Trail;
-import com.akandrewkoch.mavenRunshare.models.TrailDifficultyRating;
-import com.akandrewkoch.mavenRunshare.models.TrailSceneryRating;
 import com.akandrewkoch.mavenRunshare.models.enums.TrailDifficulty;
 import com.akandrewkoch.mavenRunshare.models.enums.TrailScenery;
 import org.springframework.stereotype.Controller;
@@ -27,9 +24,16 @@ public class TrailController extends MainController{
 
     //todo-create an edit view for Trails
     @GetMapping(value={"", "/{sortType}"})
-    public String displayTrailIndex (@PathVariable(required=false) String sortType, Model model, HttpServletRequest request){
+    public String displayTrailIndex (@PathVariable(required=false) String sortType, @RequestParam(required=false) Integer deleteTrail, Model model, HttpServletRequest request){
         setRunnerInModel(request, model);
         model.addAttribute("title", "Trail List");
+
+        if (deleteTrail!=null){
+            Trail trailToDelete = trailRepository.findById(deleteTrail).get();
+            model.addAttribute("deleteTrail", trailToDelete.getName());
+            trailToDelete.deleteTrail();
+            trailRepository.save(trailToDelete);
+        }
         if (sortType!=null) {
             switch (sortType) {
                 case "nameAsc":
@@ -104,10 +108,12 @@ public class TrailController extends MainController{
             return "trails/addTrail";
         }
 
-        Trail newTrail = new Trail(newTrailDTO.getName(), newTrailDTO.getMiles(), newTrailDTO.getAddress(), newTrailDTO.getZipCode());
+        HttpSession session = request.getSession();
+
+        Trail newTrail = new Trail(newTrailDTO.getName(), newTrailDTO.getMiles(), newTrailDTO.getAddress(), newTrailDTO.getZipCode(), getRunnerFromSession(session));
         trailRepository.save(newTrail);
 
-        HttpSession session = request.getSession();
+
         if (newTrailDifficultyDTO.getTrailDifficulty()!=null){
             TrailDifficultyRating newTrailDifficultyRating = new TrailDifficultyRating(newTrailDifficultyDTO.getTrailDifficulty(), getRunnerFromSession(session), newTrail);
             trailDifficultyRatingRepository.save(newTrailDifficultyRating);
@@ -173,13 +179,7 @@ public class TrailController extends MainController{
         return "trails/trailDetails";
     }
 
-    @GetMapping("/trailDetails")
-    public String displayTrailDetailsBlank (Model model, HttpServletRequest request){
-        setRunnerInModel(request, model);
-        model.addAttribute("title", "Blank");
-        model.addAttribute("detailedTrail", new Trail("Blank", 0, "Blank", "Blank"));
-        return "trails/trailDetails";
-    }
+
 
 
     private int getTrailDifficultyAverage(int id){

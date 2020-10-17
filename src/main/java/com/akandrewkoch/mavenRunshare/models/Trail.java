@@ -7,6 +7,7 @@ import org.jsoup.safety.Whitelist;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -30,19 +31,26 @@ public class Trail extends AbstractEntity {
 
     private Integer numberZipCode;
 
+    @OneToOne
+    private Runner trailCreator;
+
     @OneToMany(mappedBy="trail")
     private final List<Comment> comments= new ArrayList<>();
 
     @OneToMany(mappedBy="trail")
     private final List<TrailDifficultyRating> trailDifficultyRatings = new ArrayList<>();
 
-    public Trail (String name, double miles, String address, String zipCode ){
+    private Boolean deletedTrail;
+
+    public Trail (String name, double miles, String address, String zipCode, Runner trailCreator ){
         this.name= Jsoup.clean(name, Whitelist.none());
         this.miles=miles;
         this.kilometers= DistanceConversion.milesToKilometers(miles);
         this.address= Jsoup.clean(address, Whitelist.none());
         this.zipCode= Jsoup.clean(zipCode, Whitelist.none());
         this.numberZipCode= Integer.parseInt(zipCode);
+        this.deletedTrail = false;
+        this.trailCreator = trailCreator;
     }
 
     public Trail (){}
@@ -90,6 +98,18 @@ public class Trail extends AbstractEntity {
     public Integer getNumberZipCode() { return numberZipCode; }
 
     public void setNumberZipCode(Integer numberZipCode) { this.numberZipCode = numberZipCode; }
+
+    public Boolean getDeletedTrail() { return deletedTrail; }
+
+    public void deleteTrail() {this.deletedTrail = true;}
+
+    public Runner getTrailCreator() {
+        return trailCreator;
+    }
+
+    public void setTrailCreator(Runner trailCreator) {
+        this.trailCreator = trailCreator;
+    }
 
     public int returnTrailDifficultyAvg (List<TrailDifficultyRating> trailDifficultyList){
         double sum = 0;
