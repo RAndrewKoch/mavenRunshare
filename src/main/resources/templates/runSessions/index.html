@@ -10,6 +10,24 @@
 <p th:replace="fragments :: navbar"></p>
 
 <div class="headerBlankSpace"></div>
+
+<div th:if="${runSessionToDelete}"
+     style="background-color:#2A2773; color: #f1f1f1; cursor: pointer;"
+     onclick="makeDisappear(this)">
+    <div class="centeringDiv">
+        <div>
+            <span style="font-style:italic;"
+                  th:text="${runSessionToDelete}"></span>
+            <span th:text="' run session deleted'"></span>
+        </div>
+    </div>
+    <div class="centeringDiv">Note: Comments, Trails, and other Runners Associated with this Run Session are not
+        deleted</div>
+    <div class="centeringDiv">
+        <div th:text="'Click bar to remove'"></div>
+    </div>
+</div>
+
 <h1 style="text-align:center;" >Run
     Sessions</h1>
 
@@ -59,7 +77,7 @@ th:href="@{'/runSessions/addRunSession'}" style="margin:5px; padding:5px;">Add a
 
     </tr>
     <tr class="runsessiontableline"
-        th:each="runsession : ${runSessions}">
+        th:each="runsession : ${runSessions}" th:unless="${runsession.deletedRunSession}">
         <td><a
                 th:href="@{'/runSessions/runSessionDetails/'+${runsession.id}}"
                 th:text="${runsession.name}"></a></td>

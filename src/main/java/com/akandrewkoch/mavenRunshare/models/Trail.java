@@ -103,6 +103,8 @@ public class Trail extends AbstractEntity {
 
     public void deleteTrail() {this.deletedTrail = true;}
 
+    public Boolean isDeleted() {return this.deletedTrail;}
+
     public Runner getTrailCreator() {
         return trailCreator;
     }

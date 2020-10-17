@@ -44,6 +44,8 @@ public class RunSession extends AbstractEntity{
 
     private Integer pace;
 
+    private Boolean deletedRunSession;
+
     @OneToMany(mappedBy = "runSession")
     private final List<Comment> comments = new ArrayList<>();
 
@@ -60,6 +62,7 @@ public class RunSession extends AbstractEntity{
         this.time = time;
         this.distance = (Math.floor((laps*trail.getMiles())*100)/100);
         this.pace = Math.round(Math.round(this.time/this.distance));
+        this.deletedRunSession = false;
     }
 
     public RunSession (){}
@@ -112,6 +115,12 @@ public class RunSession extends AbstractEntity{
 
     public void calculatePace (){this.pace = Math.round(Math.round(this.time/this.distance));}
 
+    public Boolean getDeletedRunSession() { return deletedRunSession; }
+
+    public void setDeletedRunSession(Boolean deletedRunSession) { this.deletedRunSession = deletedRunSession; }
+
+    public void deleteRunSession() {this.deletedRunSession = true;}
+
     public Integer getTimeInSeconds() {return time;}
 
     public String getTime() {
@@ -123,6 +132,8 @@ public class RunSession extends AbstractEntity{
     }
 
     public String getDisplayDate () {return DateConversion.convertYYYYMMDDToDisplayString(date);}
+
+
 
 //    public String getDisplayMiles () {return (Math.floor((this.laps*this.trail.getMiles())*100)/100)+" miles";}
 

@@ -28,9 +28,19 @@ import java.util.Optional;
 public class RunSessionController extends MainController {
     //todo-create an edit view for runSessions
     @GetMapping(value = {"", "index", "/{sortType}"})
-    public String displayRunSessionsList(@PathVariable(required = false) String sortType, Model model, HttpServletRequest request) {
+    public String displayRunSessionsList(@PathVariable(required = false) String sortType, Model model,
+                                         @RequestParam(required=false) Integer deleteRunSession,
+                                         HttpServletRequest request) {
         setRunnerInModel(request, model);
         model.addAttribute("title", "Run Sessions");
+
+        if (deleteRunSession!=null){
+            RunSession runSessionToDelete = runSessionRepository.findById(deleteRunSession).get();
+            model.addAttribute("runSessionToDelete", runSessionToDelete.getName());
+            runSessionToDelete.deleteRunSession();
+            runSessionRepository.save(runSessionToDelete);
+        }
+
         if (sortType != null) {
             switch (sortType) {
                 case "nameAsc":

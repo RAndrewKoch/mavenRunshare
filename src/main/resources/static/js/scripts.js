@@ -84,7 +84,7 @@ function toggleComments (){
 }
 
 function toggleRunSessions (){
-    var topRunSessionsButtonSpan = document .getElementById
+    var topRunSessionsButtonSpan = document.getElementById
     ("topRunSessionsButtonSpan");
     var bottomRunSessionsButtonSpan = document.getElementById("bottomRunSessionsButtonSpan");
     var runSessions = document.getElementById
@@ -106,4 +106,9 @@ function toggleRunSessions (){
         runSessionsJoined.setAttribute("hidden", true);
         bottomRunSessionsButton.setAttribute("hidden", true);
     }
+}
+
+function changeToConfirmationButton(originalButton, newButton){
+    originalButton.setAttribute("hidden", true);
+    newButton.removeAttribute("hidden");
 }

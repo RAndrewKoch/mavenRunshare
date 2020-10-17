@@ -78,11 +78,14 @@
             class="btn btn-primary"
             style="margin-top:2px; margin-bottom:10px;">Edit
         Details</a>
-    <a
+    <button class="btn btn-primary" style="margin-top:2px; margin-bottom:10px;"
+            onclick="changeToConfirmationButton(this, document.getElementById('confirmPasswordChange'))">Change
+        Password</button>
+    <a hidden id="confirmPasswordChange"
             th:href="@{'/email/passwordResetRequest/'+${detailedRunner.id}}"
             class="btn btn-primary"
             style="margin-top:2px; margin-bottom:10px; background-color:red !important;"
-    >Change Password
+    >Confirm Change Password
     </a>
 </div>
 
@@ -217,7 +220,7 @@
                 <th>Laps</th>
             </tr>
             <tr th:each="runSession: ${runSessions}"
-                class="runnertableline">
+                class="runnertableline" th:unless="${runSession.deletedRunSession}">
                 <td>
                     <a th:href="@{'/runSessions/runSessionDetails/'+${runSession.id}}"
                        th:text="${runSession.name}"></a>
@@ -251,7 +254,7 @@
                 <th>Laps</th>
             </tr>
             <tr th:each="runSession: ${otherSessions}"
-                class="runnertableline">
+                class="runnertableline" th:unless="${runSession.deletedRunSession}">
                 <td>
                     <a th:href="@{'/runSessions/runSessionDetails/'+${runSession.id}}"
                        th:text="${runSession.name}"></a>

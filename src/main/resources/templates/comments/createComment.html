@@ -67,7 +67,7 @@
             <option th:value="${nullTrail}">None</option>
             <option th:each="trail : ${trails}"
                     th:value="${trail.id}"
-                    th:text="${trail.name}"></option>
+                    th:text="${trail.name}" th:unless="${trail.deletedTrail}"></option>
         </select>
         <p th:errors="${newCommentDTO.trail}"
            class="errors"></p>
@@ -90,7 +90,7 @@
             </option>
             <option th:each="runSession : ${runSessions}"
                     th:value="${runSession.id}"
-                    th:text="${runSession.name}"></option>
+                    th:text="${runSession.name}" th:unless="${runSession.deletedRunSession}"></option>
         </select>
         <p th:errors="${newCommentDTO.runSession}"
            class="errors"></p>
