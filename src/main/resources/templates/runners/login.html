@@ -27,7 +27,8 @@
                id="callsign" autofocus>
             <option th:each="runner : ${runners}"
                     th:text="${runner.callsign}"
-                    th:value="${runner.callsign}"></option>
+                    th:value="${runner.callsign}"
+                    th:unless="${runner.deletedRunner}"></option>
         </select>
         <p th:errors="${runnerLoginDTO.callsign}"
            class="errors"></p>

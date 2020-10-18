@@ -108,7 +108,11 @@ function toggleRunSessions (){
     }
 }
 
-function changeToConfirmationButton(originalButton, newButton){
+function changeToConfirmationButton(originalButton, newButton, warning){
+
+    if (warning!==undefined){
+        warning.removeAttribute("hidden");
+    }
     originalButton.setAttribute("hidden", true);
     newButton.removeAttribute("hidden");
 }

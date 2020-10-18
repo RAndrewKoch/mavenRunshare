@@ -11,49 +11,65 @@
 
 
 <div class="headerBlankSpace"></div>
-<div class="centeringDiv">
-    <p
-            th:text="${'You must be logged in as '+detailedRunner.callsign+' or be their friend to view this page'}"></p>
+
+<div th:unless="${detailedRunner.deletedRunner}">
+    <div class="centeringDiv">
+        <p
+                th:text="${'You must be logged in as '+detailedRunner.callsign+' or be their friend to view this page'}"></p>
+    </div>
+    <div class="centeringDiv">
+        <a th:unless="${currentRunner}" class="btn btn-primary"
+           th:href="@{'/runners/login/'+${detailedRunner.id}}"
+           th:text="'Login as '+${detailedRunner.callsign}"></a>
+        <a th:unless="${currentRunner}"
+           class="btn btn-primary"
+           th:href="@{/runners/login}"
+           th:text="'Login as another runner'"></a>
+        <p th:if="${currentRunnerFriendRequestIssued}"
+           th:text="'You have sent a friend request to '+${detailedRunner.callsign}+', but they have not yet accepted'"></p>
+        <div th:if="${detailedRunnerIssuedFriendRequest}">
+            <p th:text="${detailedRunner.callsign}+' has issued you a friend request, you can accept on your detail page'"></p>
+            <div class="centeringDiv">
+                <a class="btn btn-primary"
+                   th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}"
+                   th:text="'Return to your detail page'"></a>
+            </div>
+        </div>
+        <form th:if="${currentRunner}"
+              th:unless="${currentRunnerFriendRequestIssued} or ${detailedRunnerIssuedFriendRequest}"
+              method="post">
+            <div class="centeringDiv">
+                <button type="submit"
+                        class="btn btn-primary"
+                        th:text="'Request to be friends with '+${detailedRunner.callsign}"></button>
+            </div>
+            <div class="centeringDiv">
+                <small class="form-text text-muted"
+                       style="width:200px; text-align:justify;">Becoming
+                    a friend with another runner will allow them
+                    to see your details page, as well as
+                    comments marked as private</small>
+            </div>
+        </form>
+    </div>
+    <div th:if="${currentRunnerFriendRequestIssued}"
+         class="centeringDiv">
+        <a th:href="@{/runners}" class="btn btn-primary"
+           th:text="'Return to runner catalog'"></a>
+    </div>
 </div>
-<div class="centeringDiv">
-    <a th:unless="${currentRunner}" class="btn btn-primary"
-       th:href="@{'/runners/login/'+${detailedRunner.id}}"
-       th:text="'Login as '+${detailedRunner.callsign}"></a>
-    <a th:unless="${currentRunner}"
-       class="btn btn-primary"
-       th:href="@{/runners/login}"
-       th:text="'Login as another runner'"></a>
-    <p th:if="${currentRunnerFriendRequestIssued}"
-       th:text="'You have sent a friend request to '+${detailedRunner.callsign}+', but they have not yet accepted'"></p>
-    <div th:if="${detailedRunnerIssuedFriendRequest}">
-        <p th:text="${detailedRunner.callsign}+' has issued you a friend request, you can accept on your detail page'"></p>
-        <div class="centeringDiv">
-            <a class="btn btn-primary"
-               th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}"
-               th:text="'Return to your detail page'"></a>
+
+<div th:if="${detailedRunner.deletedRunner}">
+    <div class="centeringDiv">
+        <div>We are sorry, but this runner has been
+            deleted by its creator
         </div>
     </div>
-    <form th:if="${currentRunner}"
-          th:unless="${currentRunnerFriendRequestIssued} or ${detailedRunnerIssuedFriendRequest}"
-          method="post">
-        <div class="centeringDiv">
-            <button type="submit"
-                    class="btn btn-primary"
-                    th:text="'Request to be friends with '+${detailedRunner.callsign}"></button>
-        </div>
-        <div class="centeringDiv">
-            <small class="form-text text-muted"
-                   style="width:200px; text-align:justify;">Becoming
-                a friend with another runner will allow them
-                to see your details page, as well as
-                comments marked as private</small>
-        </div>
-    </form>
-</div>
-<div th:if="${currentRunnerFriendRequestIssued}"
-     class="centeringDiv">
-    <a th:href="@{/runners}" class="btn btn-primary"
-       th:text="'Return to runner catalog'"></a>
+    <div class="centeringDiv">
+        <a th:href="@{/runners}"
+           class="btn btn-primary">Return to runner index
+        </a>
+    </div>
 </div>
 
 <div class="centeringDiv">

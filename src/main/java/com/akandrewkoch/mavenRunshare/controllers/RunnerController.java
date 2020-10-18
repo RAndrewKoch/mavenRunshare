@@ -32,8 +32,12 @@ public class RunnerController extends MainController {
     }
 
     @GetMapping(value = {"", "/index", "/{sortType}"})
-    public String displayRunnersIndex(@PathVariable(required = false) String sortType, @RequestParam(required = false) String friendsList, @RequestParam(required = false) String runnerLevel, HttpServletRequest request, HttpSession session, Model model) {
-        setRunnerInModel(request, model);
+    public String displayRunnersIndex(@PathVariable(required = false) String sortType,
+                                      @RequestParam(required = false) String friendsList, @RequestParam(required =
+            false) String runnerLevel, @RequestParam(required=false) Integer deletedRunner, HttpServletRequest request,
+                                      HttpSession session, Model model) {
+
+
         if (friendsList != null) {
             if (friendsList.equals("true")) {
                 model.addAttribute("friendsList", runnerRepository.findById(getRunnerFromSession(session).getId()).get().getFriends());
@@ -102,6 +106,16 @@ public class RunnerController extends MainController {
                     return "runners/index";
             }
         }
+
+        if (deletedRunner!= null){
+            Runner runnerToDelete = runnerRepository.findById(deletedRunner).get();
+            runnerToDelete.deleteRunner();
+            runnerRepository.save(runnerToDelete);
+            session.removeAttribute(runnerSessionKey);
+            request.getSession().invalidate();
+        }
+
+        setRunnerInModel(request, model);
 
         return "runners/index";
     }

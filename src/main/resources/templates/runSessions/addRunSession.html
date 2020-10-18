@@ -33,7 +33,7 @@
                     id="otherRunners"
                     th:field="${newRunSessionDTO.runners}">
                 <option th:each="runner : ${runners}"
-                        th:unless="${runner==currentRunner}"
+                        th:unless="${runner==currentRunner} or ${runner.deletedRunner}"
                         th:value="${runner.id}"
                         th:text="${runner.callsign}"></option>
             </select>

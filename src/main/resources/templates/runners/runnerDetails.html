@@ -280,6 +280,21 @@
     </h1>
 </div>
 
+<div class="centeringDiv">
+    <button class="btn btn-primary" th:text="'Delete Runner'"
+            th:onclick="changeToConfirmationButton(this, document.getElementById('deleteRunnerConfirmButton'), document.getElementById('deleteRunnerWarning')) "></button>
+    <a hidden id="deleteRunnerConfirmButton" class="btn btn-primary" th:text="'Confirm Delete Runner'"
+       style="background-color:red !important;"
+       th:href="@{'/runners?deletedRunner='+${detailedRunner.id}}"></a>
+</div>
+
+<div class="centeringDiv" id="deleteRunnerWarning" hidden>
+    <p style="font-style:italic; color:red;">Please be 100% certain, this action cannot be undone!</p>
+</div>
+
+
+
+
 
 <div class="centeringDiv">
     <p th:replace="fragments :: listnavbar"></p>

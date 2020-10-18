@@ -113,7 +113,7 @@
                     hidden selected
                     th:value="${runnerToAdd.id}"></option>
             <option th:each="runner : ${runners}"
-                    th:unless="${runner==currentRunner}"
+                    th:unless="${runner==currentRunner} or ${runner.deletedRunner}"
                     th:value="${runner.id}"
                     th:text="${runner.callsign}"></option>
         </select>

@@ -140,7 +140,7 @@
 
     <tr class="runnertableline"
         th:each="runner : ${runners}"
-        th:unless="${friendsList} or ${currentRunner.equals(runner)} or ${runnerLevel}">
+        th:unless="${friendsList} or ${currentRunner.equals(runner)} or ${runnerLevel} or ${runner.deletedRunner}">
         <td th:if="${currentRunner}">
              <span
                      th:each="possibleFriend : ${currentRunner.friends}"
@@ -175,7 +175,7 @@
     </tr>
     <tr class="runnertableline"
         th:each="runner : ${friendsList}"
-        th:if="${friendsList}">
+        th:if="${friendsList} and ${!runner.deletedRunner}">
         <td>
             <a th:text="${runner.callsign}"
                th:href="@{'/runners/runnerDetails/'+${runner.id}}"></a>
@@ -203,7 +203,7 @@
 
     <tr class="runnertableline"
         th:each="runner : ${runners}"
-        th:if="${runnerLevel} and ${runner.runnerLevel.getDisplayName().equals(runnerLevel)} and ${!runner.equals(currentRunner)}">
+        th:if="${runnerLevel} and ${runner.runnerLevel.getDisplayName().equals(runnerLevel)} and ${!runner.equals(currentRunner)} and ${!runner.deletedRunner}">
         <td th:if="${currentRunner}">
              <span
                      th:each="possibleFriend : ${currentRunner.friends}"
