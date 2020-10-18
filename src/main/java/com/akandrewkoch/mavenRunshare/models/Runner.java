@@ -81,7 +81,7 @@ public class Runner extends AbstractEntity{
     @ManyToMany
     private final List<Runner> friendRequests = new ArrayList<>();
 
-
+    private Boolean deletedRunner;
 
 
     //Constructors
@@ -101,6 +101,7 @@ public class Runner extends AbstractEntity{
         this.zip = Jsoup.clean(zip, Whitelist.basic());
         this.numberZipCode = Integer.parseInt(zip);
         this.email = email;
+        this.deletedRunner= false;
     }
 
 //getters
@@ -148,6 +149,8 @@ public class Runner extends AbstractEntity{
     public String getPasswordTempRequest() {return passwordTempRequest;}
 
     public String getPreviousPWHash() { return previousPWHash; }
+
+    public Boolean getDeletedRunner() { return deletedRunner; }
 
     //setters
 
@@ -215,4 +218,8 @@ public class Runner extends AbstractEntity{
     public void removeFriendRequest (Runner runner) {this.friendRequests.remove(runner);}
 
     public boolean isFriend (Runner runner) { return this.friends.contains(runner);}
+
+    public void setDeletedRunner(Boolean deletedRunner) { this.deletedRunner = deletedRunner; }
+
+    public void deleteRunner() {this.deletedRunner = true; }
 }
