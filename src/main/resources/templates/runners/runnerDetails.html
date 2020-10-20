@@ -199,14 +199,14 @@
             </p>
             <p th:text="'Title: '+${comment.messageTitle}"></p>
             <p th:text="${comment.message}"></p>
-            <span
+            <div
                     th:if="${comment.messageCreator == detailedRunner}"
                     style="text-align:right;">
                 <a class="btn btn-primary"
                    style="margin:5px; background-color:red !important;"
                    th:href="@{'/runners/runnerDetails/'+${currentRunner.id}+'?deleteComment='+${comment.id}}">Delete
                     Comment</a>
-            </span>
+            </div>
         </div>
         <div class="centeringDiv">
             <a th:style="${currentPage<=2} ? 'visibility:hidden' : 'visibility:visible'"
