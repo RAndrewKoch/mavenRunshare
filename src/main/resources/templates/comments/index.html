@@ -31,15 +31,23 @@
         Comment</a>
 </div>
 <div class="centeringDiv">
-
+    <a class="mobilePortraitDelete" th:style="${pageNumber<=2} ? 'visibility:hidden' : 'visibility:visible'"
+       th:href="@{/comments?pageNumber=1}"
+       th:text="'Newest Comments'"></a>
     <a th:href="@{'/comments?pageNumber='+${previousPage}}"
        th:style="${previousPage} ? 'visibility:visible' : 'visibility:hidden'"
        th:text="'Newer Comments'"></a>
-    <div style="font-style:italic;" th:text="'Page '+(${pageNumber})+' of '+${totalPages}"></div>
-    <a th:style="${nextPage} ? 'visibility:visible' : 'visibility:hidden'" th:text="'Older Comments'"
+    <div style="font-style:italic;" th:text="'Page '+${pageNumber}+' of '+${totalPages}"></div>
+    <a class="mobilePortraitJustifyRight"
+       th:style="${nextPage} ? 'visibility:visible' : 'visibility:hidden'" th:text="'Older Comments'"
        th:href="@{'/comments?pageNumber='+${nextPage}}"></a>
-
+    <a class="mobilePortraitDelete"
+       th:style="${pageNumber>=(totalPages-1)}?'visibility:hidden' :
+                'visibility:visible'"
+       th:href="@{'/comments?pageNumber='+${totalPages}}"
+       th:text="'Oldest Comments'"></a>
 </div>
+
 <div th:if=${comments} th:each="comment : ${comments}">
     <div
             th:unless="${comment.privateMessage == true} or ${comment.deletedComment}"
@@ -76,12 +84,21 @@
     </div>
 </div>
 <div class="centeringDiv">
+    <a class="mobilePortraitDelete" th:style="${pageNumber<=2} ? 'visibility:hidden' : 'visibility:visible'"
+       th:href="@{/comments?pageNumber=1}"
+       th:text="'Newest Comments'"></a>
     <a th:href="@{'/comments?pageNumber='+${previousPage}}"
        th:style="${previousPage} ? 'visibility:visible' : 'visibility:hidden'"
        th:text="'Newer Comments'"></a>
-    <div style="font-style:italic;" th:text="'Page '+(${pageNumber})+' of '+${totalPages}"></div>
-    <a th:style="${nextPage} ? 'visibility:visible' : 'visibility:hidden'" th:text="'Older Comments'"
+    <div style="font-style:italic;" th:text="'Page '+${pageNumber}+' of '+${totalPages}"></div>
+    <a class="mobilePortraitJustifyRight"
+       th:style="${nextPage} ? 'visibility:visible' : 'visibility:hidden'" th:text="'Older Comments'"
        th:href="@{'/comments?pageNumber='+${nextPage}}"></a>
+    <a class="mobilePortraitDelete"
+       th:style="${pageNumber>=(totalPages-1)}?'visibility:hidden' :
+                'visibility:visible'"
+       th:href="@{'/comments?pageNumber='+${totalPages}}"
+       th:text="'Oldest Comments'"></a>
 </div>
 
 <div class="centeringDiv">
