@@ -14,8 +14,7 @@ public interface CommentRepository extends CrudRepository<Comment, Integer> {
     Comment findById(int id);
 
     Page<Comment> findByDeletedCommentAndPrivateMessageOrderByDateCreatedDescTimeCreatedDesc(Boolean deletedComment,
-                                                                          Boolean privateMessage,
-                                                       Pageable pageable);
+                                                                          Boolean privateMessage, Pageable pageable);
 
     List<Comment> findFirst10ByOrderByDateCreatedDescTimeCreatedDesc();
 
@@ -25,5 +24,6 @@ public interface CommentRepository extends CrudRepository<Comment, Integer> {
 
     List<Comment> findByRunSession_IdOrderByDateCreatedDescTimeCreatedDesc(Integer runSession);
 
-    List<Comment> findByRunners_IdOrderByDateCreatedDescTimeCreatedDesc(Integer Runner);
+    Page<Comment> findByRunners_IdAndDeletedCommentOrderByDateCreatedDescTimeCreatedDesc(Integer Runner,
+                                                                                                 Boolean deletedComment, Pageable pageable);
 }

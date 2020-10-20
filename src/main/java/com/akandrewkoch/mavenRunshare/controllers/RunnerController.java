@@ -11,6 +11,9 @@ import com.akandrewkoch.mavenRunshare.models.Runner;
 import com.akandrewkoch.mavenRunshare.models.enums.Gender;
 import com.akandrewkoch.mavenRunshare.models.enums.RunnerLevel;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -33,8 +36,10 @@ public class RunnerController extends MainController {
 
     @GetMapping(value = {"", "/index", "/{sortType}"})
     public String displayRunnersIndex(@PathVariable(required = false) String sortType,
-                                      @RequestParam(required = false) String friendsList, @RequestParam(required =
-            false) String runnerLevel, @RequestParam(required=false) Integer deletedRunner, HttpServletRequest request,
+                                      @RequestParam(required = false) String friendsList,
+                                      @RequestParam(required = false) String runnerLevel,
+                                      @RequestParam(required=false) Integer deletedRunner,
+                                      HttpServletRequest request,
                                       HttpSession session, Model model) {
 
 
@@ -268,7 +273,10 @@ public class RunnerController extends MainController {
     }
 
     @GetMapping("/runnerDetails/{id}")
-    private String displayRunnerDetailsView(@PathVariable Integer id, @RequestParam(required = false) String emailSent, @RequestParam(required=false) Integer deleteComment, Model model, HttpServletRequest request, HttpSession session) {
+    private String displayRunnerDetailsView(@PathVariable Integer id,
+                                            @RequestParam(required = false) String emailSent, @RequestParam(required=
+            false) Integer deleteComment, @RequestParam(required=false) Integer commentPageNumber, Model model,
+                                            HttpServletRequest request, HttpSession session) {
         setRunnerInModel(request, model);
 //        check if we just sent an admin email
         if (emailSent != null){
@@ -281,6 +289,12 @@ public class RunnerController extends MainController {
             commentToDelete.deleteComment();
             commentRepository.save(commentToDelete);
 
+        }
+
+        if (commentPageNumber==null){
+            commentPageNumber=1;
+        } else {
+            model.addAttribute("commentsOpen", true);
         }
         //        if no runner is logged in, detail pages cannot be viewed
         if (getRunnerFromSession(session) == null) {
@@ -305,9 +319,22 @@ public class RunnerController extends MainController {
             model.addAttribute("title", "Details " + detailedRunner.getCallsign());
             model.addAttribute("detailedRunner", detailedRunner);
 
-            List<Comment> comments = commentRepository.findByRunners_IdOrderByDateCreatedDescTimeCreatedDesc(id);
-            if (!comments.isEmpty()) {
-                model.addAttribute("comments", comments);
+            Pageable page = PageRequest.of(commentPageNumber-1, 5);
+            Page<Comment> currentPage= commentRepository.findByRunners_IdAndDeletedCommentOrderByDateCreatedDescTimeCreatedDesc(id, false, page);
+            List<Comment> currentPageContents = currentPage.getContent();
+            Integer numberOfPages = currentPage.getTotalPages();
+            if (!currentPageContents.isEmpty()) {
+                model.addAttribute("comments", currentPageContents);
+                model.addAttribute("currentPage", commentPageNumber);
+                model.addAttribute("totalNumberOfPages", numberOfPages );
+            }
+
+            if (commentPageNumber<numberOfPages){
+                model.addAttribute("nextPage", commentPageNumber+1);
+            }
+
+            if (commentPageNumber>0){
+                model.addAttribute("previousPage", commentPageNumber-1);
             }
 
             List<RunSession> runSessions = runSessionRepository.findAllByCreator_Id(id);

@@ -147,8 +147,25 @@
 
     <div th:if="${comments}"
          id="comments" hidden>
+        <div class="centeringDiv">
+            <a class="mobilePortraitDelete" th:style="${currentPage<=2} ? 'visibility:hidden' : 'visibility:visible'"
+               th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber=1'}"
+               th:text="'Newest Comments'"></a>
+            <a th:style="${previousPage}? 'visibility:visible' : 'visibility:hidden'" th:text="'Newer Comments'"
+               th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber='+${previousPage}}"></a>
+            <div style="font-style:italic" class="mobilePortraitJustifyCenter"
+                 th:text="'Page '+${currentPage}+' of '+${totalNumberOfPages}"></div>
+            <a class="mobilePortraitJustifyRight"
+               th:style="${nextPage}? 'visibility:visible' : 'visibility:hidden'"
+               th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber='+${nextPage}}"
+               th:text="'Older Comments'"></a>
+            <a class="mobilePortraitDelete"
+               th:style="${currentPage>=(totalNumberOfPages-1)}?'visibility:hidden' :
+                'visibility:visible'"
+               th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber='+${totalNumberOfPages}}"
+               th:text="'Oldest Comments'"></a>
+        </div>
         <div th:each="comment : ${comments}"
-             th:unless="${comment.deletedComment}"
              style="border-style:solid">
             <p>
                 <small
@@ -182,14 +199,28 @@
             </p>
             <p th:text="'Title: '+${comment.messageTitle}"></p>
             <p th:text="${comment.message}"></p>
-            <div
+            <span
                     th:if="${comment.messageCreator == detailedRunner}"
                     style="text-align:right;">
                 <a class="btn btn-primary"
                    style="margin:5px; background-color:red !important;"
                    th:href="@{'/runners/runnerDetails/'+${currentRunner.id}+'?deleteComment='+${comment.id}}">Delete
                     Comment</a>
-            </div>
+            </span>
+        </div>
+        <div class="centeringDiv">
+            <a th:style="${currentPage<=2} ? 'visibility:hidden' : 'visibility:visible'"
+               th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber=1'}"
+               th:text="'Newest Comments'"></a>
+            <a th:style="${previousPage}? 'visibility:visible' : 'visibility:hidden'" th:text="'Newer Comments'"
+               th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber='+${previousPage}}"></a>
+            <div style="font-style:italic" th:text="'Page '+${currentPage}+' of '+${totalNumberOfPages}"></div>
+            <a th:style="${nextPage}? 'visibility:visible' : 'visibility:hidden'"
+               th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber='+${nextPage}}"
+               th:text="'Older Comments'"></a>
+            <a th:style="${currentPage>=(totalNumberOfPages-1)}?'visibility:hidden' : 'visibility:visible'"
+               th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber='+${totalNumberOfPages}}"
+               th:text="'Oldest Comments'"></a>
         </div>
     </div>
 </div>
@@ -299,6 +330,6 @@
 <div class="centeringDiv">
     <p th:replace="fragments :: listnavbar"></p>
 </div>
-<script th:if="${commentDeleted}">toggleComments();</script>
+<script th:if="${commentDeleted} or ${commentsOpen}">toggleComments();</script>
 </body>
 </html>

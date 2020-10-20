@@ -50,8 +50,9 @@ public class CommentController extends MainController{
         Pageable paging = PageRequest.of(pageNumber-1, 5);
         Page<Comment> pageComment = commentRepository.findByDeletedCommentAndPrivateMessageOrderByDateCreatedDescTimeCreatedDesc(false, false, paging);;
         List<Comment> pageOfComments = pageComment.getContent();
-        model.addAttribute("comments", pageOfComments);
-
+        if (!pageOfComments.isEmpty()) {
+            model.addAttribute("comments", pageOfComments);
+        }
         model.addAttribute("pageNumber", pageNumber);
         if (pageNumber<pageComment.getTotalPages()) {
             model.addAttribute("nextPage", pageNumber + 1);

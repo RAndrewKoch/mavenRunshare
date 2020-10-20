@@ -31,14 +31,16 @@
         Comment</a>
 </div>
 <div class="centeringDiv">
+
     <a th:href="@{'/comments?pageNumber='+${previousPage}}"
        th:style="${previousPage} ? 'visibility:visible' : 'visibility:hidden'"
-       th:text="'Previous Page'"></a>
+       th:text="'Newer Comments'"></a>
     <div style="font-style:italic;" th:text="'Page '+(${pageNumber})+' of '+${totalPages}"></div>
-    <a th:style="${nextPage} ? 'visibility:visible' : 'visibility:hidden'" th:text="'Next Page'"
+    <a th:style="${nextPage} ? 'visibility:visible' : 'visibility:hidden'" th:text="'Older Comments'"
        th:href="@{'/comments?pageNumber='+${nextPage}}"></a>
+
 </div>
-<div th:each="comment : ${comments}">
+<div th:if=${comments} th:each="comment : ${comments}">
     <div
             th:unless="${comment.privateMessage == true} or ${comment.deletedComment}"
          style="border-style:solid">
