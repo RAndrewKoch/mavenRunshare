@@ -1,6 +1,8 @@
 package com.akandrewkoch.mavenRunshare.models.data;
 
 import com.akandrewkoch.mavenRunshare.models.Comment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +13,9 @@ public interface CommentRepository extends CrudRepository<Comment, Integer> {
 
     Comment findById(int id);
 
+    Page<Comment> findByDeletedCommentAndPrivateMessageOrderByDateCreatedDescTimeCreatedDesc(Boolean deletedComment,
+                                                                          Boolean privateMessage, Pageable pageable);
+
     List<Comment> findFirst10ByOrderByDateCreatedDescTimeCreatedDesc();
 
     List<Comment> findByTrail_IdOrderByDateCreatedDescTimeCreatedDesc(Integer trail);
@@ -19,5 +24,6 @@ public interface CommentRepository extends CrudRepository<Comment, Integer> {
 
     List<Comment> findByRunSession_IdOrderByDateCreatedDescTimeCreatedDesc(Integer runSession);
 
-    List<Comment> findByRunners_IdOrderByDateCreatedDescTimeCreatedDesc(Integer Runner);
+    Page<Comment> findByRunners_IdAndDeletedCommentOrderByDateCreatedDescTimeCreatedDesc(Integer Runner,
+                                                                                                 Boolean deletedComment, Pageable pageable);
 }

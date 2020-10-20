@@ -5,6 +5,9 @@ import com.akandrewkoch.mavenRunshare.models.DTO.NewCommentDTO;
 import com.akandrewkoch.mavenRunshare.models.RunSession;
 import com.akandrewkoch.mavenRunshare.models.Runner;
 import com.akandrewkoch.mavenRunshare.models.Trail;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -29,7 +32,13 @@ import java.util.Optional;
 public class CommentController extends MainController{
 
     @GetMapping(value={"", "index"})
-    public String displayCommentIndex(@RequestParam(required=false) Integer deleteComment, HttpServletRequest request, Model model){
+    public String displayCommentIndex(@RequestParam(required=false) Integer deleteComment,
+                                      @RequestParam(required=false) Integer pageNumber, HttpServletRequest request,
+                                      Model model){
+        if (pageNumber ==null){
+            pageNumber = 1;
+        }
+
         if (deleteComment != null){
             Comment commentToDelete = commentRepository.findById(deleteComment).get();
             commentToDelete.deleteComment();
@@ -38,7 +47,22 @@ public class CommentController extends MainController{
 
         setRunnerInModel(request, model);
         model.addAttribute("title", "Comments");
-        model.addAttribute("comments", commentRepository.findFirst10ByOrderByDateCreatedDescTimeCreatedDesc());
+        Pageable paging = PageRequest.of(pageNumber-1, 5);
+        Page<Comment> pageComment = commentRepository.findByDeletedCommentAndPrivateMessageOrderByDateCreatedDescTimeCreatedDesc(false, false, paging);;
+        List<Comment> pageOfComments = pageComment.getContent();
+        if (!pageOfComments.isEmpty()) {
+            model.addAttribute("comments", pageOfComments);
+        }
+        model.addAttribute("pageNumber", pageNumber);
+        if (pageNumber<pageComment.getTotalPages()) {
+            model.addAttribute("nextPage", pageNumber + 1);
+        }
+
+        if (pageNumber>0) {
+            model.addAttribute("previousPage", pageNumber - 1);
+        }
+
+        model.addAttribute("totalPages", pageComment.getTotalPages());
         return "comments/index";
     }
 

@@ -30,7 +30,17 @@
        style="margin:5px; padding:5px;">Post a
         Comment</a>
 </div>
-<div th:each="comment : ${comments}">
+<div class="centeringDiv">
+
+    <a th:href="@{'/comments?pageNumber='+${previousPage}}"
+       th:style="${previousPage} ? 'visibility:visible' : 'visibility:hidden'"
+       th:text="'Newer Comments'"></a>
+    <div style="font-style:italic;" th:text="'Page '+(${pageNumber})+' of '+${totalPages}"></div>
+    <a th:style="${nextPage} ? 'visibility:visible' : 'visibility:hidden'" th:text="'Older Comments'"
+       th:href="@{'/comments?pageNumber='+${nextPage}}"></a>
+
+</div>
+<div th:if=${comments} th:each="comment : ${comments}">
     <div
             th:unless="${comment.privateMessage == true} or ${comment.deletedComment}"
          style="border-style:solid">
@@ -65,6 +75,15 @@
         </div>
     </div>
 </div>
+<div class="centeringDiv">
+    <a th:href="@{'/comments?pageNumber='+${previousPage}}"
+       th:style="${previousPage} ? 'visibility:visible' : 'visibility:hidden'"
+       th:text="'Newer Comments'"></a>
+    <div style="font-style:italic;" th:text="'Page '+(${pageNumber})+' of '+${totalPages}"></div>
+    <a th:style="${nextPage} ? 'visibility:visible' : 'visibility:hidden'" th:text="'Older Comments'"
+       th:href="@{'/comments?pageNumber='+${nextPage}}"></a>
+</div>
+
 <div class="centeringDiv">
     <p th:replace="fragments :: listnavbar"></p>
 </div>
