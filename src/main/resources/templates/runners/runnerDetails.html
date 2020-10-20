@@ -209,16 +209,20 @@
             </div>
         </div>
         <div class="centeringDiv">
-            <a th:style="${currentPage<=2} ? 'visibility:hidden' : 'visibility:visible'"
+            <a class="mobilePortraitDelete" th:style="${currentPage<=2} ? 'visibility:hidden' : 'visibility:visible'"
                th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber=1'}"
                th:text="'Newest Comments'"></a>
             <a th:style="${previousPage}? 'visibility:visible' : 'visibility:hidden'" th:text="'Newer Comments'"
                th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber='+${previousPage}}"></a>
-            <div style="font-style:italic" th:text="'Page '+${currentPage}+' of '+${totalNumberOfPages}"></div>
-            <a th:style="${nextPage}? 'visibility:visible' : 'visibility:hidden'"
+            <div style="font-style:italic" class="mobilePortraitJustifyCenter"
+                 th:text="'Page '+${currentPage}+' of '+${totalNumberOfPages}"></div>
+            <a class="mobilePortraitJustifyRight"
+               th:style="${nextPage}? 'visibility:visible' : 'visibility:hidden'"
                th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber='+${nextPage}}"
                th:text="'Older Comments'"></a>
-            <a th:style="${currentPage>=(totalNumberOfPages-1)}?'visibility:hidden' : 'visibility:visible'"
+            <a class="mobilePortraitDelete"
+               th:style="${currentPage>=(totalNumberOfPages-1)}?'visibility:hidden' :
+                'visibility:visible'"
                th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber='+${totalNumberOfPages}}"
                th:text="'Oldest Comments'"></a>
         </div>
