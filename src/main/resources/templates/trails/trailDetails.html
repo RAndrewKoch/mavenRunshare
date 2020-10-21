@@ -182,6 +182,13 @@
                th:href="@{/runners/login}">Log in to see
                 personal ratings or comment</a>
         </div>
+        <div class="centeringDiv">
+            <div th:unless="${currentRunner}" class="centeringDiv">
+                <small class="form-text text-muted">Private
+                    comments on this session may be hidden if
+                    not logged in</small>
+            </div>
+        </div>
     </div>
 
 
@@ -211,46 +218,9 @@
     </span>
     </div>
 
+    <div th:replace="fragments :: commentBlock"></div>
 
-    <div th:each="comment : ${comments}"
-         style="border-style:solid"
-         th:if="${(comment.privateMessage ==  false or comment.messageCreator == currentRunner or comment.runners.contains(currentRunner)) and (comment.deletedComment!=true)}">
-        <p>
-            <small
-                    th:if="${comment.privateMessage == true}"
-                    class="form-text text-muted"
-                    style="text-align:right; margin-right:5px;">Private
-                Message
-            </small>
-            <span><a
-                    th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
-                    th:text="${comment.messageCreator.callsign}"></a></span>
-            <span th:text="' said'"></span>
-            <span th:if="${comment.runSession}"
-                  th:text="' about the '"></span>
-            <span
-                    th:if="${comment.runSession}"><a
-                    th:href="@{'../../runSessions/runSessionDetails/'+${comment.runSession.id}}"
-                    th:text="${comment.runSession.name}"></a></span>
-            <span th:if="${comment.runSession}"
-                  th:text="' session'"></span>
-            <span th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}"></span>
-        </p>
-        <p th:text="'Title: '+${comment.messageTitle}"></p>
-        <p th:text="${comment.message}"></p>
-        <span style="padding-right:10px;"
-              th:text="'Created on: '+${comment.displayStringDate()}"></span><span
-            th:text="'At: '+${comment.displayStringTime()}"></span>
-        <div
-                th:if="${comment.messageCreator == currentRunner}"
-                style="text-align:right;">
-            <a class="btn btn-primary"
-               style="margin:5px; background-color:red !important;"
-               th:href="@{'/trails/trailDetails/'+${detailedTrail.id}+'?deleteComment='+${comment.id}}">Delete
-                Comment</a>
-        </div>
 
-    </div>
 </div>
 
 <div th:if="${detailedTrail.deletedTrail}">

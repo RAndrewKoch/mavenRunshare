@@ -1,14 +1,14 @@
 :root {
-    --main-background-color:#0A0A0A;
-    --main-text-color:white;
-    --alt-text-color:white;
-    --runnerbar-and-hover-color:#2A2773;
-    --hover-text-color:#f1f1f1;
-    --greyed-text:#818181;
-    --table-line-nth-child-color:#0E0D26;
-    --shadow-color : none;
-    --comment-block-border-color : silver;
-    --comment-block-background-color : #0E0D26;
+   --main-background-color: lightgray;
+   --main-text-color:black;
+   --alt-text-color:white;
+   --runnerbar-and-hover-color: darkblue;
+   --hover-text-color: black;
+   --greyed-text: #818181;
+   --table-line-nth-child-color: gray;
+   --shadow-color : grey;
+   --comment-block-border-color : silver;
+   --comment-block-background-color : gray;
 
 
 }
@@ -43,7 +43,7 @@ body {
 }
 
 .sideNavButtonPic{
-    box-shadow:2px 2px 2px 2px var(--shadow-color);
+    box-shadow:2px 2px 2px var(--shadow-color);
 }
 
 .sideNav {

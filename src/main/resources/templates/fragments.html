@@ -11,8 +11,8 @@
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <link th:href="@{/css/runshare.css}"
-          rel="stylesheet"/>
+    <link th:unless="${lightMode}" th:href="@{/css/runshare.css}" rel="stylesheet"/>
+    <link th:if="${lightMode}" th:href="@{/css/runsharelight.css}" rel="stylesheet"/>
     <script type="text/javascript"
             th:src="@{/js/scripts.js}"></script>
 
@@ -32,6 +32,7 @@
          style="padding-top:50px;">
         <div class="topOfSideNav">
             <img
+                    style="border-style:outset; border-color:silver; margin-left:10px;"
                     th:src="@{../../../../images/RunshareLogo.jpg}"
                     width="150" height="150"/>
             <a class="closebtn"
@@ -139,7 +140,7 @@
                 </div>
             </div>
 
-            <div >
+            <div>
                 <a th:href="@{/email/contactAdmin}"
                    class="contactAdminDropdown" th:if="${currentRunner}">
                     <span class="dropMenuHeader">Contact
@@ -173,14 +174,62 @@
     </div>
 </div>
 
+<!------COMMENTS BLOCKS----->
+
+<div th:if="${comments}" th:each="comment : ${comments}" th:fragment="commentBlock">
+    <div class="commentBlock" style="border-style:solid"
+         th:if="${(comment.privateMessage == false or comment.messageCreator == currentRunner or comment.runners.contains(currentRunner)) }">
+        <p>
+            <small
+                    th:if="${comment.privateMessage == true}"
+                    class="form-text text-muted"
+                    style="text-align:right; margin-right:5px;"
+            >Private
+                Message
+            </small>
+            <span><a
+                    th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
+                    th:text="${comment.messageCreator.callsign}"></a></span>
+            <span th:text="' said'"></span>
+            <span th:if="${comment.runSession}"
+                  th:text="' about the '"></span>
+            <span
+                    th:if="${comment.runSession}"><a
+                    th:href="@{'../../runSessions/runSessionDetails/'+${comment.runSession.id}}"
+                    th:text="${comment.runSession.name}"></a></span>
+            <span th:if="${comment.runSession}"
+                  th:text="' session'"></span>
+            <span th:if="${comment.trail}"
+                  th:text="' on the '"></span>
+            <span th:if="${comment.trail}"><a
+                    th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}"
+                    th:text="${comment.trail.name}"></a></span>
+            <span th:if="${comment.trail}" th:text="' trail'"></span>
+            <span
+                    th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}+' CST'"></span>
+        </p>
+        <p th:text="'Title: '+${comment.messageTitle}"></p>
+        <p th:text="${comment.message}"></p>
+        <div th:if="${currentRunner}"
+             style="text-align:right;">
+            <a style="background-color:red !important; margin:5px;"
+               class="btn btn-primary "
+               th:if="${currentRunner} == ${comment.messageCreator}"
+               th:href="@{'/comments/index?deleteComment='+${comment.id}}">Delete Comment</a>
+        </div>
+    </div>
+</div>
+
 
 <!--RUNNERBAR-->
 <p th:if="${currentRunner}" th:fragment="runnerbar"
    class="runnerbar">
-    <span><a
-            th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}"
-            class="btn btn-primary" th:text="'Your Details'"
-            style="margin:2px; margin-right:20px;"></a></span>
+    <span>
+        <a th:href="@{'/runners/runnerDetails/'+${currentRunner.id}}"
+           class="btn btn-primary" th:text="'Your Details'"
+           style="margin:2px; margin-right:20px;"></a>
+    </span>
+
     <span class="runnerbarspan"
           th:text="${currentRunner.callsign}+' is logged in'">
     </span>
@@ -188,6 +237,16 @@
              class="btn btn-primary"
              th:text="'Logout'"
              style="margin:2px; margin-left:20px;"></a></span>
+    <span>
+        <a th:unless="${lightMode}"
+           style="margin-left:5px; margin-right:5px;"
+           th:href="@{'/runners/runnerDetails/'+${currentRunner.id}+'?toggleLightMode=true'}">
+        &#9728;</a>
+        <a th:if="${lightMode}"
+           style="margin-left:5px; margin-right:5px;"
+           th:href="@{'/runners/runnerDetails/'+${currentRunner.id}+'?toggleLightMode=true'}">
+        &#x263e;</a>
+    </span>
 </p>
 
 

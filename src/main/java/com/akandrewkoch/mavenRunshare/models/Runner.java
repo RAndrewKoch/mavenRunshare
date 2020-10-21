@@ -83,6 +83,8 @@ public class Runner extends AbstractEntity{
 
     private Boolean deletedRunner;
 
+    private Boolean lightModePreference;
+
 
     //Constructors
     public Runner() {
@@ -102,6 +104,7 @@ public class Runner extends AbstractEntity{
         this.numberZipCode = Integer.parseInt(zip);
         this.email = email;
         this.deletedRunner= false;
+        this.lightModePreference=false;
     }
 
 //getters
@@ -151,6 +154,8 @@ public class Runner extends AbstractEntity{
     public String getPreviousPWHash() { return previousPWHash; }
 
     public Boolean getDeletedRunner() { return deletedRunner; }
+
+    public Boolean getLightModePreference() { return lightModePreference; }
 
     //setters
 
@@ -222,4 +227,8 @@ public class Runner extends AbstractEntity{
     public void setDeletedRunner(Boolean deletedRunner) { this.deletedRunner = deletedRunner; }
 
     public void deleteRunner() {this.deletedRunner = true; }
+
+    public void setLightModePreference(Boolean lightModePreference) { this.lightModePreference = lightModePreference; }
+
+    public void toggleLightModePreference (){this.lightModePreference = !this.lightModePreference;}
 }

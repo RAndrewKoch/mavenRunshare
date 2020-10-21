@@ -141,7 +141,7 @@ public class TrailController extends MainController{
             commentRepository.save(commentToDelete);
         }
 
-        //testing to make sure the id is a real trail and reuturning the trail index if not
+        //testing to make sure the id is a real trail and returning the trail index if not
         Optional<Trail> testTrail = trailRepository.findById(id);
         if (testTrail.isEmpty()){
             return "trails/";
@@ -173,7 +173,8 @@ public class TrailController extends MainController{
 
         model.addAttribute("trailDifficulties", trailDifficulties);
         model.addAttribute("trailSceneryRatings", trailSceneryRatings);
-        model.addAttribute("comments", commentRepository.findByTrail_IdOrderByDateCreatedDescTimeCreatedDesc(id));
+        model.addAttribute("comments",
+                commentRepository.findByTrail_IdAndDeletedCommentOrderByDateCreatedDescTimeCreatedDesc(id, false));
         model.addAttribute("title", "Trail Details");
         model.addAttribute("detailedTrail",detailedTrail);
         return "trails/trailDetails";

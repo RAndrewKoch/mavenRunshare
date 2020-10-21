@@ -30,6 +30,8 @@ import java.util.Optional;
 @RequestMapping("/runners")
 public class RunnerController extends MainController {
 
+
+
     public static void setUserInSession(HttpSession session, Runner runner) {
         session.setAttribute(runnerSessionKey, runner.getId());
     }
@@ -275,10 +277,18 @@ public class RunnerController extends MainController {
     @GetMapping("/runnerDetails/{id}")
     private String displayRunnerDetailsView(@PathVariable Integer id,
                                             @RequestParam(required = false) String emailSent, @RequestParam(required=
-            false) Integer deleteComment, @RequestParam(required=false) Integer commentPageNumber, Model model,
+            false) Integer deleteComment, @RequestParam(required=false) Integer commentPageNumber,
+                                            @RequestParam(required=false) Boolean toggleLightMode, Model model,
                                             HttpServletRequest request, HttpSession session) {
-        setRunnerInModel(request, model);
+
 //        check if we just sent an admin email
+        if (toggleLightMode!=null){
+            Runner runnerToChangeLightMode = getRunnerFromSession(session);
+            runnerToChangeLightMode.toggleLightModePreference();
+            runnerRepository.save(runnerToChangeLightMode);
+        }
+        setRunnerInModel(request, model);
+
         if (emailSent != null){
             model.addAttribute("emailSent", emailSent);
         }

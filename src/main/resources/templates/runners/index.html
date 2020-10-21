@@ -203,7 +203,7 @@
 
     <tr class="runnertableline"
         th:each="runner : ${runners}"
-        th:if="${runnerLevel} and ${runner.runnerLevel.getDisplayName().equals(runnerLevel)} and ${!runner.equals(currentRunner)} and ${!runner.deletedRunner}">
+        th:if="${runnerLevel} and ${runner.runnerLevel.getDisplayName().equals(runnerLevel)} and ${!runner.equals(currentRunner)} and ${!(runner.deletedRunner)}">
         <td th:if="${currentRunner}">
              <span
                      th:each="possibleFriend : ${currentRunner.friends}"
