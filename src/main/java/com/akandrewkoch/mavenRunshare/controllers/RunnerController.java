@@ -31,18 +31,12 @@ import java.util.Optional;
 public class RunnerController extends MainController {
 
 
-
     public static void setUserInSession(HttpSession session, Runner runner) {
         session.setAttribute(runnerSessionKey, runner.getId());
     }
 
     @GetMapping(value = {"", "/index", "/{sortType}"})
-    public String displayRunnersIndex(@PathVariable(required = false) String sortType,
-                                      @RequestParam(required = false) String friendsList,
-                                      @RequestParam(required = false) String runnerLevel,
-                                      @RequestParam(required=false) Integer deletedRunner,
-                                      HttpServletRequest request,
-                                      HttpSession session, Model model) {
+    public String displayRunnersIndex(@PathVariable(required = false) String sortType, @RequestParam(required = false) String friendsList, @RequestParam(required = false) String runnerLevel, @RequestParam(required = false) Integer deletedRunner, HttpServletRequest request, HttpSession session, Model model) {
 
 
         if (friendsList != null) {
@@ -51,15 +45,15 @@ public class RunnerController extends MainController {
             }
         }
 
-        if (runnerLevel != null){
+        if (runnerLevel != null) {
             model.addAttribute("runnerLevel", runnerLevel);
         }
 
-        List<Runner> runners= (List<Runner>) runnerRepository.findAll();
+        List<Runner> runners = (List<Runner>) runnerRepository.findAll();
         List<Runner> runnersWithFriendRequests = new ArrayList<>();
-        if (getRunnerFromSession(session)!=null){
-            for(Runner runner : runners){
-                if (runner.getFriendRequests().contains(getRunnerFromSession(session))){
+        if (getRunnerFromSession(session) != null) {
+            for (Runner runner : runners) {
+                if (runner.getFriendRequests().contains(getRunnerFromSession(session))) {
                     runnersWithFriendRequests.add(runner);
                 }
             }
@@ -114,7 +108,7 @@ public class RunnerController extends MainController {
             }
         }
 
-        if (deletedRunner!= null){
+        if (deletedRunner != null) {
             Runner runnerToDelete = runnerRepository.findById(deletedRunner).get();
             runnerToDelete.deleteRunner();
             runnerRepository.save(runnerToDelete);
@@ -172,19 +166,12 @@ public class RunnerController extends MainController {
         Runner newRunner = new Runner(newRunnerRegistrationDTO.getCallsign(), newRunnerRegistrationDTO.getFirstName(), newRunnerRegistrationDTO.getLastName(), newRunnerRegistrationDTO.isCallsignOnly(), newRunnerRegistrationDTO.getPassword(), newRunnerRegistrationDTO.getAge(), newRunnerRegistrationDTO.getWeight(), newRunnerRegistrationDTO.getGender(), newRunnerRegistrationDTO.getRunnerLevel(), newRunnerRegistrationDTO.getZip(), newRunnerRegistrationDTO.getEmail());
         runnerRepository.save(newRunner);
         JavaEmail javaEmail = new JavaEmail();
-        String welcomeMessage = "<head>"+
-                "<style type=\"text/css\">"+
-                "</style>"+
-                "<body style=\"text-align:center\">"+
-                "<h1>Welcome to RunShare, "+newRunner.getCallsign()+"!</h1><br/>"+
-                "<h2>Login to your new account here!<h2><br/>"+
-                "<a style=\"border-style:solid; background-color:#2A2773; border-radius:10px; padding:5px; color:white;\" href=\""+System.getenv("ENVIRONMENT_URL")+"/runners/login/"+newRunner.getId()+"\">Join us on the trail!</a><br/>"+
-                "</body>";
+        String welcomeMessage = "<head>" + "<style type=\"text/css\">" + "</style>" + "<body style=\"text-align:center\">" + "<h1>Welcome to RunShare, " + newRunner.getCallsign() + "!</h1><br/>" + "<h2>Login to your new account here!<h2><br/>" + "<a style=\"border-style:solid; background-color:#2A2773; border-radius:10px; padding:5px; color:white;\" href=\"" + System.getenv("ENVIRONMENT_URL") + "/runners/login/" + newRunner.getId() + "\">Join us on the trail!</a><br/>" + "</body>";
 
-        if (System.getenv("ENVIRONMENT_URL").equals("http://localhost:8080")){
-            welcomeMessage+="sent via development mode";
+        if (System.getenv("ENVIRONMENT_URL").equals("http://localhost:8080")) {
+            welcomeMessage += "sent via development mode";
         }
-        javaEmail.sendEmail( newRunner.getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "Welcome, "+newRunner.getCallsign()+"!", welcomeMessage);
+        javaEmail.sendEmail(newRunner.getEmail(), System.getenv("SENDING_EMAIL_ADDRESS"), "Welcome, " + newRunner.getCallsign() + "!", welcomeMessage);
         setUserInSession(request.getSession(), newRunner);
 
 
@@ -275,25 +262,21 @@ public class RunnerController extends MainController {
     }
 
     @GetMapping("/runnerDetails/{id}")
-    private String displayRunnerDetailsView(@PathVariable Integer id,
-                                            @RequestParam(required = false) String emailSent, @RequestParam(required=
-            false) Integer deleteComment, @RequestParam(required=false) Integer commentPageNumber,
-                                            @RequestParam(required=false) Boolean toggleLightMode, Model model,
-                                            HttpServletRequest request, HttpSession session) {
+    private String displayRunnerDetailsView(@PathVariable Integer id, @RequestParam(required = false) String emailSent, @RequestParam(required = false) Integer deleteComment, @RequestParam(required = false) Integer commentPageNumber, @RequestParam(required = false) Boolean toggleLightMode, Model model, HttpServletRequest request, HttpSession session) {
 
-//        check if we just sent an admin email
-        if (toggleLightMode!=null){
+        //        check if we just sent an admin email
+        if (toggleLightMode != null) {
             Runner runnerToChangeLightMode = getRunnerFromSession(session);
             runnerToChangeLightMode.toggleLightModePreference();
             runnerRepository.save(runnerToChangeLightMode);
         }
         setRunnerInModel(request, model);
 
-        if (emailSent != null){
+        if (emailSent != null) {
             model.addAttribute("emailSent", emailSent);
         }
 
-        if (deleteComment!=null){
+        if (deleteComment != null) {
             Comment commentToDelete = commentRepository.findById(deleteComment).get();
             model.addAttribute("commentDeleted", commentToDelete.getMessageTitle());
             commentToDelete.deleteComment();
@@ -301,8 +284,8 @@ public class RunnerController extends MainController {
 
         }
 
-        if (commentPageNumber==null){
-            commentPageNumber=1;
+        if (commentPageNumber == null) {
+            commentPageNumber = 1;
         } else {
             model.addAttribute("commentsOpen", true);
         }
@@ -329,22 +312,22 @@ public class RunnerController extends MainController {
             model.addAttribute("title", "Details " + detailedRunner.getCallsign());
             model.addAttribute("detailedRunner", detailedRunner);
 
-            Pageable page = PageRequest.of(commentPageNumber-1, 5);
-            Page<Comment> currentPage= commentRepository.findByRunners_IdAndDeletedCommentOrderByDateCreatedDescTimeCreatedDesc(id, false, page);
+            Pageable page = PageRequest.of(commentPageNumber - 1, 5);
+            Page<Comment> currentPage = commentRepository.findByRunners_IdAndDeletedCommentOrderByDateCreatedDescTimeCreatedDesc(id, false, page);
             List<Comment> currentPageContents = currentPage.getContent();
             Integer numberOfPages = currentPage.getTotalPages();
             if (!currentPageContents.isEmpty()) {
                 model.addAttribute("comments", currentPageContents);
                 model.addAttribute("currentPage", commentPageNumber);
-                model.addAttribute("totalNumberOfPages", numberOfPages );
+                model.addAttribute("totalNumberOfPages", numberOfPages);
             }
 
-            if (commentPageNumber<numberOfPages){
-                model.addAttribute("nextPage", commentPageNumber+1);
+            if (commentPageNumber < numberOfPages) {
+                model.addAttribute("nextPage", commentPageNumber + 1);
             }
 
-            if (commentPageNumber>0){
-                model.addAttribute("previousPage", commentPageNumber-1);
+            if (commentPageNumber > 0) {
+                model.addAttribute("previousPage", commentPageNumber - 1);
             }
 
             List<RunSession> runSessions = runSessionRepository.findAllByCreator_Id(id);
@@ -495,7 +478,7 @@ public class RunnerController extends MainController {
     }
 
     @GetMapping("/forgottenPassword")
-    public String displayForgottenPasswordForm(Model model){
+    public String displayForgottenPasswordForm(Model model) {
         List<Runner> runners = (List<Runner>) runnerRepository.findAll();
         model.addAttribute("title", "forgotten password");
         model.addAttribute("runners", runners);
@@ -503,8 +486,8 @@ public class RunnerController extends MainController {
     }
 
     @PostMapping("/forgottenPassword")
-    public String processForgottenPasswordForm (@RequestParam Integer id){
+    public String processForgottenPasswordForm(@RequestParam Integer id) {
 
-        return "redirect:/email/passwordResetRequest/"+id;
+        return "redirect:/email/passwordResetRequest/" + id;
     }
 }
