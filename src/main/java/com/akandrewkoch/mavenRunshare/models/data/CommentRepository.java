@@ -18,11 +18,13 @@ public interface CommentRepository extends CrudRepository<Comment, Integer> {
 
     List<Comment> findFirst10ByOrderByDateCreatedDescTimeCreatedDesc();
 
-    List<Comment> findByTrail_IdOrderByDateCreatedDescTimeCreatedDesc(Integer trail);
+    List<Comment> findByTrail_IdAndDeletedCommentOrderByDateCreatedDescTimeCreatedDesc(Integer trail,
+                                                                                       Boolean deletedComment);
 
     List<Comment> findByRunSession_Id(Integer runSession);
 
-    List<Comment> findByRunSession_IdOrderByDateCreatedDescTimeCreatedDesc(Integer runSession);
+    List<Comment> findByRunSession_IdAndDeletedCommentOrderByDateCreatedDescTimeCreatedDesc(Integer runSession,
+                                                                                            Boolean deletedComment);
 
     Page<Comment> findByRunners_IdAndDeletedCommentOrderByDateCreatedDescTimeCreatedDesc(Integer Runner,
                                                                                                  Boolean deletedComment, Pageable pageable);

@@ -53,9 +53,13 @@ public class MainController {
         HttpSession session = request.getSession();
         if (getRunnerFromSession(session)!=null){
             model.addAttribute("currentRunner", getRunnerFromSession(session));
+            if (getRunnerFromSession(session).getLightModePreference().booleanValue()){
+                model.addAttribute("lightMode", true);
+            }
         } else {
             model.addAttribute("currentRunner", false);
         }
     }
+
 
 }

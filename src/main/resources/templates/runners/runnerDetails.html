@@ -37,6 +37,17 @@
         <div th:text="'Click bar to remove'"></div>
     </div>
 </div>
+<div th:if="${toggleLightMode}"  style="background-color:#2A2773; color: #f1f1f1; cursor: pointer;"
+     onclick="makeDisappear(this)">
+    <div class="centeringDiv">
+        <div>
+            Light mode toggled
+        </div>
+    </div>
+    <div class="centeringDiv">
+        <div th:text="'Click bar to remove'"></div>
+    </div>
+</div>
 
 <div class="centeringDiv"
      th:unless="${currentRunnerIsDetailedRunner}">
@@ -121,6 +132,13 @@
        th:text="'Send a private message to '+${detailedRunner.callsign}"></a>
 
 </div>
+<div class="centeringDiv">
+    <a th:unless="${lightMode}" th:href="@{'/runners/runnerDetails/'+${currentRunner.id}+'?toggleLightMode=true'}">
+        &#9728;</a>
+    <a th:if="${lightMode}"  th:href="@{'/runners/runnerDetails/'+${currentRunner.id}+'?toggleLightMode=true'}">
+        &#x263e;</a>
+
+</div>
 
 <div class="centeringDiv" style="margin:5px;">
     <div
@@ -165,49 +183,9 @@
                th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber='+${totalNumberOfPages}}"
                th:text="'Oldest Comments'"></a>
         </div>
-        <div th:each="comment : ${comments}"
-             style="border-style:solid">
-            <p>
-                <small
-                        th:if="${comment.privateMessage == true}"
-                        class="form-text text-muted"
-                        style="text-align:right; margin-right:5px;"
-                >Private
-                    Message
-                </small>
-                <span><a
-                        th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
-                        th:text="${comment.messageCreator.callsign}"></a></span>
-                <span th:text="' said'"></span>
-                <span th:if="${comment.runSession}"
-                      th:text="' about the '"></span>
-                <span
-                        th:if="${comment.runSession}"><a
-                        th:href="@{'../../runSessions/runSessionDetails/'+${comment.runSession.id}}"
-                        th:text="${comment.runSession.name}"></a></span>
-                <span th:if="${comment.runSession}"
-                      th:text="' session'"></span>
-                <span th:if="${comment.trail}"
-                      th:text="' on the '"></span>
-                <span th:if="${comment.trail}"><a
-                        th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}"
-                        th:text="${comment.trail.name}"></a></span>
-                <span th:if="${comment.trail}"
-                      th:text="' trail'"></span>
-                <span
-                        th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}+' CST'"></span>
-            </p>
-            <p th:text="'Title: '+${comment.messageTitle}"></p>
-            <p th:text="${comment.message}"></p>
-            <div
-                    th:if="${comment.messageCreator == detailedRunner}"
-                    style="text-align:right;">
-                <a class="btn btn-primary"
-                   style="margin:5px; background-color:red !important;"
-                   th:href="@{'/runners/runnerDetails/'+${currentRunner.id}+'?deleteComment='+${comment.id}}">Delete
-                    Comment</a>
-            </div>
-        </div>
+
+        <div th:replace="fragments :: commentBlock"></div>
+
         <div class="centeringDiv">
             <a class="mobilePortraitDelete" th:style="${currentPage<=2} ? 'visibility:hidden' : 'visibility:visible'"
                th:href="@{'/runners/runnerDetails/'+${detailedRunner.id}+'?commentPageNumber=1'}"
