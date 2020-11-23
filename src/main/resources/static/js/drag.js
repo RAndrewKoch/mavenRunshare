@@ -32,21 +32,6 @@ function drop(ev){
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = function (){
-            // changing display to successfulUpload
-            var imageDrop = document.getElementById('imageDrop');
-            imageDrop.setAttribute('hidden', true);
-            var imageChooseBox = document.getElementById('imageChooseBox');
-            imageChooseBox.setAttribute('hidden', true);
-            var imageChooseBoxMessage = document.getElementById('imageChooseBoxMessage');
-            imageChooseBoxMessage.setAttribute('hidden', true);
-            var imageDropMessage = document.getElementById('imageDropMessage');
-            imageDropMessage.setAttribute('hidden', true);
-            var JPGPNGMessage = document.getElementById('JPGPNGMessage');
-            JPGPNGMessage.setAttribute('hidden', true);
-            var droppedImageBox = document.getElementById('droppedImageBox');
-            droppedImageBox.removeAttribute('hidden');
-            var successfulUpload = document.getElementById('successfulUpload');
-            successfulUpload.removeAttribute('hidden');
             var originalImage = document.createElement('img');
             originalImage.src=reader.result;
             originalImage.onload=function(){
@@ -55,6 +40,9 @@ function drop(ev){
                 runnerPhoto.value=resized;
                 var droppedImage = document.getElementById('droppedImage');
                 droppedImage.src=resized;
+                droppedImage.onload=function(){
+                setToPhotoSelected();
+                }
             }
         }
     }
@@ -79,52 +67,65 @@ function processEnteredFile(file){
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = function (){
-            // changing display to successfulUpload
-            var imageDrop = document.getElementById('imageDrop');
-            imageDrop.setAttribute('hidden', true);
-            var imageChooseBox = document.getElementById('imageChooseBox');
-            imageChooseBox.setAttribute('hidden', true);
-            var imageChooseBoxMessage = document.getElementById('imageChooseBoxMessage');
-            imageChooseBoxMessage.setAttribute('hidden', true);
-            var imageDropMessage = document.getElementById('imageDropMessage');
-            imageDropMessage.setAttribute('hidden', true);
-            var JPGPNGMessage = document.getElementById('JPGPNGMessage');
-            JPGPNGMessage.setAttribute('hidden', true);
-            var droppedImageBox = document.getElementById('droppedImageBox');
-            droppedImageBox.removeAttribute('hidden');
-            var successfulUpload = document.getElementById('successfulUpload');
-            successfulUpload.removeAttribute('hidden');
             var originalImage = document.createElement('img');
             originalImage.src=reader.result;
             originalImage.onload=function(){
                 var resized = resizeImageTo100Width(originalImage);
                 var runnerPhoto = document.getElementById('runnerPhoto');
                 runnerPhoto.value=resized;
-                var droppedImage = document.getElementById('droppedImage');
-                droppedImage.src=resized;
+                setToPhotoSelected();
             }
         }
     }
 }
 
 function isPictureAlreadyLoaded(){
-    var loadedPicture = document.getElementById('runnerPhoto').value
-    if (loadedPicture!=""){
-        var imageDrop = document.getElementById('imageDrop');
-        imageDrop.setAttribute('hidden', true);
-        var imageChooseBox = document.getElementById('imageChooseBox');
-        imageChooseBox.setAttribute('hidden', true);
-        var imageChooseBoxMessage = document.getElementById('imageChooseBoxMessage');
-        imageChooseBoxMessage.setAttribute('hidden', true);
-        var imageDropMessage = document.getElementById('imageDropMessage');
-        imageDropMessage.setAttribute('hidden', true);
-        var JPGPNGMessage = document.getElementById('JPGPNGMessage');
-        JPGPNGMessage.setAttribute('hidden', true);
-        var droppedImageBox = document.getElementById('droppedImageBox');
-        droppedImageBox.removeAttribute('hidden');
-        var successfulUpload = document.getElementById('successfulUpload');
-        successfulUpload.removeAttribute('hidden');
-        var droppedImage = document.getElementById('droppedImage');
-        droppedImage.src = loadedPicture;
+    if (document.getElementById('runnerPhoto').value!=""){
+        setToPhotoSelected();
     }
+}
+
+function setToPhotoSelected (){
+    var imageDrop = document.getElementById('imageDrop');
+    imageDrop.setAttribute('hidden', true);
+    var imageChooseBox = document.getElementById('imageChooseBox');
+    imageChooseBox.setAttribute('hidden', true);
+    var imageChooseBoxMessage = document.getElementById('imageChooseBoxMessage');
+    imageChooseBoxMessage.setAttribute('hidden', true);
+    var imageDropMessage = document.getElementById('imageDropMessage');
+    imageDropMessage.setAttribute('hidden', true);
+    var JPGPNGMessage = document.getElementById('JPGPNGMessage');
+    JPGPNGMessage.setAttribute('hidden', true);
+    var droppedImageBox = document.getElementById('droppedImageBox');
+    droppedImageBox.removeAttribute('hidden');
+    var successfulUpload = document.getElementById('successfulUpload');
+    successfulUpload.removeAttribute('hidden');
+    var resetImageMessage = document.getElementById('resetImageMessage');
+    resetImageMessage.removeAttribute('hidden');
+    var droppedImage = document.getElementById('droppedImage');
+    var loadedPicture = document.getElementById('runnerPhoto').value
+    droppedImage.src = loadedPicture;
+}
+
+function resetDroppedImage(){
+var imageDrop = document.getElementById('imageDrop');
+    imageDrop.removeAttribute('hidden');
+    var imageChooseBox = document.getElementById('imageChooseBox');
+    imageChooseBox.removeAttribute('hidden');
+    var imageChooseBoxMessage = document.getElementById('imageChooseBoxMessage');
+    imageChooseBoxMessage.removeAttribute('hidden');
+    var imageDropMessage = document.getElementById('imageDropMessage');
+    imageDropMessage.removeAttribute('hidden');
+    var JPGPNGMessage = document.getElementById('JPGPNGMessage');
+    JPGPNGMessage.removeAttribute('hidden');
+    var droppedImageBox = document.getElementById('droppedImageBox');
+    droppedImageBox.setAttribute('hidden', true);
+    var successfulUpload = document.getElementById('successfulUpload');
+    successfulUpload.setAttribute('hidden', true);
+    var resetImageMessage = document.getElementById('resetImageMessage');
+    resetImageMessage.setAttribute('hidden', true);
+    var droppedImage = document.getElementById('droppedImage');
+    droppedImage.src="";
+    document.getElementById('runnerPhoto').value=null;
+    document.getElementById('imageChoose').value=null;
 }

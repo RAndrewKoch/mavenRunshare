@@ -175,9 +175,13 @@
         <div class="centeringDiv">
             <div style="height:100px; width:100px; background-color:white; border-style:solid; margin-bottom:10px;"
                  id="imageDrop"></div>
-            <div hidden
+            <div hidden onclick="resetDroppedImage()"
                  id="droppedImageBox"><img src="" id="droppedImage" style="border-style:outset"/></div>
         </div>
+        <div class="centeringDiv" id="resetImageMessage" hidden>
+            <p>Click Image to reset</p>
+        </div>
+
         <div class="centeringDiv" id="imageChooseBoxMessage">
             <label for="imageChoose">Or select an image here</label>
         </div>
