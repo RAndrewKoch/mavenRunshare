@@ -169,12 +169,12 @@
 
 
     <div class="form-group">
-        <div class="centeringDiv"id="imageDropMessage">
-            <label for="imageDrop" >Drag an image here</label>
+        <div class="centeringDiv mobilePortraitDelete"id="imageDropMessage">
+            <label for="imageDrop"  >Drag an image here</label>
         </div>
         <div class="centeringDiv">
             <div style="height:100px; width:100px; background-color:white; border-style:solid; margin-bottom:10px;"
-                 id="imageDrop"></div>
+                 id="imageDrop" class="mobilePortraitDelete"></div>
             <div hidden onclick="resetDroppedImage()"
                  id="droppedImageBox"><img src="" id="droppedImage" style="border-style:outset"/></div>
         </div>
@@ -183,7 +183,8 @@
         </div>
 
         <div class="centeringDiv" id="imageChooseBoxMessage">
-            <label for="imageChoose">Or select an image here</label>
+            <label for="imageChoose"><span class="mobilePortraitDelete">Or</span><span> select an image here</span>
+                </label>
         </div>
         <div class="centeringDiv" id="imageChooseBox" >
             <input type="file" accept=".jpg, .jpeg, .png" id="imageChoose" style="border-style:outset"

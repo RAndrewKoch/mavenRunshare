@@ -416,6 +416,7 @@ public class RunnerController extends MainController {
         newRunnerRegistrationDTO.setRunnerLevel(runnerToEdit.getRunnerLevel());
         newRunnerRegistrationDTO.setZip(runnerToEdit.getZip());
         newRunnerRegistrationDTO.setEmail(runnerToEdit.getEmail());
+        newRunnerRegistrationDTO.setRunnerPhoto(runnerToEdit.getRunnerPhoto());
         model.addAttribute(newRunnerRegistrationDTO);
         model.addAttribute("genders", Gender.values());
         model.addAttribute("runnerLevels", RunnerLevel.values());
@@ -446,6 +447,11 @@ public class RunnerController extends MainController {
         updatedRunner.setZip(newRunnerRegistrationDTO.getZip());
         updatedRunner.setNumberZipCode(Integer.parseInt(newRunnerRegistrationDTO.getZip()));
         updatedRunner.setEmail(newRunnerRegistrationDTO.getEmail());
+        if (newRunnerRegistrationDTO.getRunnerPhoto()!="") {
+            updatedRunner.setRunnerPhoto(newRunnerRegistrationDTO.getRunnerPhoto());
+        }else {
+            updatedRunner.setRunnerPhoto(null);
+        }
         runnerRepository.save(updatedRunner);
         return "redirect:/runners/runnerDetails/" + updatedRunner.getId();
     }
