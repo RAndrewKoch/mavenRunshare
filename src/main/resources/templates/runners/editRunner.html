@@ -140,6 +140,47 @@
             able to display your callsign.  No other
             information will ever be displayed </small>
     </div>
+
+
+    <div class="form-group">
+        <div class="centeringDiv mobilePortraitDelete"id="imageDropMessage">
+            <label for="imageDrop" >Drag an image here</label>
+        </div>
+        <div class="centeringDiv">
+            <div style="height:100px; width:100px; background-color:white; border-style:solid; margin-bottom:10px;"
+                 id="imageDrop" class="mobilePortraitDelete"></div>
+            <div hidden onclick="resetDroppedImage()"
+                 id="droppedImageBox"><img src="" id="droppedImage" style="border-style:outset"/></div>
+        </div>
+        <div class="centeringDiv" id="resetImageMessage" hidden>
+            <p>Click Image to reset</p>
+        </div>
+
+        <div class="centeringDiv" id="imageChooseBoxMessage">
+            <label for="imageChoose"><span class="mobilePortraitDelete">Or</span><span> select an image here</span></label>
+        </div>
+        <div class="centeringDiv" id="imageChooseBox" >
+            <input type="file" accept=".jpg, .jpeg, .png" id="imageChoose" style="border-style:outset"
+                   onchange="processEnteredFile(this.files[0]);">
+        </div>
+        <div class="centeringDiv" id="JPGPNGMessage">
+            <small class="form-text text-muted" >Accepts JPG and PNG images. Only 1 image can be loaded, if multiple
+                images are dropped, only 1 will be accepted</small>
+        </div>
+        <div class="centeringDiv" id="JPGPNGWarning" hidden>
+            <p class="errors">Please only use JPG, JPEG, or PNG formats</p>
+        </div>
+        <div class="centeringDiv" id="successfulUpload" hidden>
+            <p>Image successfully entered</p>
+        </div>
+
+
+        <div id="dropMessage" style="color:red" hidden></div>
+        <input hidden th:field="${newRunnerRegistrationDTO.runnerPhoto}" value="null" id="runnerPhoto">
+        <p th:errors="${newRunnerRegistrationDTO.runnerPhoto}" class="errors"></p>
+    </div>
+    </div>
+
     <div hidden>
         <input
                 th:field="${newRunnerRegistrationDTO.password}">
@@ -153,6 +194,6 @@
         Edits</button>
 </form>
 
-
+<script type="text/javascript" th:src="@{/js/drag.js}"></script>
 </body>
 </html>
