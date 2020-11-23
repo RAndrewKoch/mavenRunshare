@@ -19,7 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -163,7 +165,12 @@ public class RunnerController extends MainController {
             model.addAttribute("title", "Add Runner");
             return "runners/addRunner";
         }
-        Runner newRunner = new Runner(newRunnerRegistrationDTO.getCallsign(), newRunnerRegistrationDTO.getFirstName(), newRunnerRegistrationDTO.getLastName(), newRunnerRegistrationDTO.isCallsignOnly(), newRunnerRegistrationDTO.getPassword(), newRunnerRegistrationDTO.getAge(), newRunnerRegistrationDTO.getWeight(), newRunnerRegistrationDTO.getGender(), newRunnerRegistrationDTO.getRunnerLevel(), newRunnerRegistrationDTO.getZip(), newRunnerRegistrationDTO.getEmail());
+        Runner newRunner = new Runner(newRunnerRegistrationDTO.getCallsign(), newRunnerRegistrationDTO.getFirstName()
+                , newRunnerRegistrationDTO.getLastName(), newRunnerRegistrationDTO.isCallsignOnly(),
+                newRunnerRegistrationDTO.getPassword(), newRunnerRegistrationDTO.getAge(),
+                newRunnerRegistrationDTO.getWeight(), newRunnerRegistrationDTO.getGender(),
+                newRunnerRegistrationDTO.getRunnerLevel(), newRunnerRegistrationDTO.getZip(),
+                newRunnerRegistrationDTO.getEmail(), newRunnerRegistrationDTO.getRunnerPhoto());
         runnerRepository.save(newRunner);
         JavaEmail javaEmail = new JavaEmail();
         String welcomeMessage = "<head>" + "<style type=\"text/css\">" + "</style>" + "<body style=\"text-align:center\">" + "<h1>Welcome to RunShare, " + newRunner.getCallsign() + "!</h1><br/>" + "<h2>Login to your new account here!<h2><br/>" + "<a style=\"border-style:solid; background-color:#2A2773; border-radius:10px; padding:5px; color:white;\" href=\"" + System.getenv("ENVIRONMENT_URL") + "/runners/login/" + newRunner.getId() + "\">Join us on the trail!</a><br/>" + "</body>";
@@ -227,7 +234,9 @@ public class RunnerController extends MainController {
     }
 
     @PostMapping("/login/{id}")
-    public String processLoginForm(@PathVariable Integer id, @ModelAttribute @Valid RunnerLoginDTO runnerLoginDTO, Errors errors, Model model, HttpServletRequest request) {
+    public String processLoginForm(@PathVariable Integer id, @ModelAttribute @Valid RunnerLoginDTO runnerLoginDTO,
+                                   Errors errors, Model model, HttpServletRequest request,
+                                   HttpServletResponse response) {
         setRunnerInModel(request, model);
         model.addAttribute("selectedRunner", runnerRepository.findById(id).get());
         model.addAttribute("title", "Login");
