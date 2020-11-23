@@ -51,6 +51,8 @@ public class NewRunnerRegistrationDTO extends RunnerLoginDTO {
     @Email(message="Email provided must be valid")
     private String email;
 
+    private String runnerPhoto;
+
     public NewRunnerRegistrationDTO(){}
 
     public String getFirstName() {
@@ -132,4 +134,8 @@ public class NewRunnerRegistrationDTO extends RunnerLoginDTO {
     public String getEmail() {return email; }
 
     public void setEmail(String email) {this.email = email; }
+
+    public String getRunnerPhoto() { return runnerPhoto; }
+
+    public void setRunnerPhoto(String runnerPhoto) { this.runnerPhoto = runnerPhoto; }
 }

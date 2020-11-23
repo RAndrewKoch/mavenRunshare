@@ -85,12 +85,15 @@ public class Runner extends AbstractEntity{
 
     private Boolean lightModePreference;
 
+    private String runnerPhoto;
+
 
     //Constructors
     public Runner() {
     }
 
-    public Runner (String callsign, String firstName, String lastName, Boolean callsignOnly, String password, int age, int weight, Gender gender, RunnerLevel runnerLevel, String zip, String email){
+    public Runner (String callsign, String firstName, String lastName, Boolean callsignOnly, String password, int age
+            , int weight, Gender gender, RunnerLevel runnerLevel, String zip, String email, String runnerPhoto){
         this.callsign= Jsoup.clean(callsign, Whitelist.none());
         this.firstName= Jsoup.clean(firstName, Whitelist.none());
         this.lastName= Jsoup.clean(lastName, Whitelist.none());
@@ -103,6 +106,11 @@ public class Runner extends AbstractEntity{
         this.zip = Jsoup.clean(zip, Whitelist.basic());
         this.numberZipCode = Integer.parseInt(zip);
         this.email = email;
+        if (runnerPhoto==""||runnerPhoto==null){
+            this.runnerPhoto=null;
+        }else {
+            this.runnerPhoto = runnerPhoto;
+        }
         this.deletedRunner= false;
         this.lightModePreference=false;
     }
@@ -156,6 +164,8 @@ public class Runner extends AbstractEntity{
     public Boolean getDeletedRunner() { return deletedRunner; }
 
     public Boolean getLightModePreference() { return lightModePreference; }
+
+    public String getRunnerPhoto() {return runnerPhoto; }
 
     //setters
 
@@ -231,4 +241,6 @@ public class Runner extends AbstractEntity{
     public void setLightModePreference(Boolean lightModePreference) { this.lightModePreference = lightModePreference; }
 
     public void toggleLightModePreference (){this.lightModePreference = !this.lightModePreference;}
+
+    public void setRunnerPhoto(String runnerPhoto) { this.runnerPhoto = runnerPhoto; }
 }

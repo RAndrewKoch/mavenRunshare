@@ -177,39 +177,40 @@
 <!------COMMENTS BLOCKS----->
 
 <div th:if="${comments}" th:each="comment : ${comments}" th:fragment="commentBlock">
-    <div class="commentBlock" style="border-style:solid"
+    <div class="commentBlock" style="border-style:solid; padding:10px;"
          th:if="${(comment.privateMessage == false or comment.messageCreator == currentRunner or comment.runners.contains(currentRunner)) }">
         <p>
-            <small
-                    th:if="${comment.privateMessage == true}"
+            <small th:if="${comment.privateMessage == true}"
                     class="form-text text-muted"
-                    style="text-align:right; margin-right:5px;"
-            >Private
-                Message
+                    style="text-align:right; margin-right:5px;">Private Message
             </small>
-            <span><a
-                    th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
-                    th:text="${comment.messageCreator.callsign}"></a></span>
-            <span th:text="' said'"></span>
-            <span th:if="${comment.runSession}"
-                  th:text="' about the '"></span>
-            <span
-                    th:if="${comment.runSession}"><a
-                    th:href="@{'../../runSessions/runSessionDetails/'+${comment.runSession.id}}"
-                    th:text="${comment.runSession.name}"></a></span>
-            <span th:if="${comment.runSession}"
-                  th:text="' session'"></span>
-            <span th:if="${comment.trail}"
-                  th:text="' on the '"></span>
-            <span th:if="${comment.trail}"><a
-                    th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}"
-                    th:text="${comment.trail.name}"></a></span>
-            <span th:if="${comment.trail}" th:text="' trail'"></span>
-            <span
-                    th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}+' CST'"></span>
+        <div th:if="${comment.messageCreator.callsignOnly == false} and ${comment.messageCreator.runnerPhoto}">
+            <img  th:src="${comment.messageCreator.runnerPhoto}"
+                 style="width:50px; border-style:outset; margin-left:10px; margin-bottom:10px;" >
+        </div>
+        <span style="margin-left:10px;"><a
+                th:href="@{'../../runners/runnerDetails/'+${comment.messageCreator.id}}"
+                th:text="${comment.messageCreator.callsign}"></a></span>
+        <span th:text="' said'"></span>
+        <span th:if="${comment.runSession}"
+              th:text="' about the '"></span>
+        <span
+                th:if="${comment.runSession}"><a
+                th:href="@{'../../runSessions/runSessionDetails/'+${comment.runSession.id}}"
+                th:text="${comment.runSession.name}"></a></span>
+        <span th:if="${comment.runSession}"
+              th:text="' session'"></span>
+        <span th:if="${comment.trail}"
+              th:text="' on the '"></span>
+        <span th:if="${comment.trail}"><a
+                th:href="@{'../../trails/trailDetails/'+${comment.trail.id}}"
+                th:text="${comment.trail.name}"></a></span>
+        <span th:if="${comment.trail}" th:text="' trail'"></span>
+        <span
+                th:text="' on '+${comment.displayStringDate()}+' at '+${comment.displayStringTime()}+' CST'"></span>
         </p>
-        <p th:text="'Title: '+${comment.messageTitle}"></p>
-        <p th:text="${comment.message}"></p>
+        <p style="margin-left:10px;" th:text="'Title: '+${comment.messageTitle}"></p>
+        <p style="margin-left:10px;" th:text="${comment.message}"></p>
         <div th:if="${currentRunner}"
              style="text-align:right;">
             <a style="background-color:red !important; margin:5px;"

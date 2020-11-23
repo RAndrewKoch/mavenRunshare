@@ -17,7 +17,9 @@ public class RestController extends MainController {
     public Runner getRunner(@PathVariable int id){
         if (runnerRepository.findById(id) != null) {
             Runner runner=runnerRepository.findById(id);
-            return new Runner(runner.getCallsign(),runner.getFirstName(),runner.getLastName(),runner.isCallsignOnly(),"",runner.getAge(),runner.getWeight(),runner.getGender(),runner.getRunnerLevel(),runner.getZip(), "");
+            return new Runner(runner.getCallsign(),runner.getFirstName(),runner.getLastName(),runner.isCallsignOnly()
+                    ,"",runner.getAge(),runner.getWeight(),runner.getGender(),runner.getRunnerLevel(),runner.getZip()
+                    , "", runner.getRunnerPhoto());
         } else {return new Runner();}
     }
 

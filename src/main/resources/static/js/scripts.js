@@ -116,3 +116,4 @@ function changeToConfirmationButton(originalButton, newButton, warning){
     originalButton.setAttribute("hidden", true);
     newButton.removeAttribute("hidden");
 }
+
