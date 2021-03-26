@@ -19,8 +19,6 @@ function resizeImageTo100Width(originalImage){
 }
 
 function drop(ev){
-    console.log("function drop fired");
-    console.log(ev.dataTransfer.files);
     var files= ev.dataTransfer.files;
     var file = files[0];
     if (file.type!="image/jpeg"&&file.type!="image/png"&&file.type!="image/jpg"){

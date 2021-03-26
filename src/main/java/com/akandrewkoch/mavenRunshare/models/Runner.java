@@ -117,130 +117,52 @@ public class Runner extends AbstractEntity{
 
 //getters
 
-    public String getCallsign() {
-        return callsign;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public boolean isCallsignOnly() {
-        return callsignOnly;
-    }
-
-    public String getPwHash() {
-        return pwHash;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
+    public String getCallsign() { return callsign; }
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+    public boolean isCallsignOnly() { return callsignOnly; }
+    public String getPwHash() { return pwHash; }
+    public Integer getAge() { return age; }
     public int getWeight() { return weight; }
-
     public Gender getGender() { return gender; }
-
     public RunnerLevel getRunnerLevel() { return runnerLevel; }
-
     public String getZip() { return zip; }
-
     public Integer getNumberZipCode() { return numberZipCode; }
-
     public List<Runner> getFriendRequests() { return friendRequests; }
-
     public List<Runner> getFriends() { return friends; }
-
     public String getEmail() {return email; }
-
     public String getPasswordTempRequest() {return passwordTempRequest;}
-
     public String getPreviousPWHash() { return previousPWHash; }
-
     public Boolean getDeletedRunner() { return deletedRunner; }
-
     public Boolean getLightModePreference() { return lightModePreference; }
-
     public String getRunnerPhoto() {return runnerPhoto; }
 
     //setters
 
-    public void setCallsign(String callsign) {
-        this.callsign = callsign;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setCallsignOnly(boolean callsignOnly) {
-        this.callsignOnly = callsignOnly;
-    }
-
-    public void setPassword(String password) {
-        this.pwHash = encoder.encode(password);
-    }
-
+    public void setCallsign(String callsign) { this.callsign = callsign; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+    public void setCallsignOnly(boolean callsignOnly) { this.callsignOnly = callsignOnly; }
+    public void setPassword(String password) { this.pwHash = encoder.encode(password); }
     public void setPreviousPWHash (String previousPWHash) {this.previousPWHash = previousPWHash;}
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public void setRunningLevel(RunnerLevel runnerLevel) {
-        this.runnerLevel = runnerLevel;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
+    public void setAge(int age) { this.age = age; }
+    public void setWeight(int weight) { this.weight = weight; }
+    public void setGender(Gender gender) { this.gender = gender; }
+    public void setRunningLevel(RunnerLevel runnerLevel) { this.runnerLevel = runnerLevel; }
+    public void setZip(String zip) { this.zip = zip; }
     public void setNumberZipCode(Integer numberZipCode) { this.numberZipCode = numberZipCode; }
-
     public void setEmail(String email) { this.email = email; }
-
     public void setPasswordTempRequest (String passwordTempRequest){this.passwordTempRequest=passwordTempRequest;}
-
-    public boolean isMatchingPassword(String password){
-        return encoder.matches(password, pwHash);
-    }
-
+    public boolean isMatchingPassword(String password){ return encoder.matches(password, pwHash); }
     public boolean isMatchingPreviousPWHash (String password){ return encoder.matches(password, previousPWHash);}
-
     public void addComment (Comment comment){this.comments.add(comment);}
-
     public void addFriendRequest (Runner runner) {this.friendRequests.add(runner);}
-
     public void addFriend (Runner runner) {this.friends.add(runner);}
-
     public void removeFriendRequest (Runner runner) {this.friendRequests.remove(runner);}
-
     public boolean isFriend (Runner runner) { return this.friends.contains(runner);}
-
     public void setDeletedRunner(Boolean deletedRunner) { this.deletedRunner = deletedRunner; }
-
     public void deleteRunner() {this.deletedRunner = true; }
-
     public void setLightModePreference(Boolean lightModePreference) { this.lightModePreference = lightModePreference; }
-
     public void toggleLightModePreference (){this.lightModePreference = !this.lightModePreference;}
-
     public void setRunnerPhoto(String runnerPhoto) { this.runnerPhoto = runnerPhoto; }
 }
