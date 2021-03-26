@@ -12,6 +12,8 @@ import javax.mail.internet.MimeMessage;
 
 public class JavaEmail {
 
+
+
     public void sendEmail(String to, String from, String subjectLine, String messageContent) {
 
 
